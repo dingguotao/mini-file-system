@@ -16,9 +16,8 @@
         <module>client</module>
     </modules>
 
-    <name>mini-storage</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <name>mini-file-system</name>
+    <url>https://github.com/iclouding/mini-file-system</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
