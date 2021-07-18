@@ -1,5 +1,7 @@
-小文件系统 mini-file-system
+# 小文件系统 mini-file-system
+
 该项目是实现一套分布式小文件系统的代码，项目代号: mfs(mini-file-system)
+
 重在熟悉分布式项目的实现
 
 ## 设计
