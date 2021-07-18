@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.iclouding.mimi.namenode.rpc;
+
+option java_multiple_files = true;
+option java_package = "com.iclouding.mimi.namenode.rpc.service";
+option java_outer_classname="NameNodeRpcServer";
+
+//import "NameNodeRpcServerModel.proto";
+import "NameNodeRpcModel.proto";
+
+service NameNodeService{
+  rpc register(RegisterRequest) returns (RegisterResponse);
+  rpc heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+}

@@ -13,11 +13,14 @@ public class NameNode {
      * 提供namesystem，管理核心元数据
      */
     private FSNamesystem namesystem;
-
+    /**
+     * 管理集群中所有的datanode
+     */
+    private DataNodeManager dataNodeManager;
     /**
      * 对外提供rpc调用
      */
-    private NameNodeRpcServer rpcServer;
+    private NameNodeRpcServiceImpl rpcServer;
 
     /**
      * namenode 是否还在运行
@@ -49,7 +52,8 @@ public class NameNode {
      */
     private void initialize() {
         namesystem = new FSNamesystem();
-        this.rpcServer = new NameNodeRpcServer(namesystem);
+        dataNodeManager = new DataNodeManager();
+        this.rpcServer = new NameNodeRpcServiceImpl(namesystem, dataNodeManager);
         rpcServer.start();
     }
 }
