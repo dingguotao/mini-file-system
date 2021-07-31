@@ -2,6 +2,8 @@ package com.iclouding.mfs.namenode.rpc;
 
 import com.iclouding.mfs.namenode.DataNodeManager;
 import com.iclouding.mfs.namenode.FSNamesystem;
+import com.iclouding.mfs.namenode.protocolPB.ClientNameNodeService;
+import com.iclouding.mfs.rpc.namenode.service.ClientNameNodeServiceGrpc;
 import com.iclouding.mfs.rpc.namenode.service.NameNodeServiceGrpc;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -42,6 +44,7 @@ public class NameNodeRpcServer {
         server = ServerBuilder.forPort(50010)
                 // 绑定NameNode的RPC service
                 .addService(NameNodeServiceGrpc.bindService(new NameNodeRpcServiceImpl(namesystem, dataNodeManager)))
+                .addService(ClientNameNodeServiceGrpc.bindService(new ClientNameNodeService()))
                 .build();
         server.start();
         logger.info("NameNode RPC启动，监听{}端口", 50010);
@@ -50,13 +53,15 @@ public class NameNodeRpcServer {
 
     }
 
-    public void stop(){
-        if (server != null){
+    public void stop() {
+        if (server != null) {
             server.shutdown();
         }
     }
 
     public void blockUntilShutdown() throws InterruptedException {
-        server.awaitTermination();
+        if (server != null) {
+            server.awaitTermination();
+        }
     }
 }

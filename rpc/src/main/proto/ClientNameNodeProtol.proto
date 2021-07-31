@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.iclouding.mfs.rpc.namenode;
+option java_multiple_files = true;
+option java_package = "com.iclouding.mfs.rpc.namenode.model";
+option java_outer_classname = "ClientNameNodeProtol";
+
+message MkDirRequest{
+  string path = 1;
+  bool createParent = 2;
+}
+
+message MkDirResponse{
+  string path = 1;
+  int32 status = 2;
+}
