@@ -20,7 +20,7 @@ public class FileSystemImplTest {
     @Test
     public void mkdirs() {
         FileSystem fileSystem = FileSystem.get(new Configuration());
-        boolean result = fileSystem.mkdirs("/aaa");
+        boolean result = fileSystem.mkdirs("/aaa/bbb/ccc", true);
         System.out.println(result);
         fileSystem.close();
     }

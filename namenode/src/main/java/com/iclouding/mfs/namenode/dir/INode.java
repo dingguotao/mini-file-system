@@ -8,8 +8,26 @@ package com.iclouding.mfs.namenode.dir;
  * @email: clouding.vip@qq.com
  */
 public class INode {
+    /**
+     * 类型，是文件还是目录
+     */
+    private INodeTypeEnum iNodeType;
+
     private long createTime;
+
     public long updateTime;
+
+    public INode(INodeTypeEnum iNodeType) {
+        this.iNodeType = iNodeType;
+    }
+
+    public INodeTypeEnum getiNodeType() {
+        return iNodeType;
+    }
+
+    public void setiNodeType(INodeTypeEnum iNodeType) {
+        this.iNodeType = iNodeType;
+    }
 
     public long getCreateTime() {
         return createTime;
