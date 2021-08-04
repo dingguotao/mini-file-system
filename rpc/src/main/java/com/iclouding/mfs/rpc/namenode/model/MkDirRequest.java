@@ -66,7 +66,7 @@ public  final class MkDirRequest extends
       makeExtensionsImmutable();
     }
   }
-  public static final com.google.protobuf.Descriptors.Descriptor
+  public static com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_MkDirRequest_descriptor;
   }
