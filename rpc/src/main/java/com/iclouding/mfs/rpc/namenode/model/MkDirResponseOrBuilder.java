@@ -8,17 +8,47 @@ public interface MkDirResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 路径
+   * </pre>
+   *
    * <code>optional string path = 1;</code>
    */
   java.lang.String getPath();
   /**
+   * <pre>
+   * 路径
+   * </pre>
+   *
    * <code>optional string path = 1;</code>
    */
   com.google.protobuf.ByteString
       getPathBytes();
 
   /**
+   * <pre>
+   * 状态
+   * </pre>
+   *
    * <code>optional int32 status = 2;</code>
    */
   int getStatus();
+
+  /**
+   * <pre>
+   * 异常时提示消息
+   * </pre>
+   *
+   * <code>optional string message = 3;</code>
+   */
+  java.lang.String getMessage();
+  /**
+   * <pre>
+   * 异常时提示消息
+   * </pre>
+   *
+   * <code>optional string message = 3;</code>
+   */
+  com.google.protobuf.ByteString
+      getMessageBytes();
 }

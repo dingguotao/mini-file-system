@@ -17,6 +17,7 @@ public  final class MkDirResponse extends
   private MkDirResponse() {
     path_ = "";
     status_ = 0;
+    message_ = "";
   }
 
   @java.lang.Override
@@ -55,6 +56,12 @@ public  final class MkDirResponse extends
             status_ = input.readInt32();
             break;
           }
+          case 26: {
+            java.lang.String s = input.readStringRequireUtf8();
+
+            message_ = s;
+            break;
+          }
         }
       }
     } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -81,6 +88,10 @@ public  final class MkDirResponse extends
   public static final int PATH_FIELD_NUMBER = 1;
   private volatile java.lang.Object path_;
   /**
+   * <pre>
+   * 路径
+   * </pre>
+   *
    * <code>optional string path = 1;</code>
    */
   public java.lang.String getPath() {
@@ -96,6 +107,10 @@ public  final class MkDirResponse extends
     }
   }
   /**
+   * <pre>
+   * 路径
+   * </pre>
+   *
    * <code>optional string path = 1;</code>
    */
   public com.google.protobuf.ByteString
@@ -115,10 +130,56 @@ public  final class MkDirResponse extends
   public static final int STATUS_FIELD_NUMBER = 2;
   private int status_;
   /**
+   * <pre>
+   * 状态
+   * </pre>
+   *
    * <code>optional int32 status = 2;</code>
    */
   public int getStatus() {
     return status_;
+  }
+
+  public static final int MESSAGE_FIELD_NUMBER = 3;
+  private volatile java.lang.Object message_;
+  /**
+   * <pre>
+   * 异常时提示消息
+   * </pre>
+   *
+   * <code>optional string message = 3;</code>
+   */
+  public java.lang.String getMessage() {
+    java.lang.Object ref = message_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      message_ = s;
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * 异常时提示消息
+   * </pre>
+   *
+   * <code>optional string message = 3;</code>
+   */
+  public com.google.protobuf.ByteString
+      getMessageBytes() {
+    java.lang.Object ref = message_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      message_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -139,6 +200,9 @@ public  final class MkDirResponse extends
     if (status_ != 0) {
       output.writeInt32(2, status_);
     }
+    if (!getMessageBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, message_);
+    }
   }
 
   public int getSerializedSize() {
@@ -152,6 +216,9 @@ public  final class MkDirResponse extends
     if (status_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, status_);
+    }
+    if (!getMessageBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, message_);
     }
     memoizedSize = size;
     return size;
@@ -173,6 +240,8 @@ public  final class MkDirResponse extends
         .equals(other.getPath());
     result = result && (getStatus()
         == other.getStatus());
+    result = result && getMessage()
+        .equals(other.getMessage());
     return result;
   }
 
@@ -187,6 +256,8 @@ public  final class MkDirResponse extends
     hash = (53 * hash) + getPath().hashCode();
     hash = (37 * hash) + STATUS_FIELD_NUMBER;
     hash = (53 * hash) + getStatus();
+    hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
+    hash = (53 * hash) + getMessage().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -309,6 +380,8 @@ public  final class MkDirResponse extends
 
       status_ = 0;
 
+      message_ = "";
+
       return this;
     }
 
@@ -333,6 +406,7 @@ public  final class MkDirResponse extends
       com.iclouding.mfs.rpc.namenode.model.MkDirResponse result = new com.iclouding.mfs.rpc.namenode.model.MkDirResponse(this);
       result.path_ = path_;
       result.status_ = status_;
+      result.message_ = message_;
       onBuilt();
       return result;
     }
@@ -381,6 +455,10 @@ public  final class MkDirResponse extends
       if (other.getStatus() != 0) {
         setStatus(other.getStatus());
       }
+      if (!other.getMessage().isEmpty()) {
+        message_ = other.message_;
+        onChanged();
+      }
       onChanged();
       return this;
     }
@@ -409,6 +487,10 @@ public  final class MkDirResponse extends
 
     private java.lang.Object path_ = "";
     /**
+     * <pre>
+     * 路径
+     * </pre>
+     *
      * <code>optional string path = 1;</code>
      */
     public java.lang.String getPath() {
@@ -424,6 +506,10 @@ public  final class MkDirResponse extends
       }
     }
     /**
+     * <pre>
+     * 路径
+     * </pre>
+     *
      * <code>optional string path = 1;</code>
      */
     public com.google.protobuf.ByteString
@@ -440,6 +526,10 @@ public  final class MkDirResponse extends
       }
     }
     /**
+     * <pre>
+     * 路径
+     * </pre>
+     *
      * <code>optional string path = 1;</code>
      */
     public Builder setPath(
@@ -453,6 +543,10 @@ public  final class MkDirResponse extends
       return this;
     }
     /**
+     * <pre>
+     * 路径
+     * </pre>
+     *
      * <code>optional string path = 1;</code>
      */
     public Builder clearPath() {
@@ -462,6 +556,10 @@ public  final class MkDirResponse extends
       return this;
     }
     /**
+     * <pre>
+     * 路径
+     * </pre>
+     *
      * <code>optional string path = 1;</code>
      */
     public Builder setPathBytes(
@@ -478,12 +576,20 @@ public  final class MkDirResponse extends
 
     private int status_ ;
     /**
+     * <pre>
+     * 状态
+     * </pre>
+     *
      * <code>optional int32 status = 2;</code>
      */
     public int getStatus() {
       return status_;
     }
     /**
+     * <pre>
+     * 状态
+     * </pre>
+     *
      * <code>optional int32 status = 2;</code>
      */
     public Builder setStatus(int value) {
@@ -493,11 +599,104 @@ public  final class MkDirResponse extends
       return this;
     }
     /**
+     * <pre>
+     * 状态
+     * </pre>
+     *
      * <code>optional int32 status = 2;</code>
      */
     public Builder clearStatus() {
       
       status_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object message_ = "";
+    /**
+     * <pre>
+     * 异常时提示消息
+     * </pre>
+     *
+     * <code>optional string message = 3;</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        message_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * 异常时提示消息
+     * </pre>
+     *
+     * <code>optional string message = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * 异常时提示消息
+     * </pre>
+     *
+     * <code>optional string message = 3;</code>
+     */
+    public Builder setMessage(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      message_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * 异常时提示消息
+     * </pre>
+     *
+     * <code>optional string message = 3;</code>
+     */
+    public Builder clearMessage() {
+      
+      message_ = getDefaultInstance().getMessage();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * 异常时提示消息
+     * </pre>
+     *
+     * <code>optional string message = 3;</code>
+     */
+    public Builder setMessageBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      message_ = value;
       onChanged();
       return this;
     }

@@ -35,10 +35,11 @@ public final class ClientNameNodeProtol {
     java.lang.String[] descriptorData = {
       "\n\032ClientNameNodeProtol.proto\022\036com.icloud" +
       "ing.mfs.rpc.namenode\"2\n\014MkDirRequest\022\014\n\004" +
-      "path\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\"-\n\rMkDi" +
-      "rResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005B" +
-      ">\n$com.iclouding.mfs.rpc.namenode.modelB" +
-      "\024ClientNameNodeProtolP\001b\006proto3"
+      "path\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\">\n\rMkDi" +
+      "rResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022" +
+      "\017\n\007message\030\003 \001(\tB>\n$com.iclouding.mfs.rp" +
+      "c.namenode.modelB\024ClientNameNodeProtolP\001" +
+      "b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -63,7 +64,7 @@ public final class ClientNameNodeProtol {
     internal_static_com_iclouding_mfs_rpc_namenode_MkDirResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_iclouding_mfs_rpc_namenode_MkDirResponse_descriptor,
-        new java.lang.String[] { "Path", "Status", });
+        new java.lang.String[] { "Path", "Status", "Message", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

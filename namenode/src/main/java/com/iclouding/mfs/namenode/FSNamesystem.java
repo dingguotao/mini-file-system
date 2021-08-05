@@ -1,6 +1,10 @@
 package com.iclouding.mfs.namenode;
 
+import com.iclouding.mfs.namenode.dir.DirectoryINode;
 import com.iclouding.mfs.namenode.dir.FSDirectory;
+import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
+import com.iclouding.mfs.namenode.log.FSEditLog;
+import com.iclouding.mfs.namenode.log.MkDirEditLogOp;
 
 /**
  * FSNamesystem
@@ -13,16 +17,20 @@ public class FSNamesystem {
 
     private FSDirectory fsDirectory;
 
+    // 管理 edit log
+    private FSEditLog editLog;
+
     public FSNamesystem() {
         fsDirectory = new FSDirectory();
+        editLog = new FSEditLog();
     }
 
-    public boolean mkdirs(String path, boolean createParent) {
-        try {
-            fsDirectory.mkdirs(path,createParent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean mkdirs(String path, boolean createParent) throws Exception {
+        DirectoryINode directoryINode = fsDirectory.mkdirs(path, createParent);
+
+        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, directoryINode.getCreateTime(), directoryINode.getUpdateTime());
+        editLog.logEdit(mkDirEditLogOp);
+
+        return true;
     }
 }

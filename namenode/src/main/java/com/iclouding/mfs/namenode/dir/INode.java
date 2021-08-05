@@ -15,10 +15,12 @@ public class INode {
 
     private long createTime;
 
-    public long updateTime;
+    private long updateTime;
 
     public INode(INodeTypeEnum iNodeType) {
         this.iNodeType = iNodeType;
+        createTime = System.currentTimeMillis();
+        updateTime = createTime;
     }
 
     public INodeTypeEnum getiNodeType() {

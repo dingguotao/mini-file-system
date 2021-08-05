@@ -1,6 +1,7 @@
 package com.iclouding.mfs.namenode.dir;
 
 import com.google.common.base.Splitter;
+import com.iclouding.mfs.namenode.log.FSEditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +24,14 @@ public class FSDirectory {
      */
     private DirectoryINode dirTree;
 
+
     private String ROOT = "/";
 
     public FSDirectory() {
         this.dirTree = new DirectoryINode(ROOT);
     }
 
-    public boolean mkdirs(String path, boolean createParent) throws Exception {
+    public DirectoryINode mkdirs(String path, boolean createParent) throws Exception {
         Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
         List<String> paths = pathSplitter.splitToList(path);
 
@@ -61,10 +63,9 @@ public class FSDirectory {
         }
 
         // 最后一级的目录添加
-        addNewPath(paths.get(paths.size() - 1), parent);
-
+        DirectoryINode directoryINode = addNewPath(paths.get(paths.size() - 1), parent);
         logger.info("成功添加目录: {}", path);
-        return true;
+        return directoryINode;
     }
 
     private DirectoryINode addNewPath(String path, DirectoryINode parent) {

@@ -9,6 +9,8 @@ import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
+import java.util.concurrent.Executors;
+
 /**
  * DFSClient
  * hdfs Client
@@ -30,6 +32,7 @@ public class DFSClient {
         this.conf = conf;
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress("127.0.0.1", 50010)
+                .executor(Executors.newFixedThreadPool(100))
                 .usePlaintext()
                 .build();
         namenode = ClientNameNodeServiceGrpc.newBlockingStub(channel);
