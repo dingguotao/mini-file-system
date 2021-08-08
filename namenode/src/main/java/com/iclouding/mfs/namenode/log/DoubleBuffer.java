@@ -4,8 +4,14 @@ import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * DoubleBuffer
@@ -44,6 +50,9 @@ public class DoubleBuffer {
     public void flush() {
         logger.info("flush数据: ");
         logger.info(String.join("\n", syncBuffer.buf));
+
+        syncBuffer.flush();
+        syncBuffer.reset();
     }
 
     public void setReadyToFlush() {
@@ -77,7 +86,7 @@ public class DoubleBuffer {
                 firstTxid = editLogOp.getTxid();
             }
 
-            buf.add(JSON.toJSONString(editLogOp));
+            buf.add(JSON.toJSONString(editLogOp) + "\n");
 
         }
 
@@ -88,6 +97,23 @@ public class DoubleBuffer {
 
         public boolean shouldFlush() {
             return buf.size() > this.initBufferSize;
+        }
+
+        public void flush()  {
+
+            try {
+                List<byte[]> bufBytes = buf.stream().map(String::getBytes).collect(Collectors.toList());
+                int sum = bufBytes.stream().mapToInt(bytes -> bytes.length).sum();
+                ByteBuffer byteBuffer = ByteBuffer.allocateDirect(sum);
+
+                RandomAccessFile editLogFile = new RandomAccessFile("", "rw");
+
+                FileChannel editLogFileChannel = editLogFile.getChannel();
+                editLogFileChannel.write(byteBuffer);
+                editLogFileChannel.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

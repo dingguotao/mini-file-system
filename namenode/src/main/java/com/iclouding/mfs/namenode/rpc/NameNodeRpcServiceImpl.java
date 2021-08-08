@@ -53,7 +53,9 @@ public class NameNodeRpcServiceImpl implements NameNodeServiceGrpc.NameNodeServi
         dataNodeManager.register(request.getIp(), request.getHostname());
 
         // 封装返回值
-        RegisterResponse response = RegisterResponse.newBuilder().setStatus(STATUS_SUCCESS).build();
+        RegisterResponse response = RegisterResponse
+                .newBuilder()
+                .setStatus(STATUS_SUCCESS).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

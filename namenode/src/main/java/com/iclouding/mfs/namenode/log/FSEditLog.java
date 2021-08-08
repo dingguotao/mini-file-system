@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * FSEditLog
@@ -20,10 +21,15 @@ public class FSEditLog {
 
     private DoubleBuffer doubleBuffer;
 
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+    private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+
+    private ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+
 
     // 是否在同步
-    private Condition syncCondition = lock.newCondition();
+    private Condition syncCondition = writeLock.newCondition();
 
     /**
      * 用来生成事务的id
@@ -44,7 +50,7 @@ public class FSEditLog {
 
         //        doubleBuffer.
         // 拿到锁
-        lock.lock();
+        writeLock.lock();
         try {
             long txid = sequence++;
             editLogOp.setTxid(txid);
@@ -52,7 +58,7 @@ public class FSEditLog {
             threadLocalTxid.set(txid);
             doubleBuffer.write(editLogOp);
         } finally {
-            lock.unlock();
+            writeLock.unlock();
         }
 
         if (!shouldForceSync()) {
@@ -76,7 +82,8 @@ public class FSEditLog {
     private void logSync() {
         Long txid = threadLocalTxid.get();
         // 如果自己事务id 大于当前的，且有人在同步， 就等一下
-        lock.lock();
+        // 10 20 30
+        writeLock.lock();
         try {
             while (txid > syncTxid && isSync) {
                 try {
@@ -96,17 +103,17 @@ public class FSEditLog {
             syncTxid = doubleBuffer.getMaxTxid();
             isSync = true;
         } finally {
-            lock.unlock();
+            writeLock.unlock();
         }
 
         doubleBuffer.flush();
         logger.info("线程{}正在刷缓存", Thread.currentThread().getName());
         // 唤醒等待的线程
-        lock.lock();
+        writeLock.lock();
         try {
             syncCondition.signalAll();
         } finally {
-            lock.lock();
+            writeLock.lock();
         }
 
     }
