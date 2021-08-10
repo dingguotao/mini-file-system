@@ -1,6 +1,7 @@
 package com.iclouding.mfs.namenode;
 
 import com.iclouding.mfs.namenode.rpc.NameNodeRpcServer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,7 @@ public class NameNode {
             nameNode.initialize();
             nameNode.start();
         } catch (Exception e) {
-            logger.error("NameNode启动失败，异常原因: ", e);
+            logger.error("NameNode启动失败，异常原因: {}", ExceptionUtils.getStackTrace(e));
         }
     }
 

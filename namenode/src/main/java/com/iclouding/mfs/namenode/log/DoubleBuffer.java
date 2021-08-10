@@ -1,6 +1,7 @@
 package com.iclouding.mfs.namenode.log;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -100,19 +102,35 @@ public class DoubleBuffer {
         }
 
         public void flush()  {
-
+            RandomAccessFile editLogFile = null;
+            FileChannel editLogFileChannel = null;
             try {
-                List<byte[]> bufBytes = buf.stream().map(String::getBytes).collect(Collectors.toList());
-                int sum = bufBytes.stream().mapToInt(bytes -> bytes.length).sum();
-                ByteBuffer byteBuffer = ByteBuffer.allocateDirect(sum);
+                byte[] bufBytes = String.join("", buf).getBytes(StandardCharsets.UTF_8);
+                ByteBuffer byteBuffer = ByteBuffer.wrap(bufBytes);
 
-                RandomAccessFile editLogFile = new RandomAccessFile("", "rw");
+                editLogFile = new RandomAccessFile("./editlog/editlog-" + firstTxid + "-" + (firstTxid + buf.size()) + ".log", "rw");
 
-                FileChannel editLogFileChannel = editLogFile.getChannel();
+                editLogFileChannel = editLogFile.getChannel();
                 editLogFileChannel.write(byteBuffer);
                 editLogFileChannel.close();
+                editLogFile.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("写入异常：{}" + ExceptionUtils.getStackTrace(e));
+            }finally {
+                if (editLogFileChannel!=null){
+                    try {
+                        editLogFileChannel.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (editLogFile != null){
+                    try {
+                        editLogFile.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

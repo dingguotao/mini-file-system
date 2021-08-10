@@ -45,6 +45,7 @@ public class NameNodeRpcServer {
                 // 绑定NameNode的RPC service
                 .addService(NameNodeServiceGrpc.bindService(new NameNodeRpcServiceImpl(namesystem, dataNodeManager)))
                 .addService(ClientNameNodeServiceGrpc.bindService(new ClientNameNodeService(namesystem)))
+                //.addService()
                 .build();
         server.start();
         logger.info("NameNode RPC启动，监听{}端口", 50010);
