@@ -2,8 +2,8 @@ package com.iclouding.mfs.namenode;
 
 import com.iclouding.mfs.namenode.dir.DirectoryINode;
 import com.iclouding.mfs.namenode.dir.FSDirectory;
-import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
 import com.iclouding.mfs.namenode.log.FSEditLog;
+import com.iclouding.mfs.namenode.log.FetchEditLogsInfo;
 import com.iclouding.mfs.namenode.log.MkDirEditLogOp;
 
 /**
@@ -32,5 +32,10 @@ public class FSNamesystem {
         editLog.logEdit(mkDirEditLogOp);
 
         return true;
+    }
+
+    public FetchEditLogsInfo fetchEditLogs(long beginTxid, int fetchSize) {
+        FetchEditLogsInfo fetchEditLogsInfo = editLog.fetchEditLogs(beginTxid, fetchSize);
+        return fetchEditLogsInfo;
     }
 }

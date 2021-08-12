@@ -1,5 +1,8 @@
 package com.iclouding.mfs.namenode.protocolPB;
 
+import com.iclouding.mfs.common.ResponseStatus;
+import com.iclouding.mfs.namenode.FSNamesystem;
+import com.iclouding.mfs.namenode.log.FetchEditLogsInfo;
 import com.iclouding.mfs.rpc.namenode.model.FetchEditLogRequest;
 import com.iclouding.mfs.rpc.namenode.model.FetchEditLogResponse;
 import com.iclouding.mfs.rpc.namenode.service.StandbyNameNodeServiceGrpc;
@@ -14,9 +17,26 @@ import io.grpc.stub.StreamObserver;
  */
 public class StandbyNameNodeService implements StandbyNameNodeServiceGrpc.StandbyNameNodeService {
 
+    private FSNamesystem namesystem;
+
+    public StandbyNameNodeService(FSNamesystem namesystem) {
+        this.namesystem = namesystem;
+    }
 
     @Override
-    public void fetchEditLogs(FetchEditLogRequest request, StreamObserver<FetchEditLogResponse> responseObserver) {
+    public void fetchEditLogs(FetchEditLogRequest fetchEditLogRequest, StreamObserver<FetchEditLogResponse> responseObserver) {
+        long beginTxid = fetchEditLogRequest.getBeginTxid();
+        int fetchSize = fetchEditLogRequest.getFetchSize();
+        FetchEditLogsInfo fetchEditLogsInfo = namesystem.fetchEditLogs(beginTxid, fetchSize);
 
+        FetchEditLogResponse build = FetchEditLogResponse.newBuilder()
+                .setBeginTxid(beginTxid)
+                .addAllEditLogs(fetchEditLogsInfo.getFetchEditLogs())
+                .setFetchSize(fetchEditLogsInfo.getFetchEditLogs().size())
+                .setHasMore(fetchEditLogsInfo.isHasMore())
+                .setStatus(ResponseStatus.SUCCESS.getStatus())
+                .build();
+        responseObserver.onNext(build);
+        responseObserver.onCompleted();
     }
 }

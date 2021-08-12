@@ -1,18 +1,23 @@
 package com.iclouding.mfs.namenode.log;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
+import com.iclouding.mfs.common.util.FileUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -49,12 +54,18 @@ public class DoubleBuffer {
         writeBuffer.writeOp(editLogOp);
     }
 
-    public void flush() {
+    public Map<Long, String> flush() {
         logger.info("flush数据: ");
         logger.info(String.join("\n", syncBuffer.buf));
-
-        syncBuffer.flush();
+        long firstTxid = syncBuffer.firstTxid;
+        int size = syncBuffer.buf.size();
+        String editLogFileName = FileUtil.getEditLogFileName(firstTxid, size);
+        System.out.println("firstTxid=" + firstTxid + ", size=" + size);
+        syncBuffer.flush("./editlog/" + editLogFileName);
         syncBuffer.reset();
+        Map<Long, String> txidFileNameMap = new HashMap<>();
+        txidFileNameMap.put(firstTxid, editLogFileName);
+        return txidFileNameMap;
     }
 
     public void setReadyToFlush() {
@@ -64,12 +75,25 @@ public class DoubleBuffer {
     }
 
     public long getMaxTxid() {
-
-        return 0;
+        long wirteFirstTxid = writeBuffer.firstTxid;
+        if (wirteFirstTxid != -1) {
+            return wirteFirstTxid + writeBuffer.buf.size();
+        } else {
+            // wirtebuf没数据
+            long syncFristTxid = syncBuffer.firstTxid;
+            if (syncFristTxid == -1) {
+                return 0;
+            }
+            return syncFristTxid + syncBuffer.buf.size();
+        }
     }
 
     public boolean shouldFlush() {
         return writeBuffer.shouldFlush();
+    }
+
+    public List<String> getWriteBufferEditLogs() {
+        return writeBuffer.buf;
     }
 
     private static class TxnBuffer {
@@ -85,6 +109,7 @@ public class DoubleBuffer {
 
         public void writeOp(FSEditLogOp editLogOp) {
             if (firstTxid == -1) {
+                System.out.println("第一个数据: " + JSON.toJSONString(editLogOp));
                 firstTxid = editLogOp.getTxid();
             }
 
@@ -101,38 +126,42 @@ public class DoubleBuffer {
             return buf.size() > this.initBufferSize;
         }
 
-        public void flush()  {
-            RandomAccessFile editLogFile = null;
+        public void flush(String editLogFileName) {
+            RandomAccessFile editLogRAFile = null;
             FileChannel editLogFileChannel = null;
             try {
                 byte[] bufBytes = String.join("", buf).getBytes(StandardCharsets.UTF_8);
                 ByteBuffer byteBuffer = ByteBuffer.wrap(bufBytes);
+                File editLogFile = new File(editLogFileName);
+                if (!editLogFile.exists()) {
+                    FileUtil.createFile(editLogFile);
+                }
+                editLogRAFile = new RandomAccessFile(editLogFile, "rw");
 
-                editLogFile = new RandomAccessFile("./editlog/editlog-" + firstTxid + "-" + (firstTxid + buf.size()) + ".log", "rw");
-
-                editLogFileChannel = editLogFile.getChannel();
+                editLogFileChannel = editLogRAFile.getChannel();
                 editLogFileChannel.write(byteBuffer);
                 editLogFileChannel.close();
-                editLogFile.close();
+                editLogRAFile.close();
             } catch (IOException e) {
-                logger.error("写入异常：{}" + ExceptionUtils.getStackTrace(e));
-            }finally {
-                if (editLogFileChannel!=null){
+                logger.error("写入异常：{}" , ExceptionUtils.getStackTrace(e));
+            } finally {
+                if (editLogFileChannel != null) {
                     try {
                         editLogFileChannel.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                if (editLogFile != null){
+                if (editLogRAFile != null) {
                     try {
-                        editLogFile.close();
+                        editLogRAFile.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+
     }
 
 }

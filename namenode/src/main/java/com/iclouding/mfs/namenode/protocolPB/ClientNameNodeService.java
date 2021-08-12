@@ -1,6 +1,6 @@
 package com.iclouding.mfs.namenode.protocolPB;
 
-import com.iclouding.mfs.common.RequestStatus;
+import com.iclouding.mfs.common.ResponseStatus;
 import com.iclouding.mfs.namenode.FSNamesystem;
 import com.iclouding.mfs.rpc.namenode.model.MkDirRequest;
 import com.iclouding.mfs.rpc.namenode.model.MkDirResponse;
@@ -9,6 +9,8 @@ import io.grpc.stub.StreamObserver;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * ClientNameNodeService
@@ -22,6 +24,8 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
 
     private FSNamesystem namesystem;
 
+    private AtomicLong count = new AtomicLong(0);
+
     public ClientNameNodeService(FSNamesystem namesystem) {
         this.namesystem = namesystem;
     }
@@ -33,32 +37,35 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
         MkDirResponse mkDirResponse;
         try {
             result = namesystem.mkdirs(request.getPath(), request.getCreateParent());
+            if (result){
+                mkDirResponse = MkDirResponse
+                        .newBuilder()
+                        .setPath(request.getPath())
+                        .setStatus(ResponseStatus.SUCCESS.getStatus())
+                        .build();
+
+            }else {
+                mkDirResponse = MkDirResponse
+                        .newBuilder()
+                        .setPath(request.getPath())
+                        .setStatus(ResponseStatus.FAILURE.getStatus())
+                        .setMessage("未知原因")
+                        .build();
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info("创建目录异常: \n{}", ExceptionUtils.getStackTrace(e));
             mkDirResponse = MkDirResponse
                     .newBuilder()
                     .setPath(request.getPath())
-                    .setStatus(RequestStatus.FAILURE.getStatus())
+                    .setStatus(ResponseStatus.FAILURE.getStatus())
                     .setMessage(ExceptionUtils.getStackTrace(e))
                     .build();
+            responseObserver.onError(new Exception("aaaa"));
         }
 
-        if (result){
-            mkDirResponse = MkDirResponse
-                    .newBuilder()
-                    .setPath(request.getPath())
-                    .setStatus(RequestStatus.SUCCESS.getStatus())
-                    .build();
-
-        }else {
-            mkDirResponse = MkDirResponse
-                    .newBuilder()
-                    .setPath(request.getPath())
-                    .setStatus(RequestStatus.FAILURE.getStatus())
-                    .setMessage("未知原因")
-                    .build();
-        }
         responseObserver.onNext(mkDirResponse);
+
         responseObserver.onCompleted();
+        logger.info("处理创建目录({})请求完毕, 处理完毕的数量: {}", request.getPath(), count.incrementAndGet());
     }
 }

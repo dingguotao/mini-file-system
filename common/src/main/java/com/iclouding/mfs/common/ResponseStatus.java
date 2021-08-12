@@ -1,19 +1,19 @@
 package com.iclouding.mfs.common;
 
 /**
- * RequestStatus
+ * ResponseStatus
  * 统一请求状态
  * @author: iclouding
  * @date: 2021/7/31 21:05
  * @email: clouding.vip@qq.com
  */
-public enum RequestStatus {
+public enum ResponseStatus {
     SUCCESS(0, ""),
 
     FAILURE(-1, "未知错误");
 
 
-    RequestStatus(int status, String msg) {
+    ResponseStatus(int status, String msg) {
         this.status = status;
         this.messages = msg;
     }

@@ -10,6 +10,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * DFSClient
@@ -51,6 +52,12 @@ public class DFSClient {
 
     public void close() {
         ManagedChannel channel = (ManagedChannel) namenode.getChannel();
-        channel.shutdown();
+        try {
+            if (!channel.isShutdown()) {
+                channel.shutdown().awaitTermination(10, TimeUnit.SECONDS);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
