@@ -25,12 +25,14 @@ public class FileUtil {
     }
 
     public static List<String> getFileData(String fileName) {
-       ;
+       List<String> lines = null;
         try {
-            List<String> lines = FileUtils.readLines(new File(fileName));
+
+            lines = FileUtils.readLines(new File( fileName));
         } catch (IOException e) {
             e.printStackTrace();
-        } return null;
+        }
+        return lines;
     }
 
     public static boolean createFile(File file) throws IOException {

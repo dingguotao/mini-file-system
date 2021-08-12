@@ -1,5 +1,6 @@
 package com.iclouding.mfs.standbynode;
 
+import com.iclouding.mfs.common.conf.Configuration;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,17 @@ import org.slf4j.LoggerFactory;
 public class StandByNode {
     public static final Logger logger = LoggerFactory.getLogger(StandByNode.class);
 
+    /**
+     * 提供namesystem，管理核心元数据
+     */
+    private FSNamesystem namesystem;
+
     public static void main(String[] args) {
 
         try {
+            Configuration conf = new Configuration();
             StandByNode standByNode = new StandByNode();
-            standByNode.initialize();
+            standByNode.initialize(conf);
             standByNode.start();
         } catch (Exception e) {
             logger.error("NameNode启动失败，异常原因: {}", ExceptionUtils.getStackTrace(e));
@@ -29,8 +36,9 @@ public class StandByNode {
 
     }
 
-    private void initialize() {
-
+    private void initialize(Configuration conf) {
+        // 从fsimage恢复或者重新生成
+        namesystem = new FSNamesystem(conf);
     }
 
 }

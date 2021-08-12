@@ -1,10 +1,16 @@
 package com.iclouding.mfs.standbynode.dir;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
+import com.iclouding.mfs.standbynode.log.EditLogTypeEnum;
+import com.iclouding.mfs.standbynode.log.FSEditLogOp;
+import com.iclouding.mfs.standbynode.log.MkDirEditLogOp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 /**
@@ -26,43 +32,62 @@ public class FSDirectory {
 
     private String ROOT = "/";
 
+    private ReentrantReadWriteLock readWriteLock;
+
+    private ReentrantReadWriteLock.ReadLock readLock;
+
+    private ReentrantReadWriteLock.WriteLock writeLock;
+
     public FSDirectory() {
         this.dirTree = new DirectoryINode(ROOT);
+        this.readWriteLock = new ReentrantReadWriteLock();
+        readLock = readWriteLock.readLock();
+        writeLock = readWriteLock.writeLock();
     }
 
     public DirectoryINode mkdirs(String path, boolean createParent) throws Exception {
         Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
         List<String> paths = pathSplitter.splitToList(path);
 
-        DirectoryINode parent = this.dirTree;
-        // 找到要创建节点的父节点
-        for (int i = 0; i < paths.size() - 1; i++) {
-            // 上一级目录
-            List<INode> childDirs = parent.getChilds().stream()
-                    .filter(dir -> dir.getiNodeType().equals(INodeTypeEnum.DIRECTORY)).collect(Collectors.toList());
+        writeLock.lock();
+        DirectoryINode directoryINode = null;
+        try {
+            DirectoryINode parent = this.dirTree;
+            // 找到要创建节点的父节点
+            for (int i = 0; i < paths.size() - 1; i++) {
+                // 上一级目录
+                List<INode> childDirs = parent.getChilds().stream()
+                        .filter(dir -> INodeTypeEnum.DIRECTORY.equals(dir.getiNodeType())).collect(Collectors.toList());
 
-            boolean needCreated = true;
-            for (INode childDir : childDirs) {
-                DirectoryINode directoryINode = (DirectoryINode) childDir;
-                if ((directoryINode.getPath().equals(paths.get(i)))) {
-                    parent = directoryINode;
-                    needCreated = false;
-                    break;
+                boolean needCreated = true;
+                for (INode childDir : childDirs) {
+                    DirectoryINode childDirectoryINode = (DirectoryINode) childDir;
+                    if ((childDirectoryINode.getPath().equals(paths.get(i)))) {
+                        parent = childDirectoryINode;
+                        needCreated = false;
+                        break;
+                    }
+                }
+                if (needCreated) {
+                    // 没有找到这层目录，需要创建
+                    if (!createParent) {
+                        // 不能递归创建
+                        logger.error("目录:{} 不存在", ROOT + String.join("/", paths.subList(0, i + 1)));
+                        throw new RuntimeException("目录不存在");
+                    }
+                    parent = addNewPath(paths.get(i), parent);
                 }
             }
-            if (needCreated) {
-                // 没有找到这层目录，需要创建
-                if (!createParent) {
-                    // 不能递归创建
-                    logger.error("目录:{} 不存在", ROOT + String.join("/", paths.subList(0, i + 1)));
-                    throw new RuntimeException("目录不存在");
-                }
-                parent = addNewPath(paths.get(i), parent);
-            }
+
+            // 最后一级的目录添加
+            // TODO 判断目录是否已经存在
+
+            directoryINode = addNewPath(paths.get(paths.size() - 1), parent);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            writeLock.unlock();
         }
-
-        // 最后一级的目录添加
-        DirectoryINode directoryINode = addNewPath(paths.get(paths.size() - 1), parent);
         logger.info("成功添加目录: {}", path);
         return directoryINode;
     }
@@ -72,5 +97,21 @@ public class FSDirectory {
         DirectoryINode directoryINode = new DirectoryINode(path);
         parent.addChild(directoryINode);
         return directoryINode;
+    }
+
+    public void apply(JSONObject editLogJSONObject) {
+
+        String type = editLogJSONObject.getString("type");
+        switch (EditLogTypeEnum.valueOf(type)){
+
+            case MKDIR_OP:
+                MkDirEditLogOp mkDirEditLogOp = JSON.parseObject(editLogJSONObject.toJSONString(), MkDirEditLogOp.class);
+                try {
+                    logger.info("创建文件: {}, {}", mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent());
+                    mkdirs(mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } break;
+        }
     }
 }

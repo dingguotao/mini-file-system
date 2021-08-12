@@ -28,7 +28,7 @@ public class FSNamesystem {
     public boolean mkdirs(String path, boolean createParent) throws Exception {
         DirectoryINode directoryINode = fsDirectory.mkdirs(path, createParent);
 
-        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, directoryINode.getCreateTime(), directoryINode.getUpdateTime());
+        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, createParent,directoryINode.getCreateTime(), directoryINode.getUpdateTime());
         editLog.logEdit(mkDirEditLogOp);
 
         return true;

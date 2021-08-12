@@ -10,13 +10,16 @@ package com.iclouding.mfs.namenode.log;
 public class MkDirEditLogOp extends FSEditLogOp {
     private String path;
 
+    private boolean createParent;
+
     public MkDirEditLogOp(String path) {
-        this(path, System.currentTimeMillis(), System.currentTimeMillis());
+        this(path, false, System.currentTimeMillis(), System.currentTimeMillis());
     }
 
-    public MkDirEditLogOp(String path, long createTime, long updateTime) {
+    public MkDirEditLogOp(String path, boolean createParent, long createTime, long updateTime) {
         super(EditLogTypeEnum.MKDIR_OP, createTime, updateTime);
         this.path = path;
+        this.createParent = createParent;
     }
 
     public String getPath() {
@@ -25,5 +28,13 @@ public class MkDirEditLogOp extends FSEditLogOp {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public boolean getCreateParent() {
+        return createParent;
+    }
+
+    public void setCreateParent(boolean createParent) {
+        this.createParent = createParent;
     }
 }

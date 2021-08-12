@@ -1,12 +1,14 @@
 package com.iclouding.mfs.namenode.log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.iclouding.mfs.common.util.FileUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -99,7 +101,6 @@ public class FSEditLog {
         // 如果自己事务id 大于当前的，且有人在同步， 就等一下
         // 10 20 30
         writeLock.lock();
-        logger.info(Thread.currentThread().getName() + "获取锁");
         try {
             while (txid > syncTxid && isSync) {
                 try {
@@ -120,7 +121,6 @@ public class FSEditLog {
             isSync = true;
         } finally {
             writeLock.unlock();
-            logger.info(Thread.currentThread().getName() + "释放锁");
         }
 
         Map<Long, String> result = doubleBuffer.flush();
@@ -147,35 +147,43 @@ public class FSEditLog {
         if (entry != null) {
             // 在文件里
             String fileName = entry.getValue();
-            List<String> editLogFileData = FileUtil.getFileData(fileName);
+            String filePath = "./editlog/" + fileName;
+            List<String> editLogFileData = FileUtil.getFileData(filePath);
+            if (editLogFileData == null){
+                logger.error("没有找到文件: {}", filePath);
+                throw new RuntimeException("没有找到文件: " + filePath);
+            }
 
             for (String editLogString : editLogFileData) {
                 if (fetchSize == 0) {
                     hasMore = true;
                     break;
                 }
-                FSEditLogOp fsEditLog = JSON.parseObject(editLogString, FSEditLogOp.class);
-                long txid = fsEditLog.getTxid();
+                JSONObject editLogJSONObject = JSONObject.parseObject(editLogString);
+                long txid = editLogJSONObject.getLong("txid");
                 if (txid >= beginTxid) {
                     fetchEditLogs.add(editLogString);
                     fetchSize--;
                 }
             }
-            Map.Entry<Long, String> nextTxidFileEntry = txidFileIndexMap.floorEntry(entry.getKey() + 1);
-            if (nextTxidFileEntry != null) {
-                hasMore = true;
-            }else {
-                readLock.lock();
-                try {
-                    long lastTxid = beginTxid + fetchEditLogs.size();
-                    if (lastTxid < doubleBuffer.getMaxTxid()){
-                        hasMore = true;
+            // 如果是读完了，就判断后续还有没有数据了
+            // 如果是没读完文件，就不用判断了
+            if (!hasMore) {
+                Map.Entry<Long, String> nextTxidFileEntry = txidFileIndexMap.floorEntry(entry.getKey() + 1);
+                if (nextTxidFileEntry != null) {
+                    hasMore = true;
+                }else {
+                    readLock.lock();
+                    try {
+                        long lastTxid = beginTxid + fetchEditLogs.size();
+                        if (lastTxid < doubleBuffer.getMaxTxid()){
+                            hasMore = true;
+                        }
+                    }finally {
+                        readLock.unlock();
                     }
-                }finally {
-                    readLock.unlock();
                 }
             }
-
 
         } else {
             // 在内存里找
@@ -187,8 +195,8 @@ public class FSEditLog {
                     if (fetchSize == 0){
                         hasMore = true;
                     }
-                    FSEditLogOp fsEditLogOp = JSON.parseObject(writeBufferEditLog, FSEditLogOp.class);
-                    long txid = fsEditLogOp.getTxid();
+                    JSONObject editLogJSONObject = JSONObject.parseObject(writeBufferEditLog);
+                    long txid = editLogJSONObject.getLong("txid");
                     if (txid >= beginTxid){
                         fetchEditLogs.add(writeBufferEditLog);
                         fetchSize--;
@@ -198,7 +206,7 @@ public class FSEditLog {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                readLock.lock();
+                readLock.unlock();
             }
 
         }

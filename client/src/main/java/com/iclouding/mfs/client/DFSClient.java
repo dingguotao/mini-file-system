@@ -33,7 +33,7 @@ public class DFSClient {
         this.conf = conf;
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress("127.0.0.1", 50010)
-                .executor(Executors.newFixedThreadPool(100))
+                .executor(Executors.newFixedThreadPool(20))
                 .usePlaintext()
                 .build();
         namenode = ClientNameNodeServiceGrpc.newBlockingStub(channel);
