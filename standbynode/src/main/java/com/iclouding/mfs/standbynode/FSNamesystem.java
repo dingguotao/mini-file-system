@@ -3,8 +3,8 @@ package com.iclouding.mfs.standbynode;
 import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.standbynode.dir.DirectoryINode;
 import com.iclouding.mfs.standbynode.dir.FSDirectory;
-import com.iclouding.mfs.standbynode.log.EditLogFetcher;
-import com.iclouding.mfs.standbynode.log.MkDirEditLogOp;
+import com.iclouding.mfs.standbynode.log.CheckPointThread;
+import com.iclouding.mfs.standbynode.log.EditLogFetcherThread;
 
 /**
  * FSNamesystem
@@ -17,16 +17,24 @@ public class FSNamesystem {
 
     private FSDirectory fsDirectory;
 
-    private EditLogFetcher editLogFetcher;
+    private EditLogFetcherThread editLogFetcherThread;
+
+    private CheckPointThread checkPointThread;
 
     public FSNamesystem(Configuration conf) {
         fsDirectory = new FSDirectory();
-        editLogFetcher = new EditLogFetcher(fsDirectory, conf);
-        editLogFetcher.start();
+        editLogFetcherThread = new EditLogFetcherThread(fsDirectory, conf);
+        checkPointThread = new CheckPointThread(fsDirectory, conf);
+
+    }
+
+    public void start(){
+        editLogFetcherThread.start();
+        checkPointThread.start();
     }
 
     public boolean mkdirs(String path, boolean createParent) throws Exception {
-        DirectoryINode directoryINode = fsDirectory.mkdirs(path, createParent);
+        DirectoryINode directoryINode = fsDirectory.mkdirs(path, createParent, txid);
 
         return true;
     }

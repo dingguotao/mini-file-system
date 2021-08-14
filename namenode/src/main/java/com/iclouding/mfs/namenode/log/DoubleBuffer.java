@@ -127,39 +127,13 @@ public class DoubleBuffer {
         }
 
         public void flush(String editLogFileName) {
-            RandomAccessFile editLogRAFile = null;
-            FileChannel editLogFileChannel = null;
-            try {
-                byte[] bufBytes = String.join("", buf).getBytes(StandardCharsets.UTF_8);
-                ByteBuffer byteBuffer = ByteBuffer.wrap(bufBytes);
-                File editLogFile = new File(editLogFileName);
-                if (!editLogFile.exists()) {
-                    FileUtil.createFile(editLogFile);
-                }
-                editLogRAFile = new RandomAccessFile(editLogFile, "rw");
 
-                editLogFileChannel = editLogRAFile.getChannel();
-                editLogFileChannel.write(byteBuffer);
-                editLogFileChannel.close();
-                editLogRAFile.close();
+            try {
+                FileUtil.writeStr2File(String.join("", buf), editLogFileName);
             } catch (IOException e) {
-                logger.error("写入异常：{}" , ExceptionUtils.getStackTrace(e));
-            } finally {
-                if (editLogFileChannel != null) {
-                    try {
-                        editLogFileChannel.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (editLogRAFile != null) {
-                    try {
-                        editLogRAFile.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                logger.error("写入文件失败，异常原因: \n{}", ExceptionUtils.getStackTrace(e));
             }
+
         }
 
     }

@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
 import com.iclouding.mfs.standbynode.log.EditLogTypeEnum;
-import com.iclouding.mfs.standbynode.log.FSEditLogOp;
+import com.iclouding.mfs.standbynode.log.FSImage;
 import com.iclouding.mfs.standbynode.log.MkDirEditLogOp;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,14 +30,15 @@ public class FSDirectory {
      */
     private DirectoryINode dirTree;
 
-
-    private String ROOT = "/";
+    private final String ROOT = "/";
 
     private ReentrantReadWriteLock readWriteLock;
 
     private ReentrantReadWriteLock.ReadLock readLock;
 
     private ReentrantReadWriteLock.WriteLock writeLock;
+
+    private long lastTxid;
 
     public FSDirectory() {
         this.dirTree = new DirectoryINode(ROOT);
@@ -45,7 +47,7 @@ public class FSDirectory {
         writeLock = readWriteLock.writeLock();
     }
 
-    public DirectoryINode mkdirs(String path, boolean createParent) throws Exception {
+    public DirectoryINode mkdirs(String path, boolean createParent, long txid) throws Exception {
         Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
         List<String> paths = pathSplitter.splitToList(path);
 
@@ -83,6 +85,8 @@ public class FSDirectory {
             // TODO 判断目录是否已经存在
 
             directoryINode = addNewPath(paths.get(paths.size() - 1), parent);
+            // 记录最大的txid
+            lastTxid = Math.max(lastTxid, txid);
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
@@ -99,19 +103,39 @@ public class FSDirectory {
         return directoryINode;
     }
 
-    public void apply(JSONObject editLogJSONObject) {
+    public void apply(JSONObject editLogJSONObject, long txid) throws Exception {
 
         String type = editLogJSONObject.getString("type");
-        switch (EditLogTypeEnum.valueOf(type)){
+        switch (EditLogTypeEnum.valueOf(type)) {
 
             case MKDIR_OP:
-                MkDirEditLogOp mkDirEditLogOp = JSON.parseObject(editLogJSONObject.toJSONString(), MkDirEditLogOp.class);
+                MkDirEditLogOp mkDirEditLogOp = JSON
+                        .parseObject(editLogJSONObject.toJSONString(), MkDirEditLogOp.class);
                 try {
                     logger.info("创建文件: {}, {}", mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent());
-                    mkdirs(mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent());
+                    mkdirs(mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent(), txid);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                } break;
+                    logger.error("创建目录异常: {}", ExceptionUtils.getStackTrace(e));
+                    throw new RuntimeException(e);
+                }
+                break;
         }
+
+    }
+
+    public FSImage getFSImage() {
+        FSImage fsImage = new FSImage();
+        readLock.lock();
+        try {
+            String fsImageStr = JSON.toJSONString(dirTree);
+            fsImage.setFsimageStr(fsImageStr);
+            fsImage.setEndTxid(lastTxid);
+        } catch (Exception e) {
+            logger.error("获取fsimage异常，异常原因: \n{}", ExceptionUtils.getStackTrace(e));
+        } finally {
+            readLock.unlock();
+        }
+
+        return fsImage;
     }
 }

@@ -1,13 +1,15 @@
 package com.iclouding.mfs.common.util;
 
-import com.google.common.io.Files;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -36,11 +38,31 @@ public class FileUtil {
     }
 
     public static boolean createFile(File file) throws IOException {
-        File parentDir = file.getParentFile();
+        File parentDir = file.getAbsoluteFile().getParentFile();
         if (!parentDir.exists()){
             parentDir.mkdirs();
         }
         file.createNewFile();
         return true;
+    }
+
+    public static void writeStr2File(String str, String fileName) throws IOException {
+        File file = new File(fileName);
+        if (!file.exists()){
+            createFile(file);
+        }
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+             final FileChannel channel = randomAccessFile.getChannel()){
+            final ByteBuffer byteBuffer = ByteBuffer.wrap(str.getBytes(StandardCharsets.UTF_8));
+            channel.write(byteBuffer);
+        }catch (Exception e){
+            logger.error("写入文件异常: \n{}", e);
+            throw new IOException(e);
+        }
+        System.out.println("写入完成");
+    }
+
+    public static void deleteFile(String file) throws IOException {
+        FileUtils.forceDelete(new File(file));
     }
 }

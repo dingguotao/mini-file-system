@@ -32,21 +32,21 @@ public class FSEditLog {
 
     private DoubleBuffer doubleBuffer;
 
-    private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private ReentrantReadWriteLock readWriteLock;
 
-    private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+    private ReentrantReadWriteLock.WriteLock writeLock;
 
-    private ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+    private ReentrantReadWriteLock.ReadLock readLock;
 
     // 是否在同步
-    private Condition syncCondition = writeLock.newCondition();
+    private Condition syncCondition;
 
     /**
      * 用来生成事务的id
      */
     private long sequence;
 
-    private ThreadLocal<Long> threadLocalTxid = new ThreadLocal<>();
+    private ThreadLocal<Long> threadLocalTxid;
 
     private long syncTxid;
 
@@ -55,8 +55,16 @@ public class FSEditLog {
     private ConcurrentSkipListMap<Long, String> txidFileIndexMap;
 
     public FSEditLog() {
+        /**
+         * 初始化所有的变量
+         */
         doubleBuffer = new DoubleBuffer();
         txidFileIndexMap = new ConcurrentSkipListMap<>();
+        readWriteLock = new ReentrantReadWriteLock();
+        writeLock = readWriteLock.writeLock();
+        readLock = readWriteLock.readLock();
+        syncCondition = writeLock.newCondition();
+        threadLocalTxid = new ThreadLocal<>();
     }
 
     public void logEdit(FSEditLogOp editLogOp) {
