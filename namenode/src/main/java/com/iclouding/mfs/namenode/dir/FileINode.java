@@ -9,8 +9,14 @@ package com.iclouding.mfs.namenode.dir;
  */
 public class FileINode extends INode{
 
-    public FileINode() {
+    /**
+     * 类型，是文件还是目录
+     */
+    private String name;
+
+    public FileINode(String name) {
         super(INodeTypeEnum.FILE);
+        this.name = name;
     }
 
 

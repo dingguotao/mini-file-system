@@ -19,5 +19,7 @@ public abstract class FileSystem {
 
     public abstract boolean mkdirs(String path, boolean createParent);
 
+    public abstract boolean renamedirs(String srcFile, String destDir);
+
     public abstract void close();
 }
