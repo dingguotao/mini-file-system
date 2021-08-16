@@ -153,7 +153,7 @@ public class NIOServer {
         public HandleRequestThread(SocketChannel socketClient) {
             this.socketClient = socketClient;
             // 很多系统都是 8k的缓冲，这里也搞8k
-            byteBuffer = ByteBuffer.allocate(8);
+            byteBuffer = ByteBuffer.allocate(8 * 1024);
         }
 
         @Override
