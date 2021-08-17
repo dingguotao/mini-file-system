@@ -31,6 +31,11 @@ public class FileSystemImpl extends FileSystem {
     }
 
     @Override
+    public boolean renamedirs(String srcFile, String destDir) {
+        return dfsClient.renamedirs(srcFile,destDir);
+    }
+
+    @Override
     public void close() {
         dfsClient.close();
     }

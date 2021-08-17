@@ -50,6 +50,10 @@ public class DFSClient {
         return status == 0;
     }
 
+    public boolean renamedirs(String srcFile, String destDir) {
+        return true;
+    }
+
     public void close() {
         ManagedChannel channel = (ManagedChannel) namenode.getChannel();
         try {
