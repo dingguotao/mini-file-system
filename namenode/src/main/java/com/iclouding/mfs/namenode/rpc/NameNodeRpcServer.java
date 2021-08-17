@@ -1,5 +1,6 @@
 package com.iclouding.mfs.namenode.rpc;
 
+import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.namenode.DataNodeManager;
 import com.iclouding.mfs.namenode.FSNamesystem;
 import com.iclouding.mfs.namenode.protocolPB.ClientNameNodeService;
@@ -37,18 +38,18 @@ public class NameNodeRpcServer {
      */
     private Server server;
 
-    public NameNodeRpcServer(FSNamesystem namesystem, DataNodeManager dataNodeManager) {
+    public NameNodeRpcServer(FSNamesystem namesystem, DataNodeManager dataNodeManager, Configuration conf) {
         this.namesystem = namesystem;
         this.dataNodeManager = dataNodeManager;
-    }
-
-    public void start() throws IOException {
         server = ServerBuilder.forPort(50010)
                 // 绑定NameNode的RPC service
                 .addService(NameNodeServiceGrpc.bindService(new NameNodeRpcServiceImpl(namesystem, dataNodeManager)))
                 .addService(ClientNameNodeServiceGrpc.bindService(new ClientNameNodeService(namesystem)))
                 .addService(StandbyNameNodeServiceGrpc.bindService(new StandbyNameNodeService(namesystem)))
                 .build();
+    }
+
+    public void start() throws IOException {
         server.start();
         logger.info("NameNode RPC启动，监听{}端口", 50010);
         // 在JVM 停止时，添加钩子，停掉NameNode RPC Server

@@ -2,6 +2,7 @@ package com.iclouding.mfs.common.nio;
 
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
  */
 public class NIOServerTest {
 
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass().getName());
+    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Test
     public void start() {
@@ -39,7 +40,6 @@ public class NIOServerTest {
 
         @Override
         public String handleRequestAndResponse(String request) {
-            logger.info("收到请求...");
             return "testsdfasfasfasdf";
         }
     }

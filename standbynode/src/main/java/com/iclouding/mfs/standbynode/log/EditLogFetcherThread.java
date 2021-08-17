@@ -59,13 +59,7 @@ public class EditLogFetcherThread extends Thread {
 
         while (true){
 
-            FetchEditLogRequest editLogRequest = FetchEditLogRequest
-                    .newBuilder()
-                    .setBeginTxid(lastTxid + 1)
-                    .setFetchSize(10)
-                    .build();
-
-            FetchEditLogResponse fetchEditLogResponse = namenode.fetchEditLogs(editLogRequest);
+            FetchEditLogResponse fetchEditLogResponse = fetchEditLog();
             List<String> editLogsList = fetchEditLogResponse.getEditLogsList();
             // 如果没拉到数据，下一次就增加休眠时间，直到最大的一个小时。
             if (CollectionUtils.isEmpty(editLogsList)){
@@ -90,6 +84,8 @@ public class EditLogFetcherThread extends Thread {
                 continue;
             }
 
+            // 连接namenode，推送
+
             try {
                 Thread.sleep(sleepTime * 1000L);
             } catch (InterruptedException e) {
@@ -97,5 +93,16 @@ public class EditLogFetcherThread extends Thread {
             }
         }
 
+    }
+
+    private FetchEditLogResponse fetchEditLog() {
+        FetchEditLogRequest editLogRequest = FetchEditLogRequest
+                .newBuilder()
+                .setBeginTxid(lastTxid + 1)
+                .setFetchSize(10)
+                .build();
+
+        FetchEditLogResponse fetchEditLogResponse = namenode.fetchEditLogs(editLogRequest);
+        return fetchEditLogResponse;
     }
 }

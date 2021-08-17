@@ -1,10 +1,8 @@
-package com.iclouding.mfs.standbynode.log;
+package com.iclouding.mfs.namenode.log;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.StringJoiner;
 
 /**
  * FSImage

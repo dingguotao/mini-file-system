@@ -1,5 +1,7 @@
 package com.iclouding.mfs.namenode;
 
+import com.iclouding.mfs.common.conf.Configuration;
+import com.iclouding.mfs.namenode.log.FSImageNIOServer;
 import com.iclouding.mfs.namenode.rpc.NameNodeRpcServer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -27,18 +29,23 @@ public class NameNode {
      */
     private NameNodeRpcServer rpcServer;
 
+    private FSImageNIOServer fsImageNIOServer;
+
     public NameNode() {
     }
 
     private void start() throws Exception {
+        fsImageNIOServer.start();
         rpcServer.start();
         rpcServer.blockUntilShutdown();
     }
 
     public static void main(String[] args) {
         try {
+            // 先加载配置
+            Configuration conf = new Configuration();
             NameNode nameNode = new NameNode();
-            nameNode.initialize();
+            nameNode.initialize(conf);
             nameNode.start();
         } catch (Exception e) {
             logger.error("NameNode启动失败，异常原因: {}", ExceptionUtils.getStackTrace(e));
@@ -48,9 +55,12 @@ public class NameNode {
     /**
      * 初始化NameNode
      */
-    private void initialize() {
-        namesystem = new FSNamesystem();
+    private void initialize(Configuration conf) {
+        namesystem = new FSNamesystem(conf);
         dataNodeManager = new DataNodeManager();
-        this.rpcServer = new NameNodeRpcServer(namesystem, dataNodeManager);
+        rpcServer = new NameNodeRpcServer(namesystem, dataNodeManager, conf);
+        fsImageNIOServer = new FSImageNIOServer(conf);
+        // 加载磁盘上的fsimage和editlog
+        FSNamesystem.loadFromDisk(conf);
     }
 }

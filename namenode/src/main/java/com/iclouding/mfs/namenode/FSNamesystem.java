@@ -1,5 +1,6 @@
 package com.iclouding.mfs.namenode;
 
+import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.namenode.dir.DirectoryINode;
 import com.iclouding.mfs.namenode.dir.FSDirectory;
 import com.iclouding.mfs.namenode.log.FSEditLog;
@@ -20,9 +21,17 @@ public class FSNamesystem {
     // 管理 edit log
     private FSEditLog editLog;
 
-    public FSNamesystem() {
+    public FSNamesystem(Configuration conf) {
         fsDirectory = new FSDirectory();
         editLog = new FSEditLog();
+    }
+
+    /**
+     * 从磁盘加载 fsimage和editlog
+     * @param conf
+     */
+    public static void loadFromDisk(Configuration conf) {
+
     }
 
     public boolean mkdirs(String path, boolean createParent) throws Exception {

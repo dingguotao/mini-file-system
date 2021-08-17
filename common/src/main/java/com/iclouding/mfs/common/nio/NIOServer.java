@@ -60,7 +60,7 @@ public class NIOServer {
         this.maxConnection = maxConnection;
         listenThread = new ServerListenThread();
         this.handler = handler;
-        executorService = Executors.newFixedThreadPool(100);
+        executorService = Executors.newFixedThreadPool(2);
     }
 
     public NIOServer(String host, int port, NIOServerHandler handler) {
@@ -199,6 +199,7 @@ public class NIOServer {
                     e.printStackTrace();
                 }
             }
+            logger.info("回复消息: {}", response);
 
         }
     }

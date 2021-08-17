@@ -32,7 +32,7 @@ public class NIOClient {
 
     public void connect(String host, int port) throws IOException {
         channel.configureBlocking(false);
-         channel.connect(new InetSocketAddress(host, port));
+        channel.connect(new InetSocketAddress(host, port));
         while (!channel.finishConnect()) {
             ;
         }
@@ -45,10 +45,12 @@ public class NIOClient {
 
         channel.write(message);
         message.clear();
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024);
+        channel.socket().shutdownOutput();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
         StringBuilder result = new StringBuilder();
-        int read = - 1;
-        while ((read = channel.read(byteBuffer)) > 0) {
+
+        int read = -1;
+        while (channel.isOpen() && (read = channel.read(byteBuffer)) > 0) {
             byteBuffer.flip();
             result.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
             byteBuffer.clear();
@@ -57,20 +59,28 @@ public class NIOClient {
         return result.toString();
     }
 
-    public void close(){
-        if (selector != null){
+    public void close() {
+        if (selector != null) {
             try {
                 selector.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (channel != null){
+        if (channel != null) {
             try {
                 channel.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    class HandleThread extends Thread{
+
+        @Override
+        public void run() {
+            super.run();
         }
     }
 

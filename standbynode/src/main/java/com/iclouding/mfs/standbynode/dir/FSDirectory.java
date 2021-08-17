@@ -2,6 +2,7 @@ package com.iclouding.mfs.standbynode.dir;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Splitter;
 import com.iclouding.mfs.standbynode.log.EditLogTypeEnum;
 import com.iclouding.mfs.standbynode.log.FSImage;
@@ -127,9 +128,10 @@ public class FSDirectory {
         FSImage fsImage = new FSImage();
         readLock.lock();
         try {
-            String fsImageStr = JSON.toJSONString(dirTree);
+            String fsImageStr = JSON.toJSONString(dirTree, SerializerFeature.WriteClassName);
             fsImage.setFsimageStr(fsImageStr);
-            fsImage.setEndTxid(lastTxid);
+            fsImage.setLastTxid(lastTxid);
+            fsImage.setTimeStamp(System.currentTimeMillis());
         } catch (Exception e) {
             logger.error("获取fsimage异常，异常原因: \n{}", ExceptionUtils.getStackTrace(e));
         } finally {
