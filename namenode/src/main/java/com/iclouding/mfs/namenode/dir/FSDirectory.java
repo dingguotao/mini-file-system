@@ -1,5 +1,6 @@
 package com.iclouding.mfs.namenode.dir;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
 import com.iclouding.mfs.namenode.log.FSEditLog;
 import org.slf4j.Logger;
@@ -95,5 +96,10 @@ public class FSDirectory {
         DirectoryINode directoryINode = new DirectoryINode(path);
         parent.addChild(directoryINode);
         return directoryINode;
+    }
+
+    public void recoverFromFSImage(String fsimageStr) {
+        INode iNode = JSON.parseObject(fsimageStr, INode.class);
+        dirTree = (DirectoryINode) iNode;
     }
 }

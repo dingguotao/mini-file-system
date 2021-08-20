@@ -61,6 +61,6 @@ public class NameNode {
         rpcServer = new NameNodeRpcServer(namesystem, dataNodeManager, conf);
         fsImageNIOServer = new FSImageNIOServer(conf);
         // 加载磁盘上的fsimage和editlog
-        FSNamesystem.loadFromDisk(conf);
+        namesystem.loadFromDisk(conf);
     }
 }

@@ -30,7 +30,7 @@ public class CheckPointThread extends Thread {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckPointThread.class);
 
-    private static final int CHECKPOINT_INTERVAL = 60 * 60;
+    private static final int CHECKPOINT_INTERVAL = 5 * 60;
 
     private final FSDirectory fsDirectory;
 
@@ -103,7 +103,7 @@ public class CheckPointThread extends Thread {
 
     private boolean doCheckPoint(FSImage fsImage) {
 
-        final String fsImageFileName = getFSImageFileName(fsImage.getLastTxid());
+        final String fsImageFileName = getFSImageFileName(fsimageDir, fsImage.getLastTxid());
         try {
             FileUtil.writeStr2File(fsImage.toJSONString(), fsImageFileName);
         } catch (IOException e) {
@@ -114,8 +114,9 @@ public class CheckPointThread extends Thread {
         return true;
     }
 
-    private String getFSImageFileName(long txid) {
-        return fsimageDir + "/" + "fsimage-" + txid + ".fsimage";
+    private String getFSImageFileName(String dir, long txid) {
+        String formattedTxid = StringUtils.leftPad(String.valueOf(txid), 20, "0");
+        return dir + "/" + "fsimage-" + formattedTxid + ".fsimage";
     }
 
 }

@@ -1,6 +1,5 @@
 package com.iclouding.mfs.namenode.log;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.iclouding.mfs.common.util.FileUtil;
@@ -8,13 +7,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -52,6 +46,7 @@ public class FSEditLog {
 
     private volatile boolean isSync;
 
+    // beginTxid -> 文件名的Map，使用跳表，保证线程安全和有序
     private ConcurrentSkipListMap<Long, String> txidFileIndexMap;
 
     public FSEditLog() {
@@ -221,5 +216,11 @@ public class FSEditLog {
         fetchEditLogsInfo.setFetchEditLogs(fetchEditLogs);
         fetchEditLogsInfo.setHasMore(hasMore);
         return fetchEditLogsInfo;
+    }
+
+    public void recoverFromEditLogs(long lastTxidInEditLogs, Map<Long, String> startTxid2FileNameMap) {
+        sequence = lastTxidInEditLogs + 1;
+        txidFileIndexMap.putAll(startTxid2FileNameMap);
+
     }
 }

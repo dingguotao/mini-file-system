@@ -140,4 +140,10 @@ public class FSDirectory {
 
         return fsImage;
     }
+
+    public void recoverFromFSImage(String fsimageStr, long lastTxid) {
+        INode iNode = JSON.parseObject(fsimageStr, INode.class);
+        dirTree = (DirectoryINode) iNode;
+        this.lastTxid = lastTxid;
+    }
 }

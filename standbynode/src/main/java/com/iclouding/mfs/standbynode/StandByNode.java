@@ -20,6 +20,8 @@ public class StandByNode {
      */
     private FSNamesystem namesystem;
 
+    private volatile boolean isRunning;
+
     public static void main(String[] args) {
 
         try {
@@ -33,12 +35,21 @@ public class StandByNode {
     }
 
     private void start() {
-
+        namesystem.start();
+        isRunning = true;
+        while (isRunning) {
+            try {
+                Thread.sleep(1000 * 10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initialize(Configuration conf) {
         // 从fsimage恢复或者重新生成
         namesystem = new FSNamesystem(conf);
+        namesystem.loadFromDisk(conf);
     }
 
 }

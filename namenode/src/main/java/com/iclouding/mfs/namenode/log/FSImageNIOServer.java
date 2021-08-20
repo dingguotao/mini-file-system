@@ -63,7 +63,8 @@ public class FSImageNIOServer {
             }
             FSImage fsImage = JSON.parseObject(request, FSImage.class);
             try {
-                FileUtil.writeStr2File(request, "./namenode/fsimage/fsimage-" + fsImage.getLastTxid() + ".fsimage");
+
+                FileUtil.writeStr2File(request, getFsImageName("./namenode/fsimage/", fsImage.getLastTxid()));
             } catch (IOException e) {
                 e.printStackTrace();
                 fsImageResponse.setStatus(ResponseStatus.FAILURE.getStatus());
@@ -76,6 +77,11 @@ public class FSImageNIOServer {
             fsImageResponse.setMd5(MD5Util.getStringMD5(request));
             fsImageResponse.setTimeStamp(System.currentTimeMillis());
             return JSON.toJSONString(fsImageResponse);
+        }
+
+        private String getFsImageName(String dir, long lastTxid) {
+            String txid = StringUtils.leftPad(String.valueOf(lastTxid), 20, "0");
+            return dir + "/" + "fsimage-" + txid + ".fsimage";
         }
     }
 

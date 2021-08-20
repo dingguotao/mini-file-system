@@ -1,6 +1,7 @@
 package com.iclouding.mfs.common.util;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +24,14 @@ public class FileUtil {
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     public static String getEditLogFileName(long firstTxid, int size) {
-        return "editlog-" + firstTxid + "-" + (firstTxid + size - 1) + ".log";
+        String startTxid = StringUtils.leftPad(String.valueOf(firstTxid), 20, "0");
+        String endTxid = StringUtils.leftPad(String.valueOf(firstTxid + size - 1), 20, "0");
+        return "editlog-" + startTxid + "-" + endTxid + ".log";
     }
 
     public static List<String> getFileData(String fileName) {
        List<String> lines = null;
         try {
-
             lines = FileUtils.readLines(new File( fileName));
         } catch (IOException e) {
             e.printStackTrace();
