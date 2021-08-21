@@ -12,7 +12,7 @@ public class DFSClientTest extends TestCase {
         dfsClient.mkdirs("/a/b/d",true);
         dfsClient.mkdirs("/a/b/c",false);
         dfsClient.renamedirs("/a/b/c","/a/b/e");
-
+        dfsClient.close();
     }
 
 }
