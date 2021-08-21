@@ -10,4 +10,5 @@ import "ClientNameNodeProtol.proto";
 
 service ClientNameNodeService{
   rpc mkdir(MkDirRequest) returns (MkDirResponse);
+  rpc createFile(CreateFileRequest) returns (CreateFileResponse);
 }

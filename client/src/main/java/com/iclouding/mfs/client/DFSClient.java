@@ -1,11 +1,12 @@
 package com.iclouding.mfs.client;
 
 import com.iclouding.mfs.client.config.Configuration;
+import com.iclouding.mfs.common.ResponseStatus;
+import com.iclouding.mfs.rpc.namenode.model.CreateFileRequest;
+import com.iclouding.mfs.rpc.namenode.model.CreateFileResponse;
 import com.iclouding.mfs.rpc.namenode.model.MkDirRequest;
 import com.iclouding.mfs.rpc.namenode.model.MkDirResponse;
 import com.iclouding.mfs.rpc.namenode.service.ClientNameNodeServiceGrpc;
-import com.iclouding.mfs.rpc.namenode.service.NameNodeServiceGrpc;
-import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -25,12 +26,19 @@ public class DFSClient {
 
     private ClientNameNodeServiceGrpc.ClientNameNodeServiceBlockingStub namenode;
 
+    // 默认的副本数，配置文件里没有的话，就取默认值2
+    public static int DEFAULT_REPLICATION = 2;
+
     public DFSClient() {
 
     }
 
     public DFSClient(Configuration conf) {
         this.conf = conf;
+        /**
+         * TODO 配置文件获取
+         */
+        DEFAULT_REPLICATION = 2;
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress("127.0.0.1", 50010)
                 .executor(Executors.newFixedThreadPool(20))
@@ -47,11 +55,25 @@ public class DFSClient {
                 .build();
         MkDirResponse mkDirResponse = namenode.mkdir(mkDirRequest);
         int status = mkDirResponse.getStatus();
-        return status == 0;
+        return status == ResponseStatus.SUCCESS.getStatus();
     }
 
     public boolean renamedirs(String srcFile, String destDir) {
         return true;
+    }
+
+    public boolean createFile(String path) {
+        return createFile(path, DEFAULT_REPLICATION);
+    }
+
+    private boolean createFile(String path, int replication) {
+        CreateFileRequest createRequest = CreateFileRequest
+                .newBuilder()
+                .setPath(path)
+                .setReplication(replication)
+                .build();
+        CreateFileResponse createResponse = namenode.createFile(createRequest);
+        return createResponse.getStatus() == ResponseStatus.SUCCESS.getStatus();
     }
 
     public void close() {

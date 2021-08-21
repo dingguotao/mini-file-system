@@ -3,6 +3,7 @@ package com.iclouding.mfs.namenode.log;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.iclouding.mfs.common.util.FileUtil;
+import com.iclouding.mfs.namenode.log.editlog.FSEditLogOp;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

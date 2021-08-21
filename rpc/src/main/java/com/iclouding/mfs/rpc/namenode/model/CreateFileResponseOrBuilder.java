@@ -3,8 +3,8 @@
 
 package com.iclouding.mfs.rpc.namenode.model;
 
-public interface CreateResponseOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.iclouding.mfs.rpc.namenode.CreateResponse)
+public interface CreateFileResponseOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.iclouding.mfs.rpc.namenode.CreateFileResponse)
     com.google.protobuf.MessageOrBuilder {
 
   /**

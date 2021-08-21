@@ -2,6 +2,8 @@ package com.iclouding.mfs.namenode.protocolPB;
 
 import com.iclouding.mfs.common.ResponseStatus;
 import com.iclouding.mfs.namenode.FSNamesystem;
+import com.iclouding.mfs.rpc.namenode.model.CreateFileRequest;
+import com.iclouding.mfs.rpc.namenode.model.CreateFileResponse;
 import com.iclouding.mfs.rpc.namenode.model.MkDirRequest;
 import com.iclouding.mfs.rpc.namenode.model.MkDirResponse;
 import com.iclouding.mfs.rpc.namenode.service.ClientNameNodeServiceGrpc;
@@ -32,11 +34,11 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
 
     @Override
     public void mkdir(MkDirRequest request, StreamObserver<MkDirResponse> responseObserver) {
-        logger.info("收到创建文件请求，文件路径: {}", request.getPath());
-        boolean result = false;
-        MkDirResponse mkDirResponse;
+        logger.info("收到创建目录请求，文件路径: {}", request.getPath());
+
         try {
-            result = namesystem.mkdirs(request.getPath(), request.getCreateParent());
+            MkDirResponse mkDirResponse;
+            boolean result = namesystem.mkdirs(request.getPath(), request.getCreateParent());
             if (result){
                 mkDirResponse = MkDirResponse
                         .newBuilder()
@@ -52,20 +54,43 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
                         .setMessage("未知原因")
                         .build();
             }
+            responseObserver.onNext(mkDirResponse);
+            responseObserver.onCompleted();
         } catch (Exception e) {
             logger.info("创建目录异常: \n{}", ExceptionUtils.getStackTrace(e));
-            mkDirResponse = MkDirResponse
-                    .newBuilder()
-                    .setPath(request.getPath())
-                    .setStatus(ResponseStatus.FAILURE.getStatus())
-                    .setMessage(ExceptionUtils.getStackTrace(e))
-                    .build();
-            responseObserver.onError(new Exception("aaaa"));
+            responseObserver.onError(e);
         }
 
-        responseObserver.onNext(mkDirResponse);
 
-        responseObserver.onCompleted();
         logger.info("处理创建目录({})请求完毕, 处理完毕的数量: {}", request.getPath(), count.incrementAndGet());
     }
+
+    /**
+     * 创建文件
+     * @param request
+     * @param responseObserver
+     */
+    @Override
+    public void createFile(CreateFileRequest request, StreamObserver<CreateFileResponse> responseObserver) {
+        logger.info("收到创建文件请求，文件路径: {}", request.getPath());
+        String path = request.getPath();
+        boolean createParent = request.getCreateParent();
+        int replication = request.getReplication();
+        try {
+            namesystem.createFile(path, createParent, replication);
+            CreateFileResponse CreateFileResponse = com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.newBuilder()
+                    .setPath(path)
+                    .setStatus(ResponseStatus.SUCCESS.getStatus())
+                    .build();
+            responseObserver.onNext(CreateFileResponse);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            logger.error("创建文件异常，异常日志: {}", ExceptionUtils.getStackTrace(e));
+            responseObserver.onError(e);
+
+        }
+
+    }
+
+
 }

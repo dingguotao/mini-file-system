@@ -17,6 +17,9 @@ public class INode {
 
     private long updateTime;
 
+    public INode() {
+    }
+
     public INode(INodeTypeEnum iNodeType) {
         this.iNodeType = iNodeType;
         createTime = System.currentTimeMillis();

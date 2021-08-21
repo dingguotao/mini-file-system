@@ -2,13 +2,11 @@ package com.iclouding.mfs.namenode.dir;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
-import com.iclouding.mfs.namenode.log.FSEditLog;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
@@ -51,32 +49,7 @@ public class FSDirectory {
         writeLock.lock();
         DirectoryINode directoryINode = null;
         try {
-            DirectoryINode parent = this.dirTree;
-            // 找到要创建节点的父节点
-            for (int i = 0; i < paths.size() - 1; i++) {
-                // 上一级目录
-                List<INode> childDirs = parent.getChilds().stream()
-                        .filter(dir -> INodeTypeEnum.DIRECTORY.equals(dir.getiNodeType())).collect(Collectors.toList());
-
-                boolean needCreated = true;
-                for (INode childDir : childDirs) {
-                    DirectoryINode childDirectoryINode = (DirectoryINode) childDir;
-                    if ((childDirectoryINode.getPath().equals(paths.get(i)))) {
-                        parent = childDirectoryINode;
-                        needCreated = false;
-                        break;
-                    }
-                }
-                if (needCreated) {
-                    // 没有找到这层目录，需要创建
-                    if (!createParent) {
-                        // 不能递归创建
-                        logger.error("目录:{} 不存在", ROOT + String.join("/", paths.subList(0, i + 1)));
-                        throw new RuntimeException("目录不存在");
-                    }
-                    parent = addNewPath(paths.get(i), parent);
-                }
-            }
+            DirectoryINode parent = findParentDirectoryINode(paths.subList(0, paths.size() - 1), createParent);
 
             // 最后一级的目录添加
             // TODO 判断目录是否已经存在
@@ -91,6 +64,43 @@ public class FSDirectory {
         return directoryINode;
     }
 
+    /**
+     * 根据paths传过来的路径，找到
+     * @param paths
+     * @param createParent
+     * @return
+     */
+    private DirectoryINode findParentDirectoryINode(List<String> paths, boolean createParent) {
+        assert writeLock.isHeldByCurrentThread();
+        DirectoryINode parent = this.dirTree;
+        // 找到要创建节点的父节点
+        for (int i = 0; i < paths.size(); i++) {
+            // 上一级目录
+            List<INode> childDirs = parent.getChilds().stream()
+                    .filter(dir -> INodeTypeEnum.DIRECTORY.equals(dir.getiNodeType())).collect(Collectors.toList());
+
+            boolean needCreated = true;
+            for (INode childDir : childDirs) {
+                DirectoryINode childDirectoryINode = (DirectoryINode) childDir;
+                if ((childDirectoryINode.getPath().equals(paths.get(i)))) {
+                    parent = childDirectoryINode;
+                    needCreated = false;
+                    break;
+                }
+            }
+            if (needCreated) {
+                // 没有找到这层目录，需要创建
+                if (!createParent) {
+                    // 不能递归创建
+                    logger.error("目录:{} 不存在", ROOT + String.join("/", paths.subList(0, i + 1)));
+                    throw new RuntimeException("目录不存在");
+                }
+                parent = addNewPath(paths.get(i), parent);
+            }
+        }
+        return parent;
+    }
+
     private DirectoryINode addNewPath(String path, DirectoryINode parent) {
         // 递归创建出来目录
         DirectoryINode directoryINode = new DirectoryINode(path);
@@ -101,5 +111,24 @@ public class FSDirectory {
     public void recoverFromFSImage(String fsimageStr) {
         INode iNode = JSON.parseObject(fsimageStr, INode.class);
         dirTree = (DirectoryINode) iNode;
+    }
+
+    public FileINode create(String path, boolean createParent, int replication) {
+        FileINode fileINode = null;
+        Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
+        List<String> paths = pathSplitter.splitToList(path);
+        writeLock.lock();
+        try {
+            DirectoryINode parentDirectoryINode = findParentDirectoryINode(paths.subList(0, paths.size() - 1),
+                    createParent);
+
+            fileINode = new FileINode(path, replication);
+            parentDirectoryINode.addChild(fileINode);
+        }catch (Exception e){
+            logger.error("添加文件失败: {}", ExceptionUtils.getStackTrace(e));
+        }finally {
+            writeLock.unlock();
+        }
+        return fileINode;
     }
 }

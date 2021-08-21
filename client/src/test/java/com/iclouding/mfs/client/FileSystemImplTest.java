@@ -1,16 +1,11 @@
 package com.iclouding.mfs.client;
 
-import com.google.common.collect.Lists;
 import com.iclouding.mfs.client.config.Configuration;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 
 /**
  * FileSystemImplTest
@@ -24,7 +19,7 @@ public class FileSystemImplTest {
     private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     @Test
-    public void mkdirs() {
+    public void mkdirsTest() {
         int num = 100;
         CountDownLatch countDownLatch = new CountDownLatch(num);
         for (int i = 0; i < num; i++) {
@@ -52,4 +47,12 @@ public class FileSystemImplTest {
         }
 
     }
+
+    @Test
+    public void createTest(){
+        FileSystem fileSystem = FileSystem.get(new Configuration());
+        fileSystem.createFile("/xxx/ccc/aaa.pdf");
+        fileSystem.copyFromLocalFile( "src", "dst");
+    }
+
 }

@@ -6,17 +6,18 @@ import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.common.util.FileUtil;
 import com.iclouding.mfs.namenode.dir.DirectoryINode;
 import com.iclouding.mfs.namenode.dir.FSDirectory;
+import com.iclouding.mfs.namenode.dir.FileINode;
 import com.iclouding.mfs.namenode.log.FSEditLog;
 import com.iclouding.mfs.namenode.log.FSImage;
 import com.iclouding.mfs.namenode.log.FetchEditLogsInfo;
-import com.iclouding.mfs.namenode.log.MkDirEditLogOp;
+import com.iclouding.mfs.namenode.log.editlog.CreateEditLogOp;
+import com.iclouding.mfs.namenode.log.editlog.MkDirEditLogOp;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -97,8 +98,17 @@ public class FSNamesystem {
         return true;
     }
 
+
     public FetchEditLogsInfo fetchEditLogs(long beginTxid, int fetchSize) {
         FetchEditLogsInfo fetchEditLogsInfo = editLog.fetchEditLogs(beginTxid, fetchSize);
         return fetchEditLogsInfo;
+    }
+
+    public boolean createFile(String path, boolean createParent, int replication){
+        FileINode file = fsDirectory.create(path, createParent, replication);
+        CreateEditLogOp createEditLogOp = new CreateEditLogOp(path, createParent, replication, file.getCreateTime(),
+                file.getUpdateTime());
+        editLog.logEdit(createEditLogOp);
+        return true;
     }
 }

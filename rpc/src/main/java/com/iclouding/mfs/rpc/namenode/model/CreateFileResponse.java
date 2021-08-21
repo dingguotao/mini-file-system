@@ -4,17 +4,17 @@
 package com.iclouding.mfs.rpc.namenode.model;
 
 /**
- * Protobuf type {@code com.iclouding.mfs.rpc.namenode.UploadFileResponse}
+ * Protobuf type {@code com.iclouding.mfs.rpc.namenode.CreateFileResponse}
  */
-public  final class UploadFileResponse extends
+public  final class CreateFileResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.iclouding.mfs.rpc.namenode.UploadFileResponse)
-    UploadFileResponseOrBuilder {
-  // Use UploadFileResponse.newBuilder() to construct.
-  private UploadFileResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:com.iclouding.mfs.rpc.namenode.CreateFileResponse)
+    CreateFileResponseOrBuilder {
+  // Use CreateFileResponse.newBuilder() to construct.
+  private CreateFileResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private UploadFileResponse() {
+  private CreateFileResponse() {
     path_ = "";
     status_ = 0;
     message_ = "";
@@ -25,7 +25,7 @@ public  final class UploadFileResponse extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private UploadFileResponse(
+  private CreateFileResponse(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -75,14 +75,14 @@ public  final class UploadFileResponse extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_descriptor;
+    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_fieldAccessorTable
+    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.class, com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.Builder.class);
+            com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.class, com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.Builder.class);
   }
 
   public static final int PATH_FIELD_NUMBER = 1;
@@ -230,10 +230,10 @@ public  final class UploadFileResponse extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.iclouding.mfs.rpc.namenode.model.UploadFileResponse)) {
+    if (!(obj instanceof com.iclouding.mfs.rpc.namenode.model.CreateFileResponse)) {
       return super.equals(obj);
     }
-    com.iclouding.mfs.rpc.namenode.model.UploadFileResponse other = (com.iclouding.mfs.rpc.namenode.model.UploadFileResponse) obj;
+    com.iclouding.mfs.rpc.namenode.model.CreateFileResponse other = (com.iclouding.mfs.rpc.namenode.model.CreateFileResponse) obj;
 
     boolean result = true;
     result = result && getPath()
@@ -263,58 +263,58 @@ public  final class UploadFileResponse extends
     return hash;
   }
 
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(byte[] data)
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(java.io.InputStream input)
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseDelimitedFrom(java.io.InputStream input)
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseDelimitedFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -326,7 +326,7 @@ public  final class UploadFileResponse extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.iclouding.mfs.rpc.namenode.model.UploadFileResponse prototype) {
+  public static Builder newBuilder(com.iclouding.mfs.rpc.namenode.model.CreateFileResponse prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -341,25 +341,25 @@ public  final class UploadFileResponse extends
     return builder;
   }
   /**
-   * Protobuf type {@code com.iclouding.mfs.rpc.namenode.UploadFileResponse}
+   * Protobuf type {@code com.iclouding.mfs.rpc.namenode.CreateFileResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.iclouding.mfs.rpc.namenode.UploadFileResponse)
-      com.iclouding.mfs.rpc.namenode.model.UploadFileResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.iclouding.mfs.rpc.namenode.CreateFileResponse)
+      com.iclouding.mfs.rpc.namenode.model.CreateFileResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_descriptor;
+      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_fieldAccessorTable
+      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.class, com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.Builder.class);
+              com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.class, com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.Builder.class);
     }
 
-    // Construct using com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.newBuilder()
+    // Construct using com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -387,23 +387,23 @@ public  final class UploadFileResponse extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_descriptor;
+      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_descriptor;
     }
 
-    public com.iclouding.mfs.rpc.namenode.model.UploadFileResponse getDefaultInstanceForType() {
-      return com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.getDefaultInstance();
+    public com.iclouding.mfs.rpc.namenode.model.CreateFileResponse getDefaultInstanceForType() {
+      return com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.getDefaultInstance();
     }
 
-    public com.iclouding.mfs.rpc.namenode.model.UploadFileResponse build() {
-      com.iclouding.mfs.rpc.namenode.model.UploadFileResponse result = buildPartial();
+    public com.iclouding.mfs.rpc.namenode.model.CreateFileResponse build() {
+      com.iclouding.mfs.rpc.namenode.model.CreateFileResponse result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public com.iclouding.mfs.rpc.namenode.model.UploadFileResponse buildPartial() {
-      com.iclouding.mfs.rpc.namenode.model.UploadFileResponse result = new com.iclouding.mfs.rpc.namenode.model.UploadFileResponse(this);
+    public com.iclouding.mfs.rpc.namenode.model.CreateFileResponse buildPartial() {
+      com.iclouding.mfs.rpc.namenode.model.CreateFileResponse result = new com.iclouding.mfs.rpc.namenode.model.CreateFileResponse(this);
       result.path_ = path_;
       result.status_ = status_;
       result.message_ = message_;
@@ -438,16 +438,16 @@ public  final class UploadFileResponse extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.iclouding.mfs.rpc.namenode.model.UploadFileResponse) {
-        return mergeFrom((com.iclouding.mfs.rpc.namenode.model.UploadFileResponse)other);
+      if (other instanceof com.iclouding.mfs.rpc.namenode.model.CreateFileResponse) {
+        return mergeFrom((com.iclouding.mfs.rpc.namenode.model.CreateFileResponse)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.iclouding.mfs.rpc.namenode.model.UploadFileResponse other) {
-      if (other == com.iclouding.mfs.rpc.namenode.model.UploadFileResponse.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.iclouding.mfs.rpc.namenode.model.CreateFileResponse other) {
+      if (other == com.iclouding.mfs.rpc.namenode.model.CreateFileResponse.getDefaultInstance()) return this;
       if (!other.getPath().isEmpty()) {
         path_ = other.path_;
         onChanged();
@@ -471,11 +471,11 @@ public  final class UploadFileResponse extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.iclouding.mfs.rpc.namenode.model.UploadFileResponse parsedMessage = null;
+      com.iclouding.mfs.rpc.namenode.model.CreateFileResponse parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.iclouding.mfs.rpc.namenode.model.UploadFileResponse) e.getUnfinishedMessage();
+        parsedMessage = (com.iclouding.mfs.rpc.namenode.model.CreateFileResponse) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -711,39 +711,39 @@ public  final class UploadFileResponse extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.iclouding.mfs.rpc.namenode.UploadFileResponse)
+    // @@protoc_insertion_point(builder_scope:com.iclouding.mfs.rpc.namenode.CreateFileResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:com.iclouding.mfs.rpc.namenode.UploadFileResponse)
-  private static final com.iclouding.mfs.rpc.namenode.model.UploadFileResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.iclouding.mfs.rpc.namenode.CreateFileResponse)
+  private static final com.iclouding.mfs.rpc.namenode.model.CreateFileResponse DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.iclouding.mfs.rpc.namenode.model.UploadFileResponse();
+    DEFAULT_INSTANCE = new com.iclouding.mfs.rpc.namenode.model.CreateFileResponse();
   }
 
-  public static com.iclouding.mfs.rpc.namenode.model.UploadFileResponse getDefaultInstance() {
+  public static com.iclouding.mfs.rpc.namenode.model.CreateFileResponse getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<UploadFileResponse>
-      PARSER = new com.google.protobuf.AbstractParser<UploadFileResponse>() {
-    public UploadFileResponse parsePartialFrom(
+  private static final com.google.protobuf.Parser<CreateFileResponse>
+      PARSER = new com.google.protobuf.AbstractParser<CreateFileResponse>() {
+    public CreateFileResponse parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new UploadFileResponse(input, extensionRegistry);
+        return new CreateFileResponse(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<UploadFileResponse> parser() {
+  public static com.google.protobuf.Parser<CreateFileResponse> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<UploadFileResponse> getParserForType() {
+  public com.google.protobuf.Parser<CreateFileResponse> getParserForType() {
     return PARSER;
   }
 
-  public com.iclouding.mfs.rpc.namenode.model.UploadFileResponse getDefaultInstanceForType() {
+  public com.iclouding.mfs.rpc.namenode.model.CreateFileResponse getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

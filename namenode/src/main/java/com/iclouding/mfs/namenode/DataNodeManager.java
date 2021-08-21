@@ -53,6 +53,18 @@ public class DataNodeManager {
         dataNodes.put(dataNodeKey, dataNodeInfo);
     }
 
+    /**
+     * 获取replication个数的datanodes。这里策略比较简单，就是根据剩余空间去选择
+     * @param replication
+     * @return
+     */
+    public List<DataNodeInfo> allocateDataNodes(int replication){
+
+        return null;
+    }
+
+
+
     class DataNodeAliveMonitor extends Thread {
         @Override
         public void run() {
@@ -77,5 +89,7 @@ public class DataNodeManager {
             }
         }
     }
+
+
 
 }

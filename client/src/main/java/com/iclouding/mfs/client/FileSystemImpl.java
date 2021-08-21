@@ -39,4 +39,22 @@ public class FileSystemImpl extends FileSystem {
     public void close() {
         dfsClient.close();
     }
+
+    @Override
+    public boolean createFile(String path) {
+        return dfsClient.createFile(path);
+    }
+
+    /**
+     * 从本地上传文件到mfs系统
+     * @param localPath
+     * @param mfsPath
+     * @return
+     */
+    @Override
+    public boolean copyFromLocalFile(String localPath, String mfsPath) {
+        boolean b = dfsClient.createFile(mfsPath);
+        // 上传文件
+        return false;
+    }
 }

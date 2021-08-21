@@ -6,9 +6,10 @@ option java_multiple_files = true;
 option java_package = "com.iclouding.mfs.rpc.namenode.model";
 option java_outer_classname = "NameNodeRpcModel";
 
+import "mfs.proto";
+
 message RegisterRequest{
-    string ip = 1;
-    string hostname = 2;
+    DataNodeInfo dataNodeInfo = 1;
 }
 
 message RegisterResponse{

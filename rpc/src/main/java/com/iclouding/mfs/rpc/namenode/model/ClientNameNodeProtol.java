@@ -25,25 +25,15 @@ public final class ClientNameNodeProtol {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_iclouding_mfs_rpc_namenode_MkDirResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_iclouding_mfs_rpc_namenode_CreateRequest_descriptor;
+    internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_iclouding_mfs_rpc_namenode_CreateRequest_fieldAccessorTable;
+      internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_iclouding_mfs_rpc_namenode_CreateResponse_descriptor;
+    internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_iclouding_mfs_rpc_namenode_CreateResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_iclouding_mfs_rpc_namenode_UploadFileRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_iclouding_mfs_rpc_namenode_UploadFileRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_fieldAccessorTable;
+      internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -57,15 +47,12 @@ public final class ClientNameNodeProtol {
       "ing.mfs.rpc.namenode\"2\n\014MkDirRequest\022\014\n\004" +
       "path\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\">\n\rMkDi" +
       "rResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022" +
-      "\017\n\007message\030\003 \001(\t\"3\n\rCreateRequest\022\014\n\004pat" +
-      "h\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\"?\n\016CreateR" +
-      "esponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n" +
-      "\007message\030\003 \001(\t\"?\n\021UploadFileRequest\022\014\n\004p" +
-      "ath\030\001 \001(\t\022\013\n\003md5\030\002 \001(\t\022\017\n\007content\030\003 \001(\014\"" +
-      "C\n\022UploadFileResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006s",
-      "tatus\030\002 \001(\005\022\017\n\007message\030\003 \001(\tB>\n$com.iclo" +
-      "uding.mfs.rpc.namenode.modelB\024ClientName" +
-      "NodeProtolP\001b\006proto3"
+      "\017\n\007message\030\003 \001(\t\"L\n\021CreateFileRequest\022\014\n" +
+      "\004path\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\022\023\n\013rep" +
+      "lication\030\003 \001(\r\"C\n\022CreateFileResponse\022\014\n\004" +
+      "path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 " +
+      "\001(\tB>\n$com.iclouding.mfs.rpc.namenode.mo" +
+      "delB\024ClientNameNodeProtolP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -91,29 +78,17 @@ public final class ClientNameNodeProtol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_iclouding_mfs_rpc_namenode_MkDirResponse_descriptor,
         new java.lang.String[] { "Path", "Status", "Message", });
-    internal_static_com_iclouding_mfs_rpc_namenode_CreateRequest_descriptor =
+    internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_com_iclouding_mfs_rpc_namenode_CreateRequest_fieldAccessorTable = new
+    internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_iclouding_mfs_rpc_namenode_CreateRequest_descriptor,
-        new java.lang.String[] { "Path", "CreateParent", });
-    internal_static_com_iclouding_mfs_rpc_namenode_CreateResponse_descriptor =
+        internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_descriptor,
+        new java.lang.String[] { "Path", "CreateParent", "Replication", });
+    internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_com_iclouding_mfs_rpc_namenode_CreateResponse_fieldAccessorTable = new
+    internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_iclouding_mfs_rpc_namenode_CreateResponse_descriptor,
-        new java.lang.String[] { "Path", "Status", "Message", });
-    internal_static_com_iclouding_mfs_rpc_namenode_UploadFileRequest_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_com_iclouding_mfs_rpc_namenode_UploadFileRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_iclouding_mfs_rpc_namenode_UploadFileRequest_descriptor,
-        new java.lang.String[] { "Path", "Md5", "Content", });
-    internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_iclouding_mfs_rpc_namenode_UploadFileResponse_descriptor,
+        internal_static_com_iclouding_mfs_rpc_namenode_CreateFileResponse_descriptor,
         new java.lang.String[] { "Path", "Status", "Message", });
   }
 

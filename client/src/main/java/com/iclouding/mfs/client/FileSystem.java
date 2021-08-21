@@ -22,4 +22,8 @@ public abstract class FileSystem {
     public abstract boolean renamedirs(String srcFile, String destDir);
 
     public abstract void close();
+
+    public abstract boolean createFile(String path);
+
+    public abstract boolean copyFromLocalFile(String localPath, String mfsPath);
 }

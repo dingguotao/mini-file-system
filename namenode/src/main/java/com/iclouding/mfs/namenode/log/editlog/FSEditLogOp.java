@@ -1,4 +1,6 @@
-package com.iclouding.mfs.namenode.log;
+package com.iclouding.mfs.namenode.log.editlog;
+
+import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
 
 /**
  * FSEditLogOp

@@ -19,6 +19,11 @@
     <dependencies>
         <dependency>
             <groupId>com.iclouding.mfs</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.iclouding.mfs</groupId>
             <artifactId>rpc</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

@@ -14,10 +14,32 @@ public class FileINode extends INode{
      */
     private String name;
 
+    private int replication;
+
     public FileINode(String name) {
         super(INodeTypeEnum.FILE);
         this.name = name;
     }
 
+    public FileINode(String name, int replication) {
+        super(INodeTypeEnum.FILE);
+        this.name = name;
+        this.replication = replication;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getReplication() {
+        return replication;
+    }
+
+    public void setReplication(int replication) {
+        this.replication = replication;
+    }
 }

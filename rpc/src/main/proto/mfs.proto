@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.iclouding.mfs.rpc.namenode;
+option java_multiple_files = true;
+option java_package = "com.iclouding.mfs.rpc.namenode.model";
+option java_outer_classname = "MFSProtols";
+
+
+message DataNodeInfo{
+  string ip = 1;
+  string hostname = 2;
+  int32 dataPort = 3;
+  int64 totalDiskSize = 4;
+  int64 usedDiskSize = 5;
+}
+

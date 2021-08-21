@@ -1,5 +1,8 @@
 package com.iclouding.mfs.namenode;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * DataNodeInfo
  * 封装DataNode的信息类
@@ -7,6 +10,8 @@ package com.iclouding.mfs.namenode;
  * @date: 2021/7/16 22:10
  * @email: clouding.vip@qq.com
  */
+@Setter
+@Getter
 public class DataNodeInfo {
 
     public DataNodeInfo(String ip, String hostname) {
@@ -18,29 +23,21 @@ public class DataNodeInfo {
 
     private String hostname;
 
+    /**
+     * dataNode上面接收数据的端口
+     */
+    private int dataPort;
+
     private long latestHeartbeatTime;
 
-    public String getIp() {
-        return ip;
-    }
+    /**
+     * 这个机器磁盘的磁盘大小
+     */
+    private long totalDiskSize;
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
+    /**
+     * 磁盘上已经使用的量
+     */
+    private long usedDiskSize;
 
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
-
-    public long getLatestHeartbeatTime() {
-        return latestHeartbeatTime;
-    }
-
-    public void setLatestHeartbeatTime(long latestHeartbeatTime) {
-        this.latestHeartbeatTime = latestHeartbeatTime;
-    }
 }

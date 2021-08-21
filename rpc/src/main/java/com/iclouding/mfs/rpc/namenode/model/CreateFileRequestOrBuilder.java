@@ -3,8 +3,8 @@
 
 package com.iclouding.mfs.rpc.namenode.model;
 
-public interface CreateRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.iclouding.mfs.rpc.namenode.CreateRequest)
+public interface CreateFileRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.iclouding.mfs.rpc.namenode.CreateFileRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -21,4 +21,9 @@ public interface CreateRequestOrBuilder extends
    * <code>optional bool createParent = 2;</code>
    */
   boolean getCreateParent();
+
+  /**
+   * <code>optional uint32 replication = 3;</code>
+   */
+  int getReplication();
 }
