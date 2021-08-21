@@ -8,22 +8,15 @@ public interface RegisterRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional string ip = 1;</code>
+   * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
    */
-  java.lang.String getIp();
+  boolean hasDataNodeInfo();
   /**
-   * <code>optional string ip = 1;</code>
+   * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
    */
-  com.google.protobuf.ByteString
-      getIpBytes();
-
+  com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto getDataNodeInfo();
   /**
-   * <code>optional string hostname = 2;</code>
+   * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
    */
-  java.lang.String getHostname();
-  /**
-   * <code>optional string hostname = 2;</code>
-   */
-  com.google.protobuf.ByteString
-      getHostnameBytes();
+  com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProtoOrBuilder getDataNodeInfoOrBuilder();
 }

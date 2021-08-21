@@ -1,6 +1,8 @@
 package com.iclouding.mfs.datanode;
 
 
+
+import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse;
 import com.iclouding.mfs.rpc.namenode.model.RegisterRequest;
@@ -60,10 +62,13 @@ public class NameNodeServiceActor {
              */
             String ip = "";
             String hostname = "127.0.0.1";
-            RegisterRequest registerRequest = RegisterRequest
-                    .newBuilder()
+            DataNodeInfoProto dataNodeInfo = DataNodeInfoProto.newBuilder()
                     .setHostname(hostname)
                     .setIp(ip)
+                    .build();
+            RegisterRequest registerRequest = RegisterRequest
+                    .newBuilder()
+                    .setDataNodeInfo(dataNodeInfo)
                     .build();
             RegisterResponse registerResponse = namenode.register(registerRequest);
             int status = registerResponse.getStatus();

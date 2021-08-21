@@ -15,8 +15,6 @@ public  final class RegisterRequest extends
     super(builder);
   }
   private RegisterRequest() {
-    ip_ = "";
-    hostname_ = "";
   }
 
   @java.lang.Override
@@ -45,15 +43,16 @@ public  final class RegisterRequest extends
             break;
           }
           case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
+            com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.Builder subBuilder = null;
+            if (dataNodeInfo_ != null) {
+              subBuilder = dataNodeInfo_.toBuilder();
+            }
+            dataNodeInfo_ = input.readMessage(com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(dataNodeInfo_);
+              dataNodeInfo_ = subBuilder.buildPartial();
+            }
 
-            ip_ = s;
-            break;
-          }
-          case 18: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            hostname_ = s;
             break;
           }
         }
@@ -79,72 +78,25 @@ public  final class RegisterRequest extends
             com.iclouding.mfs.rpc.namenode.model.RegisterRequest.class, com.iclouding.mfs.rpc.namenode.model.RegisterRequest.Builder.class);
   }
 
-  public static final int IP_FIELD_NUMBER = 1;
-  private volatile java.lang.Object ip_;
+  public static final int DATANODEINFO_FIELD_NUMBER = 1;
+  private com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto dataNodeInfo_;
   /**
-   * <code>optional string ip = 1;</code>
+   * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
    */
-  public java.lang.String getIp() {
-    java.lang.Object ref = ip_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      ip_ = s;
-      return s;
-    }
+  public boolean hasDataNodeInfo() {
+    return dataNodeInfo_ != null;
   }
   /**
-   * <code>optional string ip = 1;</code>
+   * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
    */
-  public com.google.protobuf.ByteString
-      getIpBytes() {
-    java.lang.Object ref = ip_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      ip_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int HOSTNAME_FIELD_NUMBER = 2;
-  private volatile java.lang.Object hostname_;
-  /**
-   * <code>optional string hostname = 2;</code>
-   */
-  public java.lang.String getHostname() {
-    java.lang.Object ref = hostname_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      hostname_ = s;
-      return s;
-    }
+  public com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto getDataNodeInfo() {
+    return dataNodeInfo_ == null ? com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.getDefaultInstance() : dataNodeInfo_;
   }
   /**
-   * <code>optional string hostname = 2;</code>
+   * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
    */
-  public com.google.protobuf.ByteString
-      getHostnameBytes() {
-    java.lang.Object ref = hostname_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      hostname_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  public com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProtoOrBuilder getDataNodeInfoOrBuilder() {
+    return getDataNodeInfo();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -159,11 +111,8 @@ public  final class RegisterRequest extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!getIpBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ip_);
-    }
-    if (!getHostnameBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, hostname_);
+    if (dataNodeInfo_ != null) {
+      output.writeMessage(1, getDataNodeInfo());
     }
   }
 
@@ -172,11 +121,9 @@ public  final class RegisterRequest extends
     if (size != -1) return size;
 
     size = 0;
-    if (!getIpBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ip_);
-    }
-    if (!getHostnameBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, hostname_);
+    if (dataNodeInfo_ != null) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, getDataNodeInfo());
     }
     memoizedSize = size;
     return size;
@@ -194,10 +141,11 @@ public  final class RegisterRequest extends
     com.iclouding.mfs.rpc.namenode.model.RegisterRequest other = (com.iclouding.mfs.rpc.namenode.model.RegisterRequest) obj;
 
     boolean result = true;
-    result = result && getIp()
-        .equals(other.getIp());
-    result = result && getHostname()
-        .equals(other.getHostname());
+    result = result && (hasDataNodeInfo() == other.hasDataNodeInfo());
+    if (hasDataNodeInfo()) {
+      result = result && getDataNodeInfo()
+          .equals(other.getDataNodeInfo());
+    }
     return result;
   }
 
@@ -208,10 +156,10 @@ public  final class RegisterRequest extends
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptorForType().hashCode();
-    hash = (37 * hash) + IP_FIELD_NUMBER;
-    hash = (53 * hash) + getIp().hashCode();
-    hash = (37 * hash) + HOSTNAME_FIELD_NUMBER;
-    hash = (53 * hash) + getHostname().hashCode();
+    if (hasDataNodeInfo()) {
+      hash = (37 * hash) + DATANODEINFO_FIELD_NUMBER;
+      hash = (53 * hash) + getDataNodeInfo().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -330,10 +278,12 @@ public  final class RegisterRequest extends
     }
     public Builder clear() {
       super.clear();
-      ip_ = "";
-
-      hostname_ = "";
-
+      if (dataNodeInfoBuilder_ == null) {
+        dataNodeInfo_ = null;
+      } else {
+        dataNodeInfo_ = null;
+        dataNodeInfoBuilder_ = null;
+      }
       return this;
     }
 
@@ -356,8 +306,11 @@ public  final class RegisterRequest extends
 
     public com.iclouding.mfs.rpc.namenode.model.RegisterRequest buildPartial() {
       com.iclouding.mfs.rpc.namenode.model.RegisterRequest result = new com.iclouding.mfs.rpc.namenode.model.RegisterRequest(this);
-      result.ip_ = ip_;
-      result.hostname_ = hostname_;
+      if (dataNodeInfoBuilder_ == null) {
+        result.dataNodeInfo_ = dataNodeInfo_;
+      } else {
+        result.dataNodeInfo_ = dataNodeInfoBuilder_.build();
+      }
       onBuilt();
       return result;
     }
@@ -399,13 +352,8 @@ public  final class RegisterRequest extends
 
     public Builder mergeFrom(com.iclouding.mfs.rpc.namenode.model.RegisterRequest other) {
       if (other == com.iclouding.mfs.rpc.namenode.model.RegisterRequest.getDefaultInstance()) return this;
-      if (!other.getIp().isEmpty()) {
-        ip_ = other.ip_;
-        onChanged();
-      }
-      if (!other.getHostname().isEmpty()) {
-        hostname_ = other.hostname_;
-        onChanged();
+      if (other.hasDataNodeInfo()) {
+        mergeDataNodeInfo(other.getDataNodeInfo());
       }
       onChanged();
       return this;
@@ -433,142 +381,121 @@ public  final class RegisterRequest extends
       return this;
     }
 
-    private java.lang.Object ip_ = "";
+    private com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto dataNodeInfo_ = null;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto, com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.Builder, com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProtoOrBuilder> dataNodeInfoBuilder_;
     /**
-     * <code>optional string ip = 1;</code>
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
      */
-    public java.lang.String getIp() {
-      java.lang.Object ref = ip_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        ip_ = s;
-        return s;
+    public boolean hasDataNodeInfo() {
+      return dataNodeInfoBuilder_ != null || dataNodeInfo_ != null;
+    }
+    /**
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
+     */
+    public com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto getDataNodeInfo() {
+      if (dataNodeInfoBuilder_ == null) {
+        return dataNodeInfo_ == null ? com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.getDefaultInstance() : dataNodeInfo_;
       } else {
-        return (java.lang.String) ref;
+        return dataNodeInfoBuilder_.getMessage();
       }
     }
     /**
-     * <code>optional string ip = 1;</code>
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getIpBytes() {
-      java.lang.Object ref = ip_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        ip_ = b;
-        return b;
+    public Builder setDataNodeInfo(com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto value) {
+      if (dataNodeInfoBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        dataNodeInfo_ = value;
+        onChanged();
       } else {
-        return (com.google.protobuf.ByteString) ref;
+        dataNodeInfoBuilder_.setMessage(value);
       }
-    }
-    /**
-     * <code>optional string ip = 1;</code>
-     */
-    public Builder setIp(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      ip_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional string ip = 1;</code>
-     */
-    public Builder clearIp() {
-      
-      ip_ = getDefaultInstance().getIp();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional string ip = 1;</code>
-     */
-    public Builder setIpBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      ip_ = value;
-      onChanged();
-      return this;
-    }
 
-    private java.lang.Object hostname_ = "";
+      return this;
+    }
     /**
-     * <code>optional string hostname = 2;</code>
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
      */
-    public java.lang.String getHostname() {
-      java.lang.Object ref = hostname_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        hostname_ = s;
-        return s;
+    public Builder setDataNodeInfo(
+        com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.Builder builderForValue) {
+      if (dataNodeInfoBuilder_ == null) {
+        dataNodeInfo_ = builderForValue.build();
+        onChanged();
       } else {
-        return (java.lang.String) ref;
+        dataNodeInfoBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
+     */
+    public Builder mergeDataNodeInfo(com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto value) {
+      if (dataNodeInfoBuilder_ == null) {
+        if (dataNodeInfo_ != null) {
+          dataNodeInfo_ =
+            com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.newBuilder(dataNodeInfo_).mergeFrom(value).buildPartial();
+        } else {
+          dataNodeInfo_ = value;
+        }
+        onChanged();
+      } else {
+        dataNodeInfoBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
+     */
+    public Builder clearDataNodeInfo() {
+      if (dataNodeInfoBuilder_ == null) {
+        dataNodeInfo_ = null;
+        onChanged();
+      } else {
+        dataNodeInfo_ = null;
+        dataNodeInfoBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
+     */
+    public com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.Builder getDataNodeInfoBuilder() {
+      
+      onChanged();
+      return getDataNodeInfoFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
+     */
+    public com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProtoOrBuilder getDataNodeInfoOrBuilder() {
+      if (dataNodeInfoBuilder_ != null) {
+        return dataNodeInfoBuilder_.getMessageOrBuilder();
+      } else {
+        return dataNodeInfo_ == null ?
+            com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.getDefaultInstance() : dataNodeInfo_;
       }
     }
     /**
-     * <code>optional string hostname = 2;</code>
+     * <code>optional .com.iclouding.mfs.rpc.namenode.DataNodeInfoProto dataNodeInfo = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getHostnameBytes() {
-      java.lang.Object ref = hostname_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        hostname_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto, com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.Builder, com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProtoOrBuilder> 
+        getDataNodeInfoFieldBuilder() {
+      if (dataNodeInfoBuilder_ == null) {
+        dataNodeInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto, com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto.Builder, com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProtoOrBuilder>(
+                getDataNodeInfo(),
+                getParentForChildren(),
+                isClean());
+        dataNodeInfo_ = null;
       }
-    }
-    /**
-     * <code>optional string hostname = 2;</code>
-     */
-    public Builder setHostname(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      hostname_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional string hostname = 2;</code>
-     */
-    public Builder clearHostname() {
-      
-      hostname_ = getDefaultInstance().getHostname();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional string hostname = 2;</code>
-     */
-    public Builder setHostnameBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      hostname_ = value;
-      onChanged();
-      return this;
+      return dataNodeInfoBuilder_;
     }
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {

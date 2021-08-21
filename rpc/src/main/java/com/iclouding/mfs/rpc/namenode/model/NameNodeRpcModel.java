@@ -44,13 +44,14 @@ public final class NameNodeRpcModel {
   static {
     java.lang.String[] descriptorData = {
       "\n\026NameNodeRpcModel.proto\022\036com.iclouding." +
-      "mfs.rpc.namenode\"/\n\017RegisterRequest\022\n\n\002i" +
-      "p\030\001 \001(\t\022\020\n\010hostname\030\002 \001(\t\"\"\n\020RegisterRes" +
-      "ponse\022\016\n\006status\030\001 \001(\005\"0\n\020HeartbeatReques" +
-      "t\022\n\n\002ip\030\001 \001(\t\022\020\n\010hostname\030\002 \001(\t\"#\n\021Heart" +
-      "beatResponse\022\016\n\006status\030\001 \001(\005B:\n$com.iclo" +
-      "uding.mfs.rpc.namenode.modelB\020NameNodeRp" +
-      "cModelP\001b\006proto3"
+      "mfs.rpc.namenode\032\tmfs.proto\"Z\n\017RegisterR" +
+      "equest\022G\n\014dataNodeInfo\030\001 \001(\01321.com.iclou" +
+      "ding.mfs.rpc.namenode.DataNodeInfoProto\"" +
+      "\"\n\020RegisterResponse\022\016\n\006status\030\001 \001(\005\"0\n\020H" +
+      "eartbeatRequest\022\n\n\002ip\030\001 \001(\t\022\020\n\010hostname\030" +
+      "\002 \001(\t\"#\n\021HeartbeatResponse\022\016\n\006status\030\001 \001" +
+      "(\005B:\n$com.iclouding.mfs.rpc.namenode.mod" +
+      "elB\020NameNodeRpcModelP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -63,13 +64,14 @@ public final class NameNodeRpcModel {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.iclouding.mfs.rpc.namenode.model.MFSProtols.getDescriptor(),
         }, assigner);
     internal_static_com_iclouding_mfs_rpc_namenode_RegisterRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_com_iclouding_mfs_rpc_namenode_RegisterRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_iclouding_mfs_rpc_namenode_RegisterRequest_descriptor,
-        new java.lang.String[] { "Ip", "Hostname", });
+        new java.lang.String[] { "DataNodeInfo", });
     internal_static_com_iclouding_mfs_rpc_namenode_RegisterResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_iclouding_mfs_rpc_namenode_RegisterResponse_fieldAccessorTable = new
@@ -88,6 +90,7 @@ public final class NameNodeRpcModel {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_iclouding_mfs_rpc_namenode_HeartbeatResponse_descriptor,
         new java.lang.String[] { "Status", });
+    com.iclouding.mfs.rpc.namenode.model.MFSProtols.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

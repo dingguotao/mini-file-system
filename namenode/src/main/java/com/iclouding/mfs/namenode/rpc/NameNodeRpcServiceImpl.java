@@ -50,7 +50,7 @@ public class NameNodeRpcServiceImpl implements NameNodeServiceGrpc.NameNodeServi
 
     @Override
     public void register(RegisterRequest request, StreamObserver<RegisterResponse> responseObserver) {
-        dataNodeManager.register(request.getIp(), request.getHostname());
+        dataNodeManager.register(request.getDataNodeInfo().getIp(), request.getDataNodeInfo().getIp());
 
         // 封装返回值
         RegisterResponse response = RegisterResponse

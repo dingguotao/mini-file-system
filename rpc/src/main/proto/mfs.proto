@@ -6,7 +6,7 @@ option java_package = "com.iclouding.mfs.rpc.namenode.model";
 option java_outer_classname = "MFSProtols";
 
 
-message DataNodeInfo{
+message DataNodeInfoProto{
   string ip = 1;
   string hostname = 2;
   int32 dataPort = 3;

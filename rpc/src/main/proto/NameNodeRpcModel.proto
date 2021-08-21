@@ -9,7 +9,7 @@ option java_outer_classname = "NameNodeRpcModel";
 import "mfs.proto";
 
 message RegisterRequest{
-    DataNodeInfo dataNodeInfo = 1;
+    DataNodeInfoProto dataNodeInfo = 1;
 }
 
 message RegisterResponse{
