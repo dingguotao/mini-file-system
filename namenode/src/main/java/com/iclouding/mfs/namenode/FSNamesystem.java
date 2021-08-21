@@ -7,6 +7,8 @@ import com.iclouding.mfs.common.util.FileUtil;
 import com.iclouding.mfs.namenode.dir.DirectoryINode;
 import com.iclouding.mfs.namenode.dir.FSDirectory;
 import com.iclouding.mfs.namenode.dir.FileINode;
+import com.iclouding.mfs.namenode.dir.node.DirectoryINode;
+import com.iclouding.mfs.namenode.dir.node.FSDirectory;
 import com.iclouding.mfs.namenode.log.FSEditLog;
 import com.iclouding.mfs.namenode.log.FSImage;
 import com.iclouding.mfs.namenode.log.FetchEditLogsInfo;
@@ -18,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +101,14 @@ public class FSNamesystem {
         return true;
     }
 
+    public boolean renamedir(String srcdir, String desdir) throws Exception {
+        DirectoryINode directoryINode = fsDirectory.renamedir(srcdir, desdir);
+
+//        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, createParent,directoryINode.getCreateTime(), directoryINode.getUpdateTime());
+//        editLog.logEdit(mkDirEditLogOp);
+
+        return true;
+    }
 
     public FetchEditLogsInfo fetchEditLogs(long beginTxid, int fetchSize) {
         FetchEditLogsInfo fetchEditLogsInfo = editLog.fetchEditLogs(beginTxid, fetchSize);

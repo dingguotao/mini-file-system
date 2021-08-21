@@ -49,6 +49,15 @@ public class FileSystemImplTest {
     }
 
     @Test
+    public void testClient(){
+        FileSystem dfsClient = FileSystem.get(new Configuration());
+        dfsClient.mkdirs("/a/b/d",true);
+        dfsClient.mkdirs("/a/b/c",false);
+        dfsClient.renamedirs("/a/b/c","/a/b/e");
+        dfsClient.close();
+    }
+
+    @Test
     public void createTest(){
         FileSystem fileSystem = FileSystem.get(new Configuration());
         fileSystem.createFile("/xxx/ccc/aaa.pdf");

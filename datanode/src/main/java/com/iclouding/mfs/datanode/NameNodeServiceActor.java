@@ -24,7 +24,7 @@ public class NameNodeServiceActor {
 
     public NameNodeServiceActor() {
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("127.0.0.1", 50070)
+                .forAddress("127.0.0.1", 50020)
                 .usePlaintext() // 不使用ssl
                 .build();
         namenode = NameNodeServiceGrpc.newBlockingStub(channel);

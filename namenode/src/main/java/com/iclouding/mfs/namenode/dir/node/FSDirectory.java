@@ -3,6 +3,10 @@ package com.iclouding.mfs.namenode.dir;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import com.iclouding.mfs.namenode.exception.DirException;
+import com.iclouding.mfs.namenode.exception.DirNotFoundException;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +103,86 @@ public class FSDirectory {
             }
         }
         return parent;
+    }
+
+    public DirectoryINode renamedir(String srcdir, String desdir) throws Exception {
+        //获取目录列表
+        List<String> srcdirs = splitDir(srcdir);
+        List<String> desdirs = splitDir(desdir);
+
+        //check
+        checkDirLength(srcdirs,desdirs);
+
+        INode node = this.dirTree;
+
+        writeLock.lock();
+        try {
+            // 找到要创建节点的父节点
+            for (int i = 0; i < srcdirs.size(); i++) {
+
+                //前目录
+                String srcdirTemp = srcdirs.get(i);
+                //后目录
+                String destdirTemp = desdirs.get(i);
+
+                if (i == srcdirs.size() - 1) {
+                    //如果为最后一级目录，可以进行重命名
+                    if(!(node instanceof DirectoryINode)){
+                        throw new DirException("重命名文件和内存中的缓存不一致!");
+                    }
+                    List<INode> childs = ((DirectoryINode) node).getChilds();
+                    node = childs.stream().filter(iNode -> {
+                        DirectoryINode directory = (DirectoryINode) iNode;
+                        return directory.getPath().equals(srcdirTemp);
+                    }).findFirst().orElse(null);
+
+                    ((DirectoryINode) node).setPath(destdirTemp);
+
+                    break;
+                }
+
+                if (!srcdirTemp.equals(destdirTemp)) {
+                    throw new DirException("只能修改叶子节点的名称!");
+                }
+
+                //内存目录
+//                if( i == 0 ){
+//                    node = parent;
+//                }else{
+                    List<INode> childs = ((DirectoryINode) node).getChilds();
+                    node = childs.stream().filter(iNode -> {
+                        DirectoryINode directory = (DirectoryINode) iNode;
+                        return directory.getPath().equals(srcdirTemp);
+                    }).findFirst().orElse(null);
+//                }
+
+                if (node == null || !destdirTemp.equals(((DirectoryINode)node).getPath())) {
+                    throw new DirNotFoundException(srcdir);
+                }
+
+            }
+
+
+
+
+
+//            directoryINode = addNewPath(paths.get(paths.size() - 1), parent);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            writeLock.unlock();
+        }
+//        logger.info("成功添加目录: {}", path);
+        return (DirectoryINode) node;
+    }
+
+    private Boolean checkDirLength(List<String> srcdirs, List<String> desdirs){
+        return CollectionUtils.isNotEmpty(srcdirs) && CollectionUtils.isNotEmpty(desdirs) && srcdirs.size() == desdirs.size();
+    }
+
+    private List<String> splitDir(String path){
+        Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
+        return pathSplitter.splitToList(path);
     }
 
     private DirectoryINode addNewPath(String path, DirectoryINode parent) {
