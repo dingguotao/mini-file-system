@@ -1,4 +1,4 @@
-package com.iclouding.mfs.namenode.dir;
+package com.iclouding.mfs.namenode.dir.node;
 
 /**
  * INode

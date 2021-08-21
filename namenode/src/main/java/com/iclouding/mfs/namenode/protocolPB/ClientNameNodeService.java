@@ -76,10 +76,9 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
     @Override
     public void renamedirs(RenameDirRequest request, StreamObserver<RenameDirResponse> responseObserver) {
         logger.info("收到重命名文件夹请求，修改前文件路径: {}，修改后文件路径: {}", request.getSrcDir(), request.getDestDir());
-//        boolean result = false;
-//        MkDirResponse mkDirResponse;
-//        try {
-//            result = namesystem.mkdirs(request.getPath(), request.getCreateParent());
+        boolean result = false;
+        try {
+            namesystem.renamedir(request.getSrcDir(), request.getDestDir());
 //            if (result){
 //                mkDirResponse = MkDirResponse
 //                        .newBuilder()
@@ -95,20 +94,20 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
 //                        .setMessage("未知原因")
 //                        .build();
 //            }
-//        } catch (Exception e) {
-//            logger.info("创建目录异常: \n{}", ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            logger.info("创建目录异常: \n{}", ExceptionUtils.getStackTrace(e));
 //            mkDirResponse = MkDirResponse
 //                    .newBuilder()
 //                    .setPath(request.getPath())
 //                    .setStatus(ResponseStatus.FAILURE.getStatus())
 //                    .setMessage(ExceptionUtils.getStackTrace(e))
 //                    .build();
-//            responseObserver.onError(new Exception("aaaa"));
-//        }
-//
+            responseObserver.onError(new Exception("aaaa"));
+        }
+
 //        responseObserver.onNext(mkDirResponse);
-//
-//        responseObserver.onCompleted();
+
+        responseObserver.onCompleted();
         logger.info("处理重命名文件夹({})请求完毕, 处理完毕的数量: {}", request.getDestDir(), reNameCount.incrementAndGet());
     }
 }
