@@ -25,12 +25,15 @@ public final class ClientNameNodeServer {
     java.lang.String[] descriptorData = {
       "\n\032ClientNameNodeServer.proto\022\036com.icloud" +
       "ing.mfs.rpc.namenode\032\032ClientNameNodeProt" +
-      "ol.proto2}\n\025ClientNameNodeService\022d\n\005mkd" +
-      "ir\022,.com.iclouding.mfs.rpc.namenode.MkDi" +
-      "rRequest\032-.com.iclouding.mfs.rpc.namenod" +
-      "e.MkDirResponseB@\n&com.iclouding.mfs.rpc" +
-      ".namenode.serviceB\024ClientNameNodeServerP" +
-      "\001b\006proto3"
+      "ol.proto2\360\001\n\025ClientNameNodeService\022d\n\005mk" +
+      "dir\022,.com.iclouding.mfs.rpc.namenode.MkD" +
+      "irRequest\032-.com.iclouding.mfs.rpc.nameno" +
+      "de.MkDirResponse\022q\n\nrenamedirs\0220.com.icl" +
+      "ouding.mfs.rpc.namenode.RenameDirRequest" +
+      "\0321.com.iclouding.mfs.rpc.namenode.Rename" +
+      "DirResponseB@\n&com.iclouding.mfs.rpc.nam" +
+      "enode.serviceB\024ClientNameNodeServerP\001b\006p",
+      "roto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

@@ -4,6 +4,8 @@ import com.iclouding.mfs.common.ResponseStatus;
 import com.iclouding.mfs.namenode.FSNamesystem;
 import com.iclouding.mfs.rpc.namenode.model.MkDirRequest;
 import com.iclouding.mfs.rpc.namenode.model.MkDirResponse;
+import com.iclouding.mfs.rpc.namenode.model.RenameDirRequest;
+import com.iclouding.mfs.rpc.namenode.model.RenameDirResponse;
 import com.iclouding.mfs.rpc.namenode.service.ClientNameNodeServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -25,6 +27,8 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
     private FSNamesystem namesystem;
 
     private AtomicLong count = new AtomicLong(0);
+
+    private AtomicLong reNameCount = new AtomicLong(0);
 
     public ClientNameNodeService(FSNamesystem namesystem) {
         this.namesystem = namesystem;
@@ -67,5 +71,44 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
 
         responseObserver.onCompleted();
         logger.info("处理创建目录({})请求完毕, 处理完毕的数量: {}", request.getPath(), count.incrementAndGet());
+    }
+
+    @Override
+    public void renamedirs(RenameDirRequest request, StreamObserver<RenameDirResponse> responseObserver) {
+        logger.info("收到重命名文件夹请求，修改前文件路径: {}，修改后文件路径: {}", request.getSrcDir(), request.getDestDir());
+//        boolean result = false;
+//        MkDirResponse mkDirResponse;
+//        try {
+//            result = namesystem.mkdirs(request.getPath(), request.getCreateParent());
+//            if (result){
+//                mkDirResponse = MkDirResponse
+//                        .newBuilder()
+//                        .setPath(request.getPath())
+//                        .setStatus(ResponseStatus.SUCCESS.getStatus())
+//                        .build();
+//
+//            }else {
+//                mkDirResponse = MkDirResponse
+//                        .newBuilder()
+//                        .setPath(request.getPath())
+//                        .setStatus(ResponseStatus.FAILURE.getStatus())
+//                        .setMessage("未知原因")
+//                        .build();
+//            }
+//        } catch (Exception e) {
+//            logger.info("创建目录异常: \n{}", ExceptionUtils.getStackTrace(e));
+//            mkDirResponse = MkDirResponse
+//                    .newBuilder()
+//                    .setPath(request.getPath())
+//                    .setStatus(ResponseStatus.FAILURE.getStatus())
+//                    .setMessage(ExceptionUtils.getStackTrace(e))
+//                    .build();
+//            responseObserver.onError(new Exception("aaaa"));
+//        }
+//
+//        responseObserver.onNext(mkDirResponse);
+//
+//        responseObserver.onCompleted();
+        logger.info("处理重命名文件夹({})请求完毕, 处理完毕的数量: {}", request.getDestDir(), reNameCount.incrementAndGet());
     }
 }

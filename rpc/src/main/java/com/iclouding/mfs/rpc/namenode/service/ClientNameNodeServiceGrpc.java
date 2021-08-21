@@ -30,6 +30,15 @@ public class ClientNameNodeServiceGrpc {
               "com.iclouding.mfs.rpc.namenode.ClientNameNodeService", "mkdir"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.MkDirRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.MkDirResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.iclouding.mfs.rpc.namenode.model.RenameDirRequest,
+      com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> METHOD_RENAMEDIRS =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.iclouding.mfs.rpc.namenode.ClientNameNodeService", "renamedirs"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.RenameDirResponse.getDefaultInstance()));
 
   public static ClientNameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new ClientNameNodeServiceStub(channel);
@@ -49,17 +58,25 @@ public class ClientNameNodeServiceGrpc {
 
     public void mkdir(com.iclouding.mfs.rpc.namenode.model.MkDirRequest request,
         io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.MkDirResponse> responseObserver);
+
+    public void renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request,
+        io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> responseObserver);
   }
 
   public static interface ClientNameNodeServiceBlockingClient {
 
     public com.iclouding.mfs.rpc.namenode.model.MkDirResponse mkdir(com.iclouding.mfs.rpc.namenode.model.MkDirRequest request);
+
+    public com.iclouding.mfs.rpc.namenode.model.RenameDirResponse renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request);
   }
 
   public static interface ClientNameNodeServiceFutureClient {
 
     public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.MkDirResponse> mkdir(
         com.iclouding.mfs.rpc.namenode.model.MkDirRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> renamedirs(
+        com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request);
   }
 
   public static class ClientNameNodeServiceStub extends io.grpc.stub.AbstractStub<ClientNameNodeServiceStub>
@@ -85,6 +102,13 @@ public class ClientNameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_MKDIR, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request,
+        io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_RENAMEDIRS, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class ClientNameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<ClientNameNodeServiceBlockingStub>
@@ -108,6 +132,12 @@ public class ClientNameNodeServiceGrpc {
     public com.iclouding.mfs.rpc.namenode.model.MkDirResponse mkdir(com.iclouding.mfs.rpc.namenode.model.MkDirRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_MKDIR, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.iclouding.mfs.rpc.namenode.model.RenameDirResponse renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_RENAMEDIRS, getCallOptions(), request);
     }
   }
 
@@ -134,9 +164,17 @@ public class ClientNameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_MKDIR, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> renamedirs(
+        com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_RENAMEDIRS, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_MKDIR = 0;
+  private static final int METHODID_RENAMEDIRS = 1;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -157,6 +195,10 @@ public class ClientNameNodeServiceGrpc {
         case METHODID_MKDIR:
           serviceImpl.mkdir((com.iclouding.mfs.rpc.namenode.model.MkDirRequest) request,
               (io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.MkDirResponse>) responseObserver);
+          break;
+        case METHODID_RENAMEDIRS:
+          serviceImpl.renamedirs((com.iclouding.mfs.rpc.namenode.model.RenameDirRequest) request,
+              (io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -183,6 +225,13 @@ public class ClientNameNodeServiceGrpc {
               com.iclouding.mfs.rpc.namenode.model.MkDirRequest,
               com.iclouding.mfs.rpc.namenode.model.MkDirResponse>(
                 serviceImpl, METHODID_MKDIR)))
+        .addMethod(
+          METHOD_RENAMEDIRS,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.iclouding.mfs.rpc.namenode.model.RenameDirRequest,
+              com.iclouding.mfs.rpc.namenode.model.RenameDirResponse>(
+                serviceImpl, METHODID_RENAMEDIRS)))
         .build();
   }
 }

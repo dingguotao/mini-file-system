@@ -47,3 +47,17 @@ message UploadFileResponse{
   // 异常时提示消息
   string message = 3;
 }
+
+message RenameDirRequest{
+  string srcDir = 1;
+  string destDir = 2;
+}
+
+message RenameDirResponse{
+  // 路径
+  string path = 1;
+  // 状态
+  int32 status = 2;
+  // 异常时提示消息
+  string message = 3;
+}
