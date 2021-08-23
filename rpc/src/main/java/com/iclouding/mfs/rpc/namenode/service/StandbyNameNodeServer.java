@@ -29,8 +29,8 @@ public final class StandbyNameNodeServer {
       "\rfetchEditLogs\0223.com.iclouding.mfs.rpc.n" +
       "amenode.FetchEditLogRequest\0324.com.icloud" +
       "ing.mfs.rpc.namenode.FetchEditLogRespons" +
-      "eBA\n&com.iclouding.mfs.rpc.namenode.serv" +
-      "iceB\025StandbyNameNodeServerP\001b\006proto3"
+      "eBD\n&com.iclouding.mfs.rpc.namenode.serv" +
+      "iceB\025StandbyNameNodeServerP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

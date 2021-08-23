@@ -1,4 +1,6 @@
-package com.iclouding.mfs.standbynode.log;
+package com.iclouding.mfs.standbynode.log.editlog;
+
+import com.iclouding.mfs.standbynode.log.EditLogTypeEnum;
 
 /**
  * FSEditLogOp

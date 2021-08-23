@@ -29,11 +29,11 @@ public final class MFSProtols {
   static {
     java.lang.String[] descriptorData = {
       "\n\tmfs.proto\022\036com.iclouding.mfs.rpc.namen" +
-      "ode\"p\n\021DataNodeInfoProto\022\n\n\002ip\030\001 \001(\t\022\020\n\010" +
-      "hostname\030\002 \001(\t\022\020\n\010dataPort\030\003 \001(\005\022\025\n\rtota" +
-      "lDiskSize\030\004 \001(\003\022\024\n\014usedDiskSize\030\005 \001(\003B4\n" +
-      "$com.iclouding.mfs.rpc.namenode.modelB\nM" +
-      "FSProtolsP\001b\006proto3"
+      "ode\"u\n\021DataNodeInfoProto\022\n\n\002ip\030\001 \001(\t\022\020\n\010" +
+      "hostname\030\002 \001(\t\022\021\n\tdata_port\030\003 \001(\005\022\027\n\017tot" +
+      "al_disk_size\030\004 \001(\003\022\026\n\016used_disk_size\030\005 \001" +
+      "(\003B4\n$com.iclouding.mfs.rpc.namenode.mod" +
+      "elB\nMFSProtolsP\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

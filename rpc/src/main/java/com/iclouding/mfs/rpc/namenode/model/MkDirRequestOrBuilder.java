@@ -18,7 +18,7 @@ public interface MkDirRequestOrBuilder extends
       getPathBytes();
 
   /**
-   * <code>optional bool createParent = 2;</code>
+   * <code>optional bool create_parent = 2;</code>
    */
   boolean getCreateParent();
 }

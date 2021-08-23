@@ -50,8 +50,8 @@ public final class NameNodeRpcModel {
       "\"\n\020RegisterResponse\022\016\n\006status\030\001 \001(\005\"0\n\020H" +
       "eartbeatRequest\022\n\n\002ip\030\001 \001(\t\022\020\n\010hostname\030" +
       "\002 \001(\t\"#\n\021HeartbeatResponse\022\016\n\006status\030\001 \001" +
-      "(\005B:\n$com.iclouding.mfs.rpc.namenode.mod" +
-      "elB\020NameNodeRpcModelP\001b\006proto3"
+      "(\005B=\n$com.iclouding.mfs.rpc.namenode.mod" +
+      "elB\020NameNodeRpcModelP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

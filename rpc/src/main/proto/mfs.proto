@@ -9,8 +9,8 @@ option java_outer_classname = "MFSProtols";
 message DataNodeInfoProto{
   string ip = 1;
   string hostname = 2;
-  int32 dataPort = 3;
-  int64 totalDiskSize = 4;
-  int64 usedDiskSize = 5;
+  int32 data_port = 3;
+  int64 total_disk_size = 4;
+  int64 used_disk_size = 5;
 }
 

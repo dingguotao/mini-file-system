@@ -44,6 +44,16 @@ public final class ClientNameNodeProtol {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_iclouding_mfs_rpc_namenode_RenameDirResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -54,18 +64,24 @@ public final class ClientNameNodeProtol {
   static {
     java.lang.String[] descriptorData = {
       "\n\032ClientNameNodeProtol.proto\022\036com.icloud" +
-      "ing.mfs.rpc.namenode\"2\n\014MkDirRequest\022\014\n\004" +
-      "path\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\">\n\rMkDi" +
-      "rResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022" +
-      "\017\n\007message\030\003 \001(\t\"L\n\021CreateFileRequest\022\014\n" +
-      "\004path\030\001 \001(\t\022\024\n\014createParent\030\002 \001(\010\022\023\n\013rep" +
-      "lication\030\003 \001(\r\"C\n\022CreateFileResponse\022\014\n\004" +
-      "path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 " +
-      "\001(\t\"3\n\020RenameDirRequest\022\016\n\006srcDir\030\001 \001(\t\022" +
-      "\017\n\007destDir\030\002 \001(\t\"B\n\021RenameDirResponse\022\014\n",
-      "\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003" +
-      " \001(\tB>\n$com.iclouding.mfs.rpc.namenode.m" +
-      "odelB\024ClientNameNodeProtolP\001b\006proto3"
+      "ing.mfs.rpc.namenode\032\tmfs.proto\"3\n\014MkDir" +
+      "Request\022\014\n\004path\030\001 \001(\t\022\025\n\rcreate_parent\030\002" +
+      " \001(\010\">\n\rMkDirResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006s" +
+      "tatus\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\"M\n\021CreateFi" +
+      "leRequest\022\014\n\004path\030\001 \001(\t\022\025\n\rcreate_parent" +
+      "\030\002 \001(\010\022\023\n\013replication\030\003 \001(\r\"C\n\022CreateFil" +
+      "eResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022" +
+      "\017\n\007message\030\003 \001(\t\"3\n\020RenameDirRequest\022\016\n\006" +
+      "srcDir\030\001 \001(\t\022\017\n\007destDir\030\002 \001(\t\"B\n\021RenameD",
+      "irResponse\022\014\n\004path\030\001 \001(\t\022\016\n\006status\030\002 \001(\005" +
+      "\022\017\n\007message\030\003 \001(\t\"=\n\032AllocationDataNodes" +
+      "Request\022\014\n\004path\030\001 \001(\t\022\021\n\tfile_size\030\002 \001(\003" +
+      "\"\230\001\n\033AllocationDataNodesResponse\022\014\n\004path" +
+      "\030\001 \001(\t\022\016\n\006status\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\022" +
+      "J\n\017data_node_infos\030\004 \003(\01321.com.iclouding" +
+      ".mfs.rpc.namenode.DataNodeInfoProtoBA\n$c" +
+      "om.iclouding.mfs.rpc.namenode.modelB\024Cli" +
+      "entNameNodeProtolP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -78,6 +94,7 @@ public final class ClientNameNodeProtol {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.iclouding.mfs.rpc.namenode.model.MFSProtols.getDescriptor(),
         }, assigner);
     internal_static_com_iclouding_mfs_rpc_namenode_MkDirRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -115,6 +132,19 @@ public final class ClientNameNodeProtol {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_iclouding_mfs_rpc_namenode_RenameDirResponse_descriptor,
         new java.lang.String[] { "Path", "Status", "Message", });
+    internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_descriptor,
+        new java.lang.String[] { "Path", "FileSize", });
+    internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesResponse_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesResponse_descriptor,
+        new java.lang.String[] { "Path", "Status", "Message", "DataNodeInfos", });
+    com.iclouding.mfs.rpc.namenode.model.MFSProtols.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

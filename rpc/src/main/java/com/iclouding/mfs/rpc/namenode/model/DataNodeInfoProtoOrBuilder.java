@@ -28,17 +28,17 @@ public interface DataNodeInfoProtoOrBuilder extends
       getHostnameBytes();
 
   /**
-   * <code>optional int32 dataPort = 3;</code>
+   * <code>optional int32 data_port = 3;</code>
    */
   int getDataPort();
 
   /**
-   * <code>optional int64 totalDiskSize = 4;</code>
+   * <code>optional int64 total_disk_size = 4;</code>
    */
   long getTotalDiskSize();
 
   /**
-   * <code>optional int64 usedDiskSize = 5;</code>
+   * <code>optional int64 used_disk_size = 5;</code>
    */
   long getUsedDiskSize();
 }

@@ -3,8 +3,8 @@
 
 package com.iclouding.mfs.rpc.namenode.model;
 
-public interface CreateFileRequestOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.iclouding.mfs.rpc.namenode.CreateFileRequest)
+public interface AllocationDataNodesRequestOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -18,12 +18,7 @@ public interface CreateFileRequestOrBuilder extends
       getPathBytes();
 
   /**
-   * <code>optional bool create_parent = 2;</code>
+   * <code>optional int64 file_size = 2;</code>
    */
-  boolean getCreateParent();
-
-  /**
-   * <code>optional uint32 replication = 3;</code>
-   */
-  int getReplication();
+  long getFileSize();
 }

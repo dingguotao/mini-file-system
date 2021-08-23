@@ -1,9 +1,14 @@
 package com.iclouding.mfs.namenode.protocolPB;
 
 import com.iclouding.mfs.common.ResponseStatus;
+import com.iclouding.mfs.namenode.datanode.DataNodeInfo;
 import com.iclouding.mfs.namenode.FSNamesystem;
+
+import com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest;
+import com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse;
 import com.iclouding.mfs.rpc.namenode.model.CreateFileRequest;
 import com.iclouding.mfs.rpc.namenode.model.CreateFileResponse;
+import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import com.iclouding.mfs.rpc.namenode.model.MkDirRequest;
 import com.iclouding.mfs.rpc.namenode.model.MkDirResponse;
 import com.iclouding.mfs.rpc.namenode.model.RenameDirRequest;
@@ -14,7 +19,9 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * ClientNameNodeService
@@ -27,8 +34,6 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
     public static final Logger logger = LoggerFactory.getLogger(ClientNameNodeService.class);
 
     private FSNamesystem namesystem;
-
-    private AtomicLong count = new AtomicLong(0);
 
     private AtomicLong reNameCount = new AtomicLong(0);
 
@@ -63,8 +68,6 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
             logger.info("创建目录异常: \n{}", ExceptionUtils.getStackTrace(e));
             responseObserver.onError(e);
         }
-
-        logger.info("处理创建目录({})请求完毕, 处理完毕的数量: {}", request.getPath(), count.incrementAndGet());
     }
 
     @Override
@@ -84,7 +87,6 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
         } catch (Exception e) {
             logger.error("创建文件异常，异常日志: {}", ExceptionUtils.getStackTrace(e));
             responseObserver.onError(e);
-
         }
     }
 
@@ -124,5 +126,30 @@ public class ClientNameNodeService implements ClientNameNodeServiceGrpc.ClientNa
 
         responseObserver.onCompleted();
         logger.info("处理重命名文件夹({})请求完毕, 处理完毕的数量: {}", request.getDestDir(), reNameCount.incrementAndGet());
+    }
+
+    @Override
+    public void allocationDataNodes(AllocationDataNodesRequest request,
+                                    StreamObserver<AllocationDataNodesResponse> responseObserver) {
+        String path = request.getPath();
+        long fileSize = request.getFileSize();
+        logger.info("收到获取文件存储节点请求, 路径: {}, 文件大小: {}", path, fileSize);
+        List<DataNodeInfo> dataNodeInfos = namesystem.allocationDataNodes(path, fileSize);
+        List<DataNodeInfoProto> dataNodeInfoProtos = dataNodeInfos.stream().map(dataNodeInfo -> {
+            DataNodeInfoProto dataNodeInfoProto = DataNodeInfoProto
+                    .newBuilder()
+                    .setHostname(dataNodeInfo.getHostname())
+                    .setIp(dataNodeInfo.getIp())
+                    .setDataPort(dataNodeInfo.getDataPort())
+                    .build();
+            return dataNodeInfoProto;
+        }).collect(Collectors.toList());
+        AllocationDataNodesResponse allocationDataNodesResponse = AllocationDataNodesResponse
+                .newBuilder()
+                .addAllDataNodeInfos(dataNodeInfoProtos)
+                .build();
+        responseObserver.onNext(allocationDataNodesResponse);
+        responseObserver.onCompleted();
+
     }
 }

@@ -8,8 +8,14 @@ package com.iclouding.mfs.common;
  * @email: clouding.vip@qq.com
  */
 public enum ResponseStatus {
+    /**
+     * 成功
+     */
     SUCCESS(0, ""),
 
+    /**
+     *
+     */
     FAILURE(-1, "未知错误");
 
 

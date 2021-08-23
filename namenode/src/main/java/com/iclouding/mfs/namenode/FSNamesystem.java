@@ -4,14 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Splitter;
 import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.common.util.FileUtil;
+import com.iclouding.mfs.namenode.datanode.DataNodeInfo;
+import com.iclouding.mfs.namenode.datanode.DataNodeManager;
 import com.iclouding.mfs.namenode.dir.FSDirectory;
-import com.iclouding.mfs.namenode.dir.node.DirectoryINode;
-import com.iclouding.mfs.namenode.dir.node.FileINode;
+import com.iclouding.mfs.namenode.dir.DirectoryINode;
+import com.iclouding.mfs.namenode.dir.FileINode;
 import com.iclouding.mfs.namenode.log.FSEditLog;
 import com.iclouding.mfs.namenode.log.FSImage;
 import com.iclouding.mfs.namenode.log.FetchEditLogsInfo;
-import com.iclouding.mfs.namenode.log.editlog.CreateEditLogOp;
-import com.iclouding.mfs.namenode.log.editlog.MkDirEditLogOp;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,12 +36,11 @@ public class FSNamesystem {
 
     private FSDirectory fsDirectory;
 
-    // 管理 edit log
-    private FSEditLog editLog;
+    private DataNodeManager dataNodeManager;
 
-    public FSNamesystem(Configuration conf) {
+    public FSNamesystem(DataNodeManager dataNodeManager, Configuration conf) {
+        this.dataNodeManager = dataNodeManager;
         fsDirectory = new FSDirectory();
-        editLog = new FSEditLog();
     }
 
     /**
@@ -85,38 +84,40 @@ public class FSNamesystem {
             lastTxidInEditLogs = Math.max(lastTxidInEditLogs, endTxid);
             startTxid2FileNameMap.put(startTxid, editlog);
         }
-        editLog.recoverFromEditLogs(lastTxidInEditLogs, startTxid2FileNameMap);
+        getEditLog().recoverFromEditLogs(lastTxidInEditLogs, startTxid2FileNameMap);
 
+    }
+
+    private FSEditLog getEditLog() {
+        return fsDirectory.getEditLog();
     }
 
     public boolean mkdirs(String path, boolean createParent) throws Exception {
         DirectoryINode directoryINode = fsDirectory.mkdirs(path, createParent);
-
-        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, createParent,directoryINode.getCreateTime(), directoryINode.getUpdateTime());
-        editLog.logEdit(mkDirEditLogOp);
-
         return true;
     }
 
     public boolean renamedir(String srcdir, String desdir) throws Exception {
         DirectoryINode directoryINode = fsDirectory.renamedir(srcdir, desdir);
 
-//        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, createParent,directoryINode.getCreateTime(), directoryINode.getUpdateTime());
+//        MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, create_parent,directoryINode.getCreateTime(), directoryINode.getUpdateTime());
 //        editLog.logEdit(mkDirEditLogOp);
 
         return true;
     }
 
     public FetchEditLogsInfo fetchEditLogs(long beginTxid, int fetchSize) {
-        FetchEditLogsInfo fetchEditLogsInfo = editLog.fetchEditLogs(beginTxid, fetchSize);
+        FetchEditLogsInfo fetchEditLogsInfo = getEditLog().fetchEditLogs(beginTxid, fetchSize);
         return fetchEditLogsInfo;
     }
 
     public boolean createFile(String path, boolean createParent, int replication){
         FileINode file = fsDirectory.create(path, createParent, replication);
-        CreateEditLogOp createEditLogOp = new CreateEditLogOp(path, createParent, replication, file.getCreateTime(),
-                file.getUpdateTime());
-        editLog.logEdit(createEditLogOp);
         return true;
+    }
+
+    public List<DataNodeInfo> allocationDataNodes(String filePath, long fileSize) {
+        List<DataNodeInfo> dataNodeInfos = dataNodeManager.allocateDataNodes(fileSize, 2);
+        return dataNodeInfos;
     }
 }

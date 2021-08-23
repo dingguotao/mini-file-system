@@ -48,12 +48,9 @@ public class DoubleBuffer {
     }
 
     public Map<Long, String> flush() {
-        logger.info("flush数据: ");
-        logger.info(String.join("\n", syncBuffer.buf));
         long firstTxid = syncBuffer.firstTxid;
         int size = syncBuffer.buf.size();
         String editLogFileName = FileUtil.getEditLogFileName(firstTxid, size);
-        System.out.println("firstTxid=" + firstTxid + ", size=" + size);
         syncBuffer.flush("./editlog/" + editLogFileName);
         syncBuffer.reset();
         Map<Long, String> txidFileNameMap = new HashMap<>();
@@ -116,7 +113,7 @@ public class DoubleBuffer {
         }
 
         public boolean shouldFlush() {
-            return buf.size() > this.initBufferSize;
+            return buf.size() >= this.initBufferSize;
         }
 
         public void flush(String editLogFileName) {

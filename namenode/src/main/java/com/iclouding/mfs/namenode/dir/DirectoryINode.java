@@ -1,4 +1,4 @@
-package com.iclouding.mfs.namenode.dir.node;
+package com.iclouding.mfs.namenode.dir;
 
 import java.util.ArrayList;
 import java.util.List;

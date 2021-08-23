@@ -1,6 +1,7 @@
 package com.iclouding.mfs.namenode;
 
 import com.iclouding.mfs.common.conf.Configuration;
+import com.iclouding.mfs.namenode.datanode.DataNodeManager;
 import com.iclouding.mfs.namenode.log.FSImageNIOServer;
 import com.iclouding.mfs.namenode.rpc.NameNodeRpcServer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -56,8 +57,8 @@ public class NameNode {
      * 初始化NameNode
      */
     private void initialize(Configuration conf) {
-        namesystem = new FSNamesystem(conf);
         dataNodeManager = new DataNodeManager();
+        namesystem = new FSNamesystem(dataNodeManager, conf);
         rpcServer = new NameNodeRpcServer(namesystem, dataNodeManager, conf);
         fsImageNIOServer = new FSImageNIOServer(conf);
         // 加载磁盘上的fsimage和editlog

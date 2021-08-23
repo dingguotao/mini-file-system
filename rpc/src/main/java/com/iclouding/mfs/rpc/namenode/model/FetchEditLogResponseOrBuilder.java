@@ -13,7 +13,7 @@ public interface FetchEditLogResponseOrBuilder extends
   int getStatus();
 
   /**
-   * <code>optional int64 beginTxid = 2;</code>
+   * <code>optional int64 begin_txid = 2;</code>
    */
   long getBeginTxid();
 
@@ -22,7 +22,7 @@ public interface FetchEditLogResponseOrBuilder extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   java.util.List<java.lang.String>
       getEditLogsList();
@@ -31,7 +31,7 @@ public interface FetchEditLogResponseOrBuilder extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   int getEditLogsCount();
   /**
@@ -39,7 +39,7 @@ public interface FetchEditLogResponseOrBuilder extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   java.lang.String getEditLogs(int index);
   /**
@@ -47,7 +47,7 @@ public interface FetchEditLogResponseOrBuilder extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   com.google.protobuf.ByteString
       getEditLogsBytes(int index);
@@ -57,7 +57,7 @@ public interface FetchEditLogResponseOrBuilder extends
    * 获取editlog的数量
    * </pre>
    *
-   * <code>optional int32 fetchSize = 4;</code>
+   * <code>optional int32 fetch_size = 4;</code>
    */
   int getFetchSize();
 
@@ -66,7 +66,7 @@ public interface FetchEditLogResponseOrBuilder extends
    * 是否还有后续editlog
    * </pre>
    *
-   * <code>optional bool hasMore = 5;</code>
+   * <code>optional bool has_more = 5;</code>
    */
   boolean getHasMore();
 

@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Splitter;
 import com.iclouding.mfs.standbynode.log.EditLogTypeEnum;
 import com.iclouding.mfs.standbynode.log.FSImage;
-import com.iclouding.mfs.standbynode.log.MkDirEditLogOp;
+import com.iclouding.mfs.standbynode.log.editlog.MkDirEditLogOp;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,6 +119,9 @@ public class FSDirectory {
                     logger.error("创建目录异常: {}", ExceptionUtils.getStackTrace(e));
                     throw new RuntimeException(e);
                 }
+                break;
+            case CREATE_OP:
+                logger.info("创建文件请求");
                 break;
         }
 

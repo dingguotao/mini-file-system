@@ -5,6 +5,7 @@ package com.iclouding.mfs.rpc.namenode;
 option java_multiple_files = true;
 option java_package = "com.iclouding.mfs.rpc.namenode.model";
 option java_outer_classname = "NameNodeRpcModel";
+option java_generate_equals_and_hash = true;
 
 import "mfs.proto";
 

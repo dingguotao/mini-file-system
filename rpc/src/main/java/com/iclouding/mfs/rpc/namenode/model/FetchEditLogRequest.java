@@ -77,19 +77,19 @@ public  final class FetchEditLogRequest extends
             com.iclouding.mfs.rpc.namenode.model.FetchEditLogRequest.class, com.iclouding.mfs.rpc.namenode.model.FetchEditLogRequest.Builder.class);
   }
 
-  public static final int BEGINTXID_FIELD_NUMBER = 1;
+  public static final int BEGIN_TXID_FIELD_NUMBER = 1;
   private long beginTxid_;
   /**
-   * <code>optional int64 beginTxid = 1;</code>
+   * <code>optional int64 begin_txid = 1;</code>
    */
   public long getBeginTxid() {
     return beginTxid_;
   }
 
-  public static final int FETCHSIZE_FIELD_NUMBER = 2;
+  public static final int FETCH_SIZE_FIELD_NUMBER = 2;
   private int fetchSize_;
   /**
-   * <code>optional int32 fetchSize = 2;</code>
+   * <code>optional int32 fetch_size = 2;</code>
    */
   public int getFetchSize() {
     return fetchSize_;
@@ -158,10 +158,10 @@ public  final class FetchEditLogRequest extends
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptorForType().hashCode();
-    hash = (37 * hash) + BEGINTXID_FIELD_NUMBER;
+    hash = (37 * hash) + BEGIN_TXID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getBeginTxid());
-    hash = (37 * hash) + FETCHSIZE_FIELD_NUMBER;
+    hash = (37 * hash) + FETCH_SIZE_FIELD_NUMBER;
     hash = (53 * hash) + getFetchSize();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -384,13 +384,13 @@ public  final class FetchEditLogRequest extends
 
     private long beginTxid_ ;
     /**
-     * <code>optional int64 beginTxid = 1;</code>
+     * <code>optional int64 begin_txid = 1;</code>
      */
     public long getBeginTxid() {
       return beginTxid_;
     }
     /**
-     * <code>optional int64 beginTxid = 1;</code>
+     * <code>optional int64 begin_txid = 1;</code>
      */
     public Builder setBeginTxid(long value) {
       
@@ -399,7 +399,7 @@ public  final class FetchEditLogRequest extends
       return this;
     }
     /**
-     * <code>optional int64 beginTxid = 1;</code>
+     * <code>optional int64 begin_txid = 1;</code>
      */
     public Builder clearBeginTxid() {
       
@@ -410,13 +410,13 @@ public  final class FetchEditLogRequest extends
 
     private int fetchSize_ ;
     /**
-     * <code>optional int32 fetchSize = 2;</code>
+     * <code>optional int32 fetch_size = 2;</code>
      */
     public int getFetchSize() {
       return fetchSize_;
     }
     /**
-     * <code>optional int32 fetchSize = 2;</code>
+     * <code>optional int32 fetch_size = 2;</code>
      */
     public Builder setFetchSize(int value) {
       
@@ -425,7 +425,7 @@ public  final class FetchEditLogRequest extends
       return this;
     }
     /**
-     * <code>optional int32 fetchSize = 2;</code>
+     * <code>optional int32 fetch_size = 2;</code>
      */
     public Builder clearFetchSize() {
       

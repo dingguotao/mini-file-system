@@ -4,20 +4,19 @@
 package com.iclouding.mfs.rpc.namenode.model;
 
 /**
- * Protobuf type {@code com.iclouding.mfs.rpc.namenode.CreateFileRequest}
+ * Protobuf type {@code com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest}
  */
-public  final class CreateFileRequest extends
+public  final class AllocationDataNodesRequest extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.iclouding.mfs.rpc.namenode.CreateFileRequest)
-    CreateFileRequestOrBuilder {
-  // Use CreateFileRequest.newBuilder() to construct.
-  private CreateFileRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest)
+    AllocationDataNodesRequestOrBuilder {
+  // Use AllocationDataNodesRequest.newBuilder() to construct.
+  private AllocationDataNodesRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private CreateFileRequest() {
+  private AllocationDataNodesRequest() {
     path_ = "";
-    createParent_ = false;
-    replication_ = 0;
+    fileSize_ = 0L;
   }
 
   @java.lang.Override
@@ -25,7 +24,7 @@ public  final class CreateFileRequest extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private CreateFileRequest(
+  private AllocationDataNodesRequest(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -53,12 +52,7 @@ public  final class CreateFileRequest extends
           }
           case 16: {
 
-            createParent_ = input.readBool();
-            break;
-          }
-          case 24: {
-
-            replication_ = input.readUInt32();
+            fileSize_ = input.readInt64();
             break;
           }
         }
@@ -74,14 +68,14 @@ public  final class CreateFileRequest extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_descriptor;
+    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_descriptor;
   }
 
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_fieldAccessorTable
+    return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.class, com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.Builder.class);
+            com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.class, com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.Builder.class);
   }
 
   public static final int PATH_FIELD_NUMBER = 1;
@@ -118,22 +112,13 @@ public  final class CreateFileRequest extends
     }
   }
 
-  public static final int CREATE_PARENT_FIELD_NUMBER = 2;
-  private boolean createParent_;
+  public static final int FILE_SIZE_FIELD_NUMBER = 2;
+  private long fileSize_;
   /**
-   * <code>optional bool create_parent = 2;</code>
+   * <code>optional int64 file_size = 2;</code>
    */
-  public boolean getCreateParent() {
-    return createParent_;
-  }
-
-  public static final int REPLICATION_FIELD_NUMBER = 3;
-  private int replication_;
-  /**
-   * <code>optional uint32 replication = 3;</code>
-   */
-  public int getReplication() {
-    return replication_;
+  public long getFileSize() {
+    return fileSize_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -151,11 +136,8 @@ public  final class CreateFileRequest extends
     if (!getPathBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, path_);
     }
-    if (createParent_ != false) {
-      output.writeBool(2, createParent_);
-    }
-    if (replication_ != 0) {
-      output.writeUInt32(3, replication_);
+    if (fileSize_ != 0L) {
+      output.writeInt64(2, fileSize_);
     }
   }
 
@@ -167,13 +149,9 @@ public  final class CreateFileRequest extends
     if (!getPathBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, path_);
     }
-    if (createParent_ != false) {
+    if (fileSize_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(2, createParent_);
-    }
-    if (replication_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeUInt32Size(3, replication_);
+        .computeInt64Size(2, fileSize_);
     }
     memoizedSize = size;
     return size;
@@ -185,18 +163,16 @@ public  final class CreateFileRequest extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.iclouding.mfs.rpc.namenode.model.CreateFileRequest)) {
+    if (!(obj instanceof com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest)) {
       return super.equals(obj);
     }
-    com.iclouding.mfs.rpc.namenode.model.CreateFileRequest other = (com.iclouding.mfs.rpc.namenode.model.CreateFileRequest) obj;
+    com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest other = (com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest) obj;
 
     boolean result = true;
     result = result && getPath()
         .equals(other.getPath());
-    result = result && (getCreateParent()
-        == other.getCreateParent());
-    result = result && (getReplication()
-        == other.getReplication());
+    result = result && (getFileSize()
+        == other.getFileSize());
     return result;
   }
 
@@ -209,68 +185,66 @@ public  final class CreateFileRequest extends
     hash = (19 * hash) + getDescriptorForType().hashCode();
     hash = (37 * hash) + PATH_FIELD_NUMBER;
     hash = (53 * hash) + getPath().hashCode();
-    hash = (37 * hash) + CREATE_PARENT_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-        getCreateParent());
-    hash = (37 * hash) + REPLICATION_FIELD_NUMBER;
-    hash = (53 * hash) + getReplication();
+    hash = (37 * hash) + FILE_SIZE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        getFileSize());
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(byte[] data)
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(java.io.InputStream input)
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseDelimitedFrom(java.io.InputStream input)
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseDelimitedFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parseFrom(
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -282,7 +256,7 @@ public  final class CreateFileRequest extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.iclouding.mfs.rpc.namenode.model.CreateFileRequest prototype) {
+  public static Builder newBuilder(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -297,25 +271,25 @@ public  final class CreateFileRequest extends
     return builder;
   }
   /**
-   * Protobuf type {@code com.iclouding.mfs.rpc.namenode.CreateFileRequest}
+   * Protobuf type {@code com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.iclouding.mfs.rpc.namenode.CreateFileRequest)
-      com.iclouding.mfs.rpc.namenode.model.CreateFileRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest)
+      com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_descriptor;
+      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_fieldAccessorTable
+      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.class, com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.Builder.class);
+              com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.class, com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.Builder.class);
     }
 
-    // Construct using com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.newBuilder()
+    // Construct using com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -334,35 +308,32 @@ public  final class CreateFileRequest extends
       super.clear();
       path_ = "";
 
-      createParent_ = false;
-
-      replication_ = 0;
+      fileSize_ = 0L;
 
       return this;
     }
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_CreateFileRequest_descriptor;
+      return com.iclouding.mfs.rpc.namenode.model.ClientNameNodeProtol.internal_static_com_iclouding_mfs_rpc_namenode_AllocationDataNodesRequest_descriptor;
     }
 
-    public com.iclouding.mfs.rpc.namenode.model.CreateFileRequest getDefaultInstanceForType() {
-      return com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.getDefaultInstance();
+    public com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest getDefaultInstanceForType() {
+      return com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.getDefaultInstance();
     }
 
-    public com.iclouding.mfs.rpc.namenode.model.CreateFileRequest build() {
-      com.iclouding.mfs.rpc.namenode.model.CreateFileRequest result = buildPartial();
+    public com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest build() {
+      com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public com.iclouding.mfs.rpc.namenode.model.CreateFileRequest buildPartial() {
-      com.iclouding.mfs.rpc.namenode.model.CreateFileRequest result = new com.iclouding.mfs.rpc.namenode.model.CreateFileRequest(this);
+    public com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest buildPartial() {
+      com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest result = new com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest(this);
       result.path_ = path_;
-      result.createParent_ = createParent_;
-      result.replication_ = replication_;
+      result.fileSize_ = fileSize_;
       onBuilt();
       return result;
     }
@@ -394,25 +365,22 @@ public  final class CreateFileRequest extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.iclouding.mfs.rpc.namenode.model.CreateFileRequest) {
-        return mergeFrom((com.iclouding.mfs.rpc.namenode.model.CreateFileRequest)other);
+      if (other instanceof com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest) {
+        return mergeFrom((com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.iclouding.mfs.rpc.namenode.model.CreateFileRequest other) {
-      if (other == com.iclouding.mfs.rpc.namenode.model.CreateFileRequest.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest other) {
+      if (other == com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.getDefaultInstance()) return this;
       if (!other.getPath().isEmpty()) {
         path_ = other.path_;
         onChanged();
       }
-      if (other.getCreateParent() != false) {
-        setCreateParent(other.getCreateParent());
-      }
-      if (other.getReplication() != 0) {
-        setReplication(other.getReplication());
+      if (other.getFileSize() != 0L) {
+        setFileSize(other.getFileSize());
       }
       onChanged();
       return this;
@@ -426,11 +394,11 @@ public  final class CreateFileRequest extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.iclouding.mfs.rpc.namenode.model.CreateFileRequest parsedMessage = null;
+      com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.iclouding.mfs.rpc.namenode.model.CreateFileRequest) e.getUnfinishedMessage();
+        parsedMessage = (com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -509,54 +477,28 @@ public  final class CreateFileRequest extends
       return this;
     }
 
-    private boolean createParent_ ;
+    private long fileSize_ ;
     /**
-     * <code>optional bool create_parent = 2;</code>
+     * <code>optional int64 file_size = 2;</code>
      */
-    public boolean getCreateParent() {
-      return createParent_;
+    public long getFileSize() {
+      return fileSize_;
     }
     /**
-     * <code>optional bool create_parent = 2;</code>
+     * <code>optional int64 file_size = 2;</code>
      */
-    public Builder setCreateParent(boolean value) {
+    public Builder setFileSize(long value) {
       
-      createParent_ = value;
+      fileSize_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>optional bool create_parent = 2;</code>
+     * <code>optional int64 file_size = 2;</code>
      */
-    public Builder clearCreateParent() {
+    public Builder clearFileSize() {
       
-      createParent_ = false;
-      onChanged();
-      return this;
-    }
-
-    private int replication_ ;
-    /**
-     * <code>optional uint32 replication = 3;</code>
-     */
-    public int getReplication() {
-      return replication_;
-    }
-    /**
-     * <code>optional uint32 replication = 3;</code>
-     */
-    public Builder setReplication(int value) {
-      
-      replication_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional uint32 replication = 3;</code>
-     */
-    public Builder clearReplication() {
-      
-      replication_ = 0;
+      fileSize_ = 0L;
       onChanged();
       return this;
     }
@@ -571,39 +513,39 @@ public  final class CreateFileRequest extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.iclouding.mfs.rpc.namenode.CreateFileRequest)
+    // @@protoc_insertion_point(builder_scope:com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:com.iclouding.mfs.rpc.namenode.CreateFileRequest)
-  private static final com.iclouding.mfs.rpc.namenode.model.CreateFileRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.iclouding.mfs.rpc.namenode.AllocationDataNodesRequest)
+  private static final com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.iclouding.mfs.rpc.namenode.model.CreateFileRequest();
+    DEFAULT_INSTANCE = new com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest();
   }
 
-  public static com.iclouding.mfs.rpc.namenode.model.CreateFileRequest getDefaultInstance() {
+  public static com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<CreateFileRequest>
-      PARSER = new com.google.protobuf.AbstractParser<CreateFileRequest>() {
-    public CreateFileRequest parsePartialFrom(
+  private static final com.google.protobuf.Parser<AllocationDataNodesRequest>
+      PARSER = new com.google.protobuf.AbstractParser<AllocationDataNodesRequest>() {
+    public AllocationDataNodesRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CreateFileRequest(input, extensionRegistry);
+        return new AllocationDataNodesRequest(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<CreateFileRequest> parser() {
+  public static com.google.protobuf.Parser<AllocationDataNodesRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<CreateFileRequest> getParserForType() {
+  public com.google.protobuf.Parser<AllocationDataNodesRequest> getParserForType() {
     return PARSER;
   }
 
-  public com.iclouding.mfs.rpc.namenode.model.CreateFileRequest getDefaultInstanceForType() {
+  public com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -8,5 +8,12 @@ package com.iclouding.mfs.standbynode.log;
  * @email: clouding.vip@qq.com
  */
 public enum EditLogTypeEnum {
-    MKDIR_OP;
+    /**
+     * 创建目录
+     */
+    MKDIR_OP,
+    /**
+     * 创建文件
+     */
+    CREATE_OP;
 }

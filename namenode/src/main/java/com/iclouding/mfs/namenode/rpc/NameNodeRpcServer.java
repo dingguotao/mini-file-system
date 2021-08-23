@@ -1,7 +1,7 @@
 package com.iclouding.mfs.namenode.rpc;
 
 import com.iclouding.mfs.common.conf.Configuration;
-import com.iclouding.mfs.namenode.DataNodeManager;
+import com.iclouding.mfs.namenode.datanode.DataNodeManager;
 import com.iclouding.mfs.namenode.FSNamesystem;
 import com.iclouding.mfs.namenode.protocolPB.ClientNameNodeService;
 import com.iclouding.mfs.namenode.protocolPB.StandbyNameNodeService;

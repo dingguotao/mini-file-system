@@ -25,7 +25,7 @@ public final class ClientNameNodeServer {
     java.lang.String[] descriptorData = {
       "\n\032ClientNameNodeServer.proto\022\036com.icloud" +
       "ing.mfs.rpc.namenode\032\032ClientNameNodeProt" +
-      "ol.proto2\345\002\n\025ClientNameNodeService\022d\n\005mk" +
+      "ol.proto2\366\003\n\025ClientNameNodeService\022d\n\005mk" +
       "dir\022,.com.iclouding.mfs.rpc.namenode.MkD" +
       "irRequest\032-.com.iclouding.mfs.rpc.nameno" +
       "de.MkDirResponse\022s\n\ncreateFile\0221.com.icl" +
@@ -34,9 +34,12 @@ public final class ClientNameNodeServer {
       "eFileResponse\022q\n\nrenamedirs\0220.com.icloud" +
       "ing.mfs.rpc.namenode.RenameDirRequest\0321.",
       "com.iclouding.mfs.rpc.namenode.RenameDir" +
-      "ResponseB@\n&com.iclouding.mfs.rpc.nameno" +
-      "de.serviceB\024ClientNameNodeServerP\001b\006prot" +
-      "o3"
+      "Response\022\216\001\n\023allocationDataNodes\022:.com.i" +
+      "clouding.mfs.rpc.namenode.AllocationData" +
+      "NodesRequest\032;.com.iclouding.mfs.rpc.nam" +
+      "enode.AllocationDataNodesResponseBC\n&com" +
+      ".iclouding.mfs.rpc.namenode.serviceB\024Cli" +
+      "entNameNodeServerP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

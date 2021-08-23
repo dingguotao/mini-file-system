@@ -48,6 +48,15 @@ public class ClientNameNodeServiceGrpc {
               "com.iclouding.mfs.rpc.namenode.ClientNameNodeService", "renamedirs"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.RenameDirResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest,
+      com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse> METHOD_ALLOCATION_DATA_NODES =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.iclouding.mfs.rpc.namenode.ClientNameNodeService", "allocationDataNodes"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse.getDefaultInstance()));
 
   public static ClientNameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new ClientNameNodeServiceStub(channel);
@@ -73,6 +82,9 @@ public class ClientNameNodeServiceGrpc {
 
     public void renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request,
         io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> responseObserver);
+
+    public void allocationDataNodes(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest request,
+        io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse> responseObserver);
   }
 
   public static interface ClientNameNodeServiceBlockingClient {
@@ -82,6 +94,8 @@ public class ClientNameNodeServiceGrpc {
     public com.iclouding.mfs.rpc.namenode.model.CreateFileResponse createFile(com.iclouding.mfs.rpc.namenode.model.CreateFileRequest request);
 
     public com.iclouding.mfs.rpc.namenode.model.RenameDirResponse renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request);
+
+    public com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse allocationDataNodes(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest request);
   }
 
   public static interface ClientNameNodeServiceFutureClient {
@@ -94,6 +108,9 @@ public class ClientNameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse> renamedirs(
         com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse> allocationDataNodes(
+        com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest request);
   }
 
   public static class ClientNameNodeServiceStub extends io.grpc.stub.AbstractStub<ClientNameNodeServiceStub>
@@ -133,6 +150,13 @@ public class ClientNameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_RENAMEDIRS, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void allocationDataNodes(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest request,
+        io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_ALLOCATION_DATA_NODES, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class ClientNameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<ClientNameNodeServiceBlockingStub>
@@ -168,6 +192,12 @@ public class ClientNameNodeServiceGrpc {
     public com.iclouding.mfs.rpc.namenode.model.RenameDirResponse renamedirs(com.iclouding.mfs.rpc.namenode.model.RenameDirRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_RENAMEDIRS, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse allocationDataNodes(com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_ALLOCATION_DATA_NODES, getCallOptions(), request);
     }
   }
 
@@ -208,11 +238,19 @@ public class ClientNameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_RENAMEDIRS, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse> allocationDataNodes(
+        com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_ALLOCATION_DATA_NODES, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_MKDIR = 0;
   private static final int METHODID_CREATE_FILE = 1;
   private static final int METHODID_RENAMEDIRS = 2;
+  private static final int METHODID_ALLOCATION_DATA_NODES = 3;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -241,6 +279,10 @@ public class ClientNameNodeServiceGrpc {
         case METHODID_RENAMEDIRS:
           serviceImpl.renamedirs((com.iclouding.mfs.rpc.namenode.model.RenameDirRequest) request,
               (io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.RenameDirResponse>) responseObserver);
+          break;
+        case METHODID_ALLOCATION_DATA_NODES:
+          serviceImpl.allocationDataNodes((com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest) request,
+              (io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -281,6 +323,13 @@ public class ClientNameNodeServiceGrpc {
               com.iclouding.mfs.rpc.namenode.model.RenameDirRequest,
               com.iclouding.mfs.rpc.namenode.model.RenameDirResponse>(
                 serviceImpl, METHODID_RENAMEDIRS)))
+        .addMethod(
+          METHOD_ALLOCATION_DATA_NODES,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest,
+              com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse>(
+                serviceImpl, METHODID_ALLOCATION_DATA_NODES)))
         .build();
   }
 }

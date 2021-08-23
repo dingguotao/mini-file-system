@@ -8,12 +8,12 @@ public interface FetchEditLogRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional int64 beginTxid = 1;</code>
+   * <code>optional int64 begin_txid = 1;</code>
    */
   long getBeginTxid();
 
   /**
-   * <code>optional int32 fetchSize = 2;</code>
+   * <code>optional int32 fetch_size = 2;</code>
    */
   int getFetchSize();
 }

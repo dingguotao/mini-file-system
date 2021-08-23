@@ -1,4 +1,4 @@
-package com.iclouding.mfs.namenode;
+package com.iclouding.mfs.namenode.datanode;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class DataNodeInfo {
+public class DataNodeInfo implements Comparable<DataNodeInfo> {
 
     public DataNodeInfo(String ip, String hostname) {
         this.ip = ip;
@@ -40,4 +40,18 @@ public class DataNodeInfo {
      */
     private long usedDiskSize;
 
+    public long leftDiskSize(){
+        return totalDiskSize - usedDiskSize;
+    }
+
+    @Override
+    public int compareTo(DataNodeInfo o) {
+        long leftDiskSize = this.totalDiskSize - this.usedDiskSize;
+        long oLeftDiskSize = o.totalDiskSize - o.usedDiskSize;
+        return (int) (leftDiskSize - oLeftDiskSize);
+    }
+
+    public void addUsedDiskSize(long fileSize) {
+        usedDiskSize += fileSize;
+    }
 }

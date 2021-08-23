@@ -2,8 +2,11 @@ package com.iclouding.mfs.client;
 
 import com.iclouding.mfs.client.config.Configuration;
 import com.iclouding.mfs.common.ResponseStatus;
+import com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest;
+import com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse;
 import com.iclouding.mfs.rpc.namenode.model.CreateFileRequest;
 import com.iclouding.mfs.rpc.namenode.model.CreateFileResponse;
+import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import com.iclouding.mfs.rpc.namenode.model.MkDirRequest;
 import com.iclouding.mfs.rpc.namenode.model.MkDirResponse;
 import com.iclouding.mfs.rpc.namenode.model.RenameDirRequest;
@@ -12,6 +15,7 @@ import com.iclouding.mfs.rpc.namenode.service.ClientNameNodeServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -90,5 +94,26 @@ public class DFSClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<DataNodeInfoProto> allocationDataNodes(String filePath, long fileSize) {
+        AllocationDataNodesRequest allocationDataNodesRequest = AllocationDataNodesRequest
+                .newBuilder()
+                .setPath(filePath)
+                .setFileSize(fileSize)
+                .build();
+        AllocationDataNodesResponse dataNodesResponse = namenode.allocationDataNodes(
+                allocationDataNodesRequest);
+        return dataNodesResponse.getDataNodeInfosList();
+    }
+
+    /**
+     * 通过NIO发送文件
+     * @param oriPath
+     * @param destPath
+     * @param dataNodeInfoProtos
+     */
+    public void uploadFile(String oriPath, String destPath, List<DataNodeInfoProto> dataNodeInfoProtos) {
+
     }
 }

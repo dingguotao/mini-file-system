@@ -1,7 +1,7 @@
-package com.iclouding.mfs.namenode.log.editlog;
+package com.iclouding.mfs.standbynode.log.editlog;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
+import com.iclouding.mfs.standbynode.log.EditLogTypeEnum;
 
 /**
  * CreateEditLogOp

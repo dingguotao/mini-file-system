@@ -1,6 +1,6 @@
 package com.iclouding.mfs.namenode.rpc;
 
-import com.iclouding.mfs.namenode.DataNodeManager;
+import com.iclouding.mfs.namenode.datanode.DataNodeManager;
 import com.iclouding.mfs.namenode.FSNamesystem;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse;

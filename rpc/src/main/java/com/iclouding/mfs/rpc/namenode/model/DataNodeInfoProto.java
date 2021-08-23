@@ -165,28 +165,28 @@ public  final class DataNodeInfoProto extends
     }
   }
 
-  public static final int DATAPORT_FIELD_NUMBER = 3;
+  public static final int DATA_PORT_FIELD_NUMBER = 3;
   private int dataPort_;
   /**
-   * <code>optional int32 dataPort = 3;</code>
+   * <code>optional int32 data_port = 3;</code>
    */
   public int getDataPort() {
     return dataPort_;
   }
 
-  public static final int TOTALDISKSIZE_FIELD_NUMBER = 4;
+  public static final int TOTAL_DISK_SIZE_FIELD_NUMBER = 4;
   private long totalDiskSize_;
   /**
-   * <code>optional int64 totalDiskSize = 4;</code>
+   * <code>optional int64 total_disk_size = 4;</code>
    */
   public long getTotalDiskSize() {
     return totalDiskSize_;
   }
 
-  public static final int USEDDISKSIZE_FIELD_NUMBER = 5;
+  public static final int USED_DISK_SIZE_FIELD_NUMBER = 5;
   private long usedDiskSize_;
   /**
-   * <code>optional int64 usedDiskSize = 5;</code>
+   * <code>optional int64 used_disk_size = 5;</code>
    */
   public long getUsedDiskSize() {
     return usedDiskSize_;
@@ -284,12 +284,12 @@ public  final class DataNodeInfoProto extends
     hash = (53 * hash) + getIp().hashCode();
     hash = (37 * hash) + HOSTNAME_FIELD_NUMBER;
     hash = (53 * hash) + getHostname().hashCode();
-    hash = (37 * hash) + DATAPORT_FIELD_NUMBER;
+    hash = (37 * hash) + DATA_PORT_FIELD_NUMBER;
     hash = (53 * hash) + getDataPort();
-    hash = (37 * hash) + TOTALDISKSIZE_FIELD_NUMBER;
+    hash = (37 * hash) + TOTAL_DISK_SIZE_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTotalDiskSize());
-    hash = (37 * hash) + USEDDISKSIZE_FIELD_NUMBER;
+    hash = (37 * hash) + USED_DISK_SIZE_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getUsedDiskSize());
     hash = (29 * hash) + unknownFields.hashCode();
@@ -671,13 +671,13 @@ public  final class DataNodeInfoProto extends
 
     private int dataPort_ ;
     /**
-     * <code>optional int32 dataPort = 3;</code>
+     * <code>optional int32 data_port = 3;</code>
      */
     public int getDataPort() {
       return dataPort_;
     }
     /**
-     * <code>optional int32 dataPort = 3;</code>
+     * <code>optional int32 data_port = 3;</code>
      */
     public Builder setDataPort(int value) {
       
@@ -686,7 +686,7 @@ public  final class DataNodeInfoProto extends
       return this;
     }
     /**
-     * <code>optional int32 dataPort = 3;</code>
+     * <code>optional int32 data_port = 3;</code>
      */
     public Builder clearDataPort() {
       
@@ -697,13 +697,13 @@ public  final class DataNodeInfoProto extends
 
     private long totalDiskSize_ ;
     /**
-     * <code>optional int64 totalDiskSize = 4;</code>
+     * <code>optional int64 total_disk_size = 4;</code>
      */
     public long getTotalDiskSize() {
       return totalDiskSize_;
     }
     /**
-     * <code>optional int64 totalDiskSize = 4;</code>
+     * <code>optional int64 total_disk_size = 4;</code>
      */
     public Builder setTotalDiskSize(long value) {
       
@@ -712,7 +712,7 @@ public  final class DataNodeInfoProto extends
       return this;
     }
     /**
-     * <code>optional int64 totalDiskSize = 4;</code>
+     * <code>optional int64 total_disk_size = 4;</code>
      */
     public Builder clearTotalDiskSize() {
       
@@ -723,13 +723,13 @@ public  final class DataNodeInfoProto extends
 
     private long usedDiskSize_ ;
     /**
-     * <code>optional int64 usedDiskSize = 5;</code>
+     * <code>optional int64 used_disk_size = 5;</code>
      */
     public long getUsedDiskSize() {
       return usedDiskSize_;
     }
     /**
-     * <code>optional int64 usedDiskSize = 5;</code>
+     * <code>optional int64 used_disk_size = 5;</code>
      */
     public Builder setUsedDiskSize(long value) {
       
@@ -738,7 +738,7 @@ public  final class DataNodeInfoProto extends
       return this;
     }
     /**
-     * <code>optional int64 usedDiskSize = 5;</code>
+     * <code>optional int64 used_disk_size = 5;</code>
      */
     public Builder clearUsedDiskSize() {
       

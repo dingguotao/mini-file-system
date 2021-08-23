@@ -112,10 +112,10 @@ public  final class MkDirRequest extends
     }
   }
 
-  public static final int CREATEPARENT_FIELD_NUMBER = 2;
+  public static final int CREATE_PARENT_FIELD_NUMBER = 2;
   private boolean createParent_;
   /**
-   * <code>optional bool createParent = 2;</code>
+   * <code>optional bool create_parent = 2;</code>
    */
   public boolean getCreateParent() {
     return createParent_;
@@ -185,7 +185,7 @@ public  final class MkDirRequest extends
     hash = (19 * hash) + getDescriptorForType().hashCode();
     hash = (37 * hash) + PATH_FIELD_NUMBER;
     hash = (53 * hash) + getPath().hashCode();
-    hash = (37 * hash) + CREATEPARENT_FIELD_NUMBER;
+    hash = (37 * hash) + CREATE_PARENT_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getCreateParent());
     hash = (29 * hash) + unknownFields.hashCode();
@@ -479,13 +479,13 @@ public  final class MkDirRequest extends
 
     private boolean createParent_ ;
     /**
-     * <code>optional bool createParent = 2;</code>
+     * <code>optional bool create_parent = 2;</code>
      */
     public boolean getCreateParent() {
       return createParent_;
     }
     /**
-     * <code>optional bool createParent = 2;</code>
+     * <code>optional bool create_parent = 2;</code>
      */
     public Builder setCreateParent(boolean value) {
       
@@ -494,7 +494,7 @@ public  final class MkDirRequest extends
       return this;
     }
     /**
-     * <code>optional bool createParent = 2;</code>
+     * <code>optional bool create_parent = 2;</code>
      */
     public Builder clearCreateParent() {
       

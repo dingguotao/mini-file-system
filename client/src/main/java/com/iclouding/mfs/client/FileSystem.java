@@ -2,6 +2,8 @@ package com.iclouding.mfs.client;
 
 import com.iclouding.mfs.client.config.Configuration;
 
+import java.io.FileNotFoundException;
+
 /**
  * FileSystem
  * 客户端文件系统
@@ -25,5 +27,5 @@ public abstract class FileSystem {
 
     public abstract boolean createFile(String path);
 
-    public abstract boolean copyFromLocalFile(String localPath, String mfsPath);
+    public abstract boolean copyFromLocalFile(String localPath, String mfsPath) throws FileNotFoundException, Exception;
 }

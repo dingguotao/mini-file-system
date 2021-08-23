@@ -34,14 +34,14 @@ public final class StandbyNameNodeProtol {
   static {
     java.lang.String[] descriptorData = {
       "\n\033StandByNameNodeProtol.proto\022\036com.iclou" +
-      "ding.mfs.rpc.namenode\";\n\023FetchEditLogReq" +
-      "uest\022\021\n\tbeginTxid\030\001 \001(\003\022\021\n\tfetchSize\030\002 \001" +
-      "(\005\"\200\001\n\024FetchEditLogResponse\022\016\n\006status\030\001 " +
-      "\001(\005\022\021\n\tbeginTxid\030\002 \001(\003\022\020\n\010editLogs\030\003 \003(\t" +
-      "\022\021\n\tfetchSize\030\004 \001(\005\022\017\n\007hasMore\030\005 \001(\010\022\017\n\007" +
-      "message\030\006 \001(\tB?\n$com.iclouding.mfs.rpc.n" +
-      "amenode.modelB\025StandbyNameNodeProtolP\001b\006" +
-      "proto3"
+      "ding.mfs.rpc.namenode\"=\n\023FetchEditLogReq" +
+      "uest\022\022\n\nbegin_txid\030\001 \001(\003\022\022\n\nfetch_size\030\002" +
+      " \001(\005\"\204\001\n\024FetchEditLogResponse\022\016\n\006status\030" +
+      "\001 \001(\005\022\022\n\nbegin_txid\030\002 \001(\003\022\021\n\tedit_logs\030\003" +
+      " \003(\t\022\022\n\nfetch_size\030\004 \001(\005\022\020\n\010has_more\030\005 \001" +
+      "(\010\022\017\n\007message\030\006 \001(\tBB\n$com.iclouding.mfs" +
+      ".rpc.namenode.modelB\025StandbyNameNodeProt" +
+      "olP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

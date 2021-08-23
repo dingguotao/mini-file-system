@@ -1,16 +1,17 @@
 package com.iclouding.mfs.namenode.dir;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
-import com.iclouding.mfs.namenode.dir.node.DirectoryINode;
-import com.iclouding.mfs.namenode.dir.node.FileINode;
-import com.iclouding.mfs.namenode.dir.node.INode;
-import com.iclouding.mfs.namenode.dir.node.INodeTypeEnum;
+import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
+import com.iclouding.mfs.namenode.log.FSEditLog;
+import com.iclouding.mfs.namenode.log.FSImage;
+import com.iclouding.mfs.namenode.log.editlog.CreateEditLogOp;
+import com.iclouding.mfs.namenode.log.editlog.MkDirEditLogOp;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import com.iclouding.mfs.namenode.exception.DirException;
 import com.iclouding.mfs.namenode.exception.DirNotFoundException;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,11 +44,19 @@ public class FSDirectory {
 
     private ReentrantReadWriteLock.WriteLock writeLock;
 
+    // 管理 edit log
+    private FSEditLog editLog;
+
     public FSDirectory() {
         this.dirTree = new DirectoryINode(ROOT);
         this.readWriteLock = new ReentrantReadWriteLock();
         readLock = readWriteLock.readLock();
         writeLock = readWriteLock.writeLock();
+        editLog = new FSEditLog();
+    }
+
+    public FSEditLog getEditLog() {
+        return editLog;
     }
 
     public DirectoryINode mkdirs(String path, boolean createParent) throws Exception {
@@ -63,6 +72,8 @@ public class FSDirectory {
             // TODO 判断目录是否已经存在
 
             directoryINode = addNewPath(paths.get(paths.size() - 1), parent);
+            MkDirEditLogOp mkDirEditLogOp = new MkDirEditLogOp(path, createParent,directoryINode.getCreateTime(), directoryINode.getUpdateTime());
+            editLog.logEdit(mkDirEditLogOp);
         } catch (RuntimeException e) {
             e.printStackTrace();
         } finally {
@@ -212,6 +223,9 @@ public class FSDirectory {
 
             fileINode = new FileINode(path, replication);
             parentDirectoryINode.addChild(fileINode);
+            CreateEditLogOp createEditLogOp = new CreateEditLogOp(path, createParent, replication, fileINode.getCreateTime(),
+                    fileINode.getUpdateTime());
+            getEditLog().logEdit(createEditLogOp);
         }catch (Exception e){
             logger.error("添加文件失败: {}", ExceptionUtils.getStackTrace(e));
         }finally {
@@ -219,4 +233,31 @@ public class FSDirectory {
         }
         return fileINode;
     }
+
+    public FSImage getFSImage() {
+        return null;
+    }
+    //
+    //public void apply(JSONObject editLogJSONObject, long txid) throws Exception {
+    //
+    //    String type = editLogJSONObject.getString("type");
+    //    switch (EditLogTypeEnum.valueOf(type)) {
+    //
+    //
+    //        case MKDIR_OP:
+    //            MkDirEditLogOp mkDirEditLogOp = JSON
+    //                    .parseObject(editLogJSONObject.toJSONString(), MkDirEditLogOp.class);
+    //            try {
+    //                logger.info("创建文件: {}, {}", mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent());
+    //                mkdirs(mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent(), txid);
+    //            } catch (Exception e) {
+    //                logger.error("创建目录异常: {}", ExceptionUtils.getStackTrace(e));
+    //                throw new RuntimeException(e);
+    //            }
+    //            break;
+    //        case CREATE_OP:
+    //            break;
+    //    }
+    //
+    //}
 }

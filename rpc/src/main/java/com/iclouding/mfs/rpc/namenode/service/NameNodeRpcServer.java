@@ -31,8 +31,8 @@ public final class NameNodeRpcServer {
       "sterResponse\022p\n\theartbeat\0220.com.icloudin" +
       "g.mfs.rpc.namenode.HeartbeatRequest\0321.co" +
       "m.iclouding.mfs.rpc.namenode.HeartbeatRe" +
-      "sponseB=\n&com.iclouding.mfs.rpc.namenode" +
-      ".serviceB\021NameNodeRpcServerP\001b\006proto3"
+      "sponseB@\n&com.iclouding.mfs.rpc.namenode" +
+      ".serviceB\021NameNodeRpcServerP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

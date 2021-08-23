@@ -119,23 +119,23 @@ public  final class FetchEditLogResponse extends
     return status_;
   }
 
-  public static final int BEGINTXID_FIELD_NUMBER = 2;
+  public static final int BEGIN_TXID_FIELD_NUMBER = 2;
   private long beginTxid_;
   /**
-   * <code>optional int64 beginTxid = 2;</code>
+   * <code>optional int64 begin_txid = 2;</code>
    */
   public long getBeginTxid() {
     return beginTxid_;
   }
 
-  public static final int EDITLOGS_FIELD_NUMBER = 3;
+  public static final int EDIT_LOGS_FIELD_NUMBER = 3;
   private com.google.protobuf.LazyStringList editLogs_;
   /**
    * <pre>
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   public com.google.protobuf.ProtocolStringList
       getEditLogsList() {
@@ -146,7 +146,7 @@ public  final class FetchEditLogResponse extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   public int getEditLogsCount() {
     return editLogs_.size();
@@ -156,7 +156,7 @@ public  final class FetchEditLogResponse extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   public java.lang.String getEditLogs(int index) {
     return editLogs_.get(index);
@@ -166,34 +166,34 @@ public  final class FetchEditLogResponse extends
    * 存放editlogs的
    * </pre>
    *
-   * <code>repeated string editLogs = 3;</code>
+   * <code>repeated string edit_logs = 3;</code>
    */
   public com.google.protobuf.ByteString
       getEditLogsBytes(int index) {
     return editLogs_.getByteString(index);
   }
 
-  public static final int FETCHSIZE_FIELD_NUMBER = 4;
+  public static final int FETCH_SIZE_FIELD_NUMBER = 4;
   private int fetchSize_;
   /**
    * <pre>
    * 获取editlog的数量
    * </pre>
    *
-   * <code>optional int32 fetchSize = 4;</code>
+   * <code>optional int32 fetch_size = 4;</code>
    */
   public int getFetchSize() {
     return fetchSize_;
   }
 
-  public static final int HASMORE_FIELD_NUMBER = 5;
+  public static final int HAS_MORE_FIELD_NUMBER = 5;
   private boolean hasMore_;
   /**
    * <pre>
    * 是否还有后续editlog
    * </pre>
    *
-   * <code>optional bool hasMore = 5;</code>
+   * <code>optional bool has_more = 5;</code>
    */
   public boolean getHasMore() {
     return hasMore_;
@@ -345,16 +345,16 @@ public  final class FetchEditLogResponse extends
     hash = (19 * hash) + getDescriptorForType().hashCode();
     hash = (37 * hash) + STATUS_FIELD_NUMBER;
     hash = (53 * hash) + getStatus();
-    hash = (37 * hash) + BEGINTXID_FIELD_NUMBER;
+    hash = (37 * hash) + BEGIN_TXID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getBeginTxid());
     if (getEditLogsCount() > 0) {
-      hash = (37 * hash) + EDITLOGS_FIELD_NUMBER;
+      hash = (37 * hash) + EDIT_LOGS_FIELD_NUMBER;
       hash = (53 * hash) + getEditLogsList().hashCode();
     }
-    hash = (37 * hash) + FETCHSIZE_FIELD_NUMBER;
+    hash = (37 * hash) + FETCH_SIZE_FIELD_NUMBER;
     hash = (53 * hash) + getFetchSize();
-    hash = (37 * hash) + HASMORE_FIELD_NUMBER;
+    hash = (37 * hash) + HAS_MORE_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getHasMore());
     hash = (37 * hash) + MESSAGE_FIELD_NUMBER;
@@ -646,13 +646,13 @@ public  final class FetchEditLogResponse extends
 
     private long beginTxid_ ;
     /**
-     * <code>optional int64 beginTxid = 2;</code>
+     * <code>optional int64 begin_txid = 2;</code>
      */
     public long getBeginTxid() {
       return beginTxid_;
     }
     /**
-     * <code>optional int64 beginTxid = 2;</code>
+     * <code>optional int64 begin_txid = 2;</code>
      */
     public Builder setBeginTxid(long value) {
       
@@ -661,7 +661,7 @@ public  final class FetchEditLogResponse extends
       return this;
     }
     /**
-     * <code>optional int64 beginTxid = 2;</code>
+     * <code>optional int64 begin_txid = 2;</code>
      */
     public Builder clearBeginTxid() {
       
@@ -682,7 +682,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public com.google.protobuf.ProtocolStringList
         getEditLogsList() {
@@ -693,7 +693,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public int getEditLogsCount() {
       return editLogs_.size();
@@ -703,7 +703,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public java.lang.String getEditLogs(int index) {
       return editLogs_.get(index);
@@ -713,7 +713,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public com.google.protobuf.ByteString
         getEditLogsBytes(int index) {
@@ -724,7 +724,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public Builder setEditLogs(
         int index, java.lang.String value) {
@@ -741,7 +741,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public Builder addEditLogs(
         java.lang.String value) {
@@ -758,7 +758,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public Builder addAllEditLogs(
         java.lang.Iterable<java.lang.String> values) {
@@ -773,7 +773,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public Builder clearEditLogs() {
       editLogs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -786,7 +786,7 @@ public  final class FetchEditLogResponse extends
      * 存放editlogs的
      * </pre>
      *
-     * <code>repeated string editLogs = 3;</code>
+     * <code>repeated string edit_logs = 3;</code>
      */
     public Builder addEditLogsBytes(
         com.google.protobuf.ByteString value) {
@@ -806,7 +806,7 @@ public  final class FetchEditLogResponse extends
      * 获取editlog的数量
      * </pre>
      *
-     * <code>optional int32 fetchSize = 4;</code>
+     * <code>optional int32 fetch_size = 4;</code>
      */
     public int getFetchSize() {
       return fetchSize_;
@@ -816,7 +816,7 @@ public  final class FetchEditLogResponse extends
      * 获取editlog的数量
      * </pre>
      *
-     * <code>optional int32 fetchSize = 4;</code>
+     * <code>optional int32 fetch_size = 4;</code>
      */
     public Builder setFetchSize(int value) {
       
@@ -829,7 +829,7 @@ public  final class FetchEditLogResponse extends
      * 获取editlog的数量
      * </pre>
      *
-     * <code>optional int32 fetchSize = 4;</code>
+     * <code>optional int32 fetch_size = 4;</code>
      */
     public Builder clearFetchSize() {
       
@@ -844,7 +844,7 @@ public  final class FetchEditLogResponse extends
      * 是否还有后续editlog
      * </pre>
      *
-     * <code>optional bool hasMore = 5;</code>
+     * <code>optional bool has_more = 5;</code>
      */
     public boolean getHasMore() {
       return hasMore_;
@@ -854,7 +854,7 @@ public  final class FetchEditLogResponse extends
      * 是否还有后续editlog
      * </pre>
      *
-     * <code>optional bool hasMore = 5;</code>
+     * <code>optional bool has_more = 5;</code>
      */
     public Builder setHasMore(boolean value) {
       
@@ -867,7 +867,7 @@ public  final class FetchEditLogResponse extends
      * 是否还有后续editlog
      * </pre>
      *
-     * <code>optional bool hasMore = 5;</code>
+     * <code>optional bool has_more = 5;</code>
      */
     public Builder clearHasMore() {
       

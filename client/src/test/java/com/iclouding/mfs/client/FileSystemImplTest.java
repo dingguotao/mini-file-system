@@ -29,7 +29,7 @@ public class FileSystemImplTest {
                     FileSystem fileSystem = FileSystem.get(new Configuration());
                     System.out.println(Thread.currentThread().getName() + "-" + "获取成功，发送请求");
                     boolean result = fileSystem.mkdirs("/aaa/bbb/ccc-1" + finalI, true);
-                    boolean result2 = fileSystem.mkdirs("/aaa/bbb/ddd-1" + finalI, true);
+                    boolean result2 = fileSystem.createFile("/aaa/bbb/ccc-1" + finalI + "/aa.pdf");
                     System.out.println(Thread.currentThread().getName() + "-" + "请求完毕");
                     fileSystem.close();
                     System.out.println(Thread.currentThread().getName() + "-" + "关闭成功");
@@ -58,7 +58,7 @@ public class FileSystemImplTest {
     }
 
     @Test
-    public void createTest(){
+    public void createTest() throws Exception {
         FileSystem fileSystem = FileSystem.get(new Configuration());
         fileSystem.createFile("/xxx/ccc/aaa.pdf");
         fileSystem.copyFromLocalFile( "src", "dst");

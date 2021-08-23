@@ -1,16 +1,25 @@
 syntax = "proto3";
 
 package com.iclouding.mfs.rpc.namenode;
+
 option java_multiple_files = true;
 option java_package = "com.iclouding.mfs.rpc.namenode.service";
 option java_outer_classname = "ClientNameNodeServer";
-
+option java_generate_equals_and_hash = true;
 
 import "ClientNameNodeProtol.proto";
 
-service ClientNameNodeService{
-  rpc mkdir(MkDirRequest) returns (MkDirResponse);
-  rpc createFile(CreateFileRequest) returns (CreateFileResponse);
+service ClientNameNodeService {
 
-  rpc renamedirs(RenameDirRequest) returns (RenameDirResponse);
+    rpc mkdir(MkDirRequest)
+            returns (MkDirResponse);
+
+    rpc createFile(CreateFileRequest)
+            returns (CreateFileResponse);
+
+    rpc renamedirs(RenameDirRequest)
+            returns (RenameDirResponse);
+
+    rpc allocationDataNodes(AllocationDataNodesRequest)
+            returns (AllocationDataNodesResponse);
 }

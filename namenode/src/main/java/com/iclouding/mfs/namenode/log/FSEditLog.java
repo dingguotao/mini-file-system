@@ -47,7 +47,7 @@ public class FSEditLog {
 
     private volatile boolean isSync;
 
-    // beginTxid -> 文件名的Map，使用跳表，保证线程安全和有序
+    // begin_txid -> 文件名的Map，使用跳表，保证线程安全和有序
     private ConcurrentSkipListMap<Long, String> txidFileIndexMap;
 
     public FSEditLog() {
@@ -68,7 +68,6 @@ public class FSEditLog {
         //        doubleBuffer.
         // 拿到锁
         writeLock.lock();
-        logger.info(Thread.currentThread().getName() + "获取锁");
         try {
             long txid = sequence++;
             editLogOp.setTxid(txid);
@@ -79,7 +78,6 @@ public class FSEditLog {
             logger.error(ExceptionUtils.getStackTrace(e));
         }finally {
             writeLock.unlock();
-            logger.info(Thread.currentThread().getName() + "释放锁");
         }
 
         if (!shouldForceSync()) {
@@ -132,13 +130,11 @@ public class FSEditLog {
         logger.info("线程{}正在刷缓存", Thread.currentThread().getName());
         // 唤醒等待的线程
         writeLock.lock();
-        logger.info(Thread.currentThread().getName() + "获取锁");
         try {
             isSync = false;
             syncCondition.signalAll();
         } finally {
             writeLock.unlock();
-            logger.info(Thread.currentThread().getName() + "释放锁");
         }
 
     }

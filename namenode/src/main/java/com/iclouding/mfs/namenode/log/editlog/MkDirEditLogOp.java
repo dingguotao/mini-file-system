@@ -1,5 +1,6 @@
 package com.iclouding.mfs.namenode.log.editlog;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
 
 /**
@@ -10,8 +11,10 @@ import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
  * @email: clouding.vip@qq.com
  */
 public class MkDirEditLogOp extends FSEditLogOp {
+    @JSONField(ordinal = 1)
     private String path;
 
+    @JSONField(ordinal = 2)
     private boolean createParent;
 
     public MkDirEditLogOp(String path) {
