@@ -36,10 +36,11 @@ public class NIOServerTest {
     public void stop() {
     }
 
-    class TestHandler implements NIOServerHandler{
+    class TestHandler extends NIOServerHandler{
 
         @Override
         public String handleRequestAndResponse(String request) {
+            logger.info("收到请求: {}", request);
             return "testsdfasfasfasdf";
         }
     }

@@ -2,8 +2,12 @@ package com.iclouding.mfs.common.nio;
 
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 
 /**
  * NIOClientTest
@@ -14,15 +18,34 @@ import java.io.IOException;
  */
 public class NIOClientTest {
 
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass().getName());
+    private final static Logger logger = LoggerFactory.getLogger(NIOClientTest.class);
 
     @Test
     public void connect() throws Exception {
-        NIOClient nioClient = new NIOClient();
+        NIOClientTestHandler nioClientTestHandler = new NIOClientTestHandler();
+        NIOClient nioClient = new NIOClient(nioClientTestHandler);
         nioClient.connect("127.0.0.1", 9527);
-        String hello = nioClient.sendRequest("hello");
-        System.out.println(hello);
-        Thread.sleep(3000L);
-        nioClient.close();
+        Thread.sleep(1000000000);
+
+    }
+
+    class NIOClientTestHandler extends NIOClientHandler{
+
+        @Override
+        public void acceptConnect(SocketChannel socketClient) {
+            System.out.println("收到请求，发送数据");
+            ByteBuffer byteBuffer = ByteBuffer.wrap("hello,nice".getBytes(StandardCharsets.UTF_8));
+            try {
+                socketClient.write(byteBuffer);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("异常");
+            }
+        }
+
+        @Override
+        public void handleReadRequest(SocketChannel socketClient) {
+            logger.info("处理数据");
+        }
     }
 }

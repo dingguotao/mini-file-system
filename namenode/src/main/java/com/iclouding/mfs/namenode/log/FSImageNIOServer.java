@@ -49,7 +49,7 @@ public class FSImageNIOServer {
     }
 
 
-    class FSImageHandler implements NIOServerHandler{
+    class FSImageHandler extends NIOServerHandler{
 
         @Override
         public String handleRequestAndResponse(String request) {

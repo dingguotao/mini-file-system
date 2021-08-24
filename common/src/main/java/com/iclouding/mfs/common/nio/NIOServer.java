@@ -113,7 +113,14 @@ public class NIOServer {
             while (isRunning) {
 
                 try {
-                    selector.select();
+                    int select = selector.select();
+                    if (select == 0){
+                        try {
+                            Thread.sleep(1000L);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();
                     Iterator<SelectionKey> selectionKeyIterator = selectionKeys.iterator();
                     while (selectionKeyIterator.hasNext()) {
@@ -123,7 +130,7 @@ public class NIOServer {
                         } else if (selectionKey.isReadable()) {
                             SocketChannel socketClient = (SocketChannel) selectionKey.channel();
                             // 提交到线程池，避免阻塞
-                            executorService.submit(new HandleRequestThread(socketClient));
+                            executorService.submit(() -> handler.handleChannel(socketClient));
                         }
                         selectionKeyIterator.remove();
                     }
@@ -141,66 +148,6 @@ public class NIOServer {
             socketClient.configureBlocking(false);
             socketClient.register(selector, SelectionKey.OP_READ);
             logger.info("接收到客户端连接请求");
-        }
-    }
-
-    class HandleRequestThread extends Thread {
-
-        private SocketChannel socketClient;
-
-        private ByteBuffer byteBuffer;
-
-        public HandleRequestThread(SocketChannel socketClient) {
-            this.socketClient = socketClient;
-            // 很多系统都是 8k的缓冲，这里也搞8k
-            byteBuffer = ByteBuffer.allocate(8 * 1024);
-        }
-
-        @Override
-        public void run() {
-
-            StringBuilder received = new StringBuilder();
-            int readCount = -1;
-            int totalCount = 0;
-            try {
-                while ((readCount = socketClient.read(byteBuffer)) > 0) {
-                    totalCount += readCount;
-                    byteBuffer.flip();
-                    received.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
-                    byteBuffer.clear();
-                }
-            } catch (Exception e) {
-                logger.info("异常: {}", ExceptionUtils.getStackTrace(e));
-            }
-            if (totalCount == 0) {
-                return;
-            }
-            logger.info("收到的消息内容: {}", received.toString());
-
-            String response = handler.handleRequestAndResponse(received.toString());
-            // 没有返回值，就直接return
-            if (StringUtils.isEmpty(response)) {
-                return;
-            }
-
-            byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
-            int totalResponseSize = responseBytes.length;
-            int limit = byteBuffer.limit();
-            int begin = 0;
-            while (begin < totalResponseSize) {
-                try {
-                    int sendSize = Math.min(limit, totalResponseSize - begin);
-                    byteBuffer.put(responseBytes, begin, sendSize);
-                    byteBuffer.flip();
-                    socketClient.write(byteBuffer);
-                    byteBuffer.clear();
-                    begin += sendSize;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            logger.info("回复消息: {}", response);
-
         }
     }
 

@@ -1,15 +1,18 @@
 package com.iclouding.mfs.common.nio;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * NIOClient
@@ -25,41 +28,77 @@ public class NIOClient {
 
     private SocketChannel channel;
 
-    public NIOClient() throws IOException {
-        selector = Selector.open();
-        channel = SocketChannel.open();
+    public ExecutorService executorService;
+
+    private NIOClientHandler handler;
+
+    private volatile boolean isRunning = false;
+
+    private ClientListenThread listenThread;
+
+    public NIOClient(NIOClientHandler handler) throws IOException {
+        this.handler = handler;
+        executorService = Executors.newFixedThreadPool(3);
+        listenThread = new ClientListenThread();
     }
 
     public void connect(String host, int port) throws IOException {
+        selector = Selector.open();
+        channel = SocketChannel.open();
         channel.configureBlocking(false);
         channel.connect(new InetSocketAddress(host, port));
-        while (!channel.finishConnect()) {
-            ;
-        }
-        channel.register(selector, SelectionKey.OP_WRITE);
+        channel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ );
+        isRunning = true;
+        listenThread.start();
     }
 
-    public String sendRequest(String request) throws IOException {
-        logger.info("发送消息: {}", request);
-        ByteBuffer message = ByteBuffer.wrap(request.getBytes(StandardCharsets.UTF_8));
+    class ClientListenThread extends Thread {
 
-        channel.write(message);
-        message.clear();
-        channel.socket().shutdownOutput();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-        StringBuilder result = new StringBuilder();
-
-        int read = -1;
-        while (channel.isOpen() && (read = channel.read(byteBuffer)) > 0) {
-            byteBuffer.flip();
-            result.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
-            byteBuffer.clear();
+        @Override
+        public void run() {
+            while (isRunning) {
+                System.out.println("启动线程...");
+                try {
+                    int select = selector.select();
+                    if (select == 0){
+                        try {
+                            Thread.sleep(1000L);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                    Iterator<SelectionKey> selectionKeyIterator = selectionKeys.iterator();
+                    while (selectionKeyIterator.hasNext()) {
+                        SelectionKey selectionKey = selectionKeyIterator.next();
+                        SocketChannel socketClient = (SocketChannel) selectionKey.channel();
+                        if (selectionKey.isConnectable()) {
+                            if (channel.isConnectionPending()){
+                                channel.finishConnect();
+                            }
+                            System.out.println("可连接");
+                            executorService.submit(() -> handler.acceptConnect(socketClient));
+                            channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                        } else if (selectionKey.isReadable()) {
+                            // 提交到线程池，避免阻塞
+                            System.out.println("可读取");
+                            executorService.submit(() -> handler.handleReadRequest(socketClient));
+                            channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                        }else if (selectionKey.isWritable()){
+                            System.out.println("sss");
+                            channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                        }
+                        selectionKeyIterator.remove();
+                    }
+                } catch (IOException e) {
+                    logger.error("处理连接请求异常: \n{}", ExceptionUtils.getStackTrace(e));
+                }
+            }
         }
-        logger.info("收到消息: {}", result.toString());
-        return result.toString();
     }
 
     public void close() {
+        isRunning = false;
         if (selector != null) {
             try {
                 selector.close();
@@ -74,17 +113,8 @@ public class NIOClient {
                 e.printStackTrace();
             }
         }
+        executorService.shutdown();
+        listenThread.interrupt();
     }
-
-    class HandleThread extends Thread{
-
-        @Override
-        public void run() {
-            super.run();
-        }
-    }
-
-
-
 
 }
