@@ -18,10 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * FSNamesystem
@@ -38,9 +40,25 @@ public class FSNamesystem {
 
     private DataNodeManager dataNodeManager;
 
+    /**
+     * 每个文件对应的副本所在的DataNode
+     */
+    private Map<String, List<DataNodeInfo>> replicasByFilePath;
+
+    private ReentrantReadWriteLock readWriteLock;
+
+    private ReentrantReadWriteLock.ReadLock readLock;
+
+    private ReentrantReadWriteLock.WriteLock writeLock;
+
     public FSNamesystem(DataNodeManager dataNodeManager, Configuration conf) {
         this.dataNodeManager = dataNodeManager;
         fsDirectory = new FSDirectory();
+        replicasByFilePath = new HashMap<>();
+
+        readWriteLock = new ReentrantReadWriteLock();
+        readLock = readWriteLock.readLock();
+        writeLock = readWriteLock.writeLock();
     }
 
     /**
@@ -122,5 +140,17 @@ public class FSNamesystem {
         file.setFileSize(fileSize);
         List<DataNodeInfo> dataNodeInfos = dataNodeManager.allocateDataNodes(fileSize, file.getReplication());
         return dataNodeInfos;
+    }
+
+    public void informReplicaReceived(String filePath, DataNodeInfo dataNodeInfo) {
+        logger.info("收到一个副本的通知，路径: {}, 节点：{}", filePath, dataNodeInfo);
+        writeLock.lock();
+        try {
+            List<DataNodeInfo> dataNodeInfos = replicasByFilePath.getOrDefault(filePath, new ArrayList<>());
+            dataNodeInfos.add(dataNodeInfo);
+        } finally {
+            writeLock.unlock();
+        }
+
     }
 }

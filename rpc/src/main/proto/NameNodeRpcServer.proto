@@ -12,6 +12,10 @@ import "NameNodeRpcModel.proto";
 // datanode 发送到namenode的接口
 
 service NameNodeService{
+  // 注册
   rpc register(RegisterRequest) returns (RegisterResponse);
+  // 心跳
   rpc heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  // 通知收到一个文件副本
+  rpc informReplicaReceived(InformReplicaReceivedRequest) returns (InformReplicaReceivedResponse);
 }

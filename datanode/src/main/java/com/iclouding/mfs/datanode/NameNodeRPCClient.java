@@ -1,9 +1,12 @@
 package com.iclouding.mfs.datanode;
 
+import com.iclouding.mfs.common.ResponseStatus;
 import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse;
+import com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest;
+import com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse;
 import com.iclouding.mfs.rpc.namenode.model.RegisterRequest;
 import com.iclouding.mfs.rpc.namenode.model.RegisterResponse;
 import com.iclouding.mfs.rpc.namenode.service.NameNodeServiceGrpc;
@@ -24,6 +27,8 @@ public class NameNodeRPCClient {
 
     private NameNodeServiceGrpc.NameNodeServiceBlockingStub namenode;
 
+    private DataNodeInfoProto dataNodeInfo;
+
     public NameNodeRPCClient(Configuration conf) {
         String nameNodeIp = conf.get("namenode.ip");
         int rpcPort = conf.getInt("namenode.rpc.port");
@@ -32,6 +37,17 @@ public class NameNodeRPCClient {
                 .usePlaintext() // 不使用ssl
                 .build();
         namenode = NameNodeServiceGrpc.newBlockingStub(channel);
+        // datanode Info
+        String ip = conf.get("datanode.ip");
+        String hostname = conf.get("datanode.hostname");
+        int dataPort = conf.getInt("datanode.nio.port");
+
+        dataNodeInfo = DataNodeInfoProto
+                .newBuilder()
+                .setHostname(hostname)
+                .setIp(ip)
+                .setDataPort(dataPort)
+                .build();
     }
 
     /**
@@ -42,15 +58,6 @@ public class NameNodeRPCClient {
         /**
          * 拿到 ip hostname 去namenode注册
          */
-        String ip = conf.get("datanode.ip");
-        String hostname = conf.get("datanode.hostname");
-        int dataPort = conf.getInt("datanode.nio.port");
-        DataNodeInfoProto dataNodeInfo = DataNodeInfoProto
-                .newBuilder()
-                .setHostname(hostname)
-                .setIp(ip)
-                .setDataPort(dataPort)
-                .build();
         RegisterRequest registerRequest = RegisterRequest
                 .newBuilder()
                 .setDataNodeInfo(dataNodeInfo)
@@ -65,6 +72,16 @@ public class NameNodeRPCClient {
         return namenode.heartbeat(heartbeatRequest);
     }
 
+    public boolean informReplicaReceived(String filePath) {
+        InformReplicaReceivedRequest informReplicaReceivedRequest = InformReplicaReceivedRequest
+                .newBuilder()
+                .setDataNodeInfo(dataNodeInfo)
+                .setFilePath(filePath)
+                .build();
+        InformReplicaReceivedResponse informResponse = namenode.informReplicaReceived(informReplicaReceivedRequest);
+        return informResponse.getStatus() == ResponseStatus.SUCCESS.getStatus();
+    }
+
     public void stop() {
         ManagedChannel channel = (ManagedChannel) namenode.getChannel();
         try {
@@ -75,4 +92,6 @@ public class NameNodeRPCClient {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -26,3 +26,12 @@ message HeartbeatRequest{
 message HeartbeatResponse{
     int32 status = 1;
 }
+
+message InformReplicaReceivedRequest{
+    string file_path = 1;
+    DataNodeInfoProto dataNodeInfo = 2;
+}
+
+message InformReplicaReceivedResponse{
+    int32 status = 1;
+}

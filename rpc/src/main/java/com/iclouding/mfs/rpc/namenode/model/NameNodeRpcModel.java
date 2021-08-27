@@ -34,6 +34,16 @@ public final class NameNodeRpcModel {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_iclouding_mfs_rpc_namenode_HeartbeatResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -50,8 +60,13 @@ public final class NameNodeRpcModel {
       "\"\n\020RegisterResponse\022\016\n\006status\030\001 \001(\005\"0\n\020H" +
       "eartbeatRequest\022\n\n\002ip\030\001 \001(\t\022\020\n\010hostname\030" +
       "\002 \001(\t\"#\n\021HeartbeatResponse\022\016\n\006status\030\001 \001" +
-      "(\005B=\n$com.iclouding.mfs.rpc.namenode.mod" +
-      "elB\020NameNodeRpcModelP\001\240\001\001b\006proto3"
+      "(\005\"z\n\034InformReplicaReceivedRequest\022\021\n\tfi" +
+      "le_path\030\001 \001(\t\022G\n\014dataNodeInfo\030\002 \001(\01321.co" +
+      "m.iclouding.mfs.rpc.namenode.DataNodeInf",
+      "oProto\"/\n\035InformReplicaReceivedResponse\022" +
+      "\016\n\006status\030\001 \001(\005B=\n$com.iclouding.mfs.rpc" +
+      ".namenode.modelB\020NameNodeRpcModelP\001\240\001\001b\006" +
+      "proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -89,6 +104,18 @@ public final class NameNodeRpcModel {
     internal_static_com_iclouding_mfs_rpc_namenode_HeartbeatResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_iclouding_mfs_rpc_namenode_HeartbeatResponse_descriptor,
+        new java.lang.String[] { "Status", });
+    internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedRequest_descriptor,
+        new java.lang.String[] { "FilePath", "DataNodeInfo", });
+    internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedResponse_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_iclouding_mfs_rpc_namenode_InformReplicaReceivedResponse_descriptor,
         new java.lang.String[] { "Status", });
     com.iclouding.mfs.rpc.namenode.model.MFSProtols.getDescriptor();
   }

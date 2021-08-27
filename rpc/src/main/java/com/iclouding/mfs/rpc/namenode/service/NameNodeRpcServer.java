@@ -25,14 +25,18 @@ public final class NameNodeRpcServer {
     java.lang.String[] descriptorData = {
       "\n\027NameNodeRpcServer.proto\022\036com.iclouding" +
       ".mfs.rpc.namenode\032\026NameNodeRpcModel.prot" +
-      "o2\362\001\n\017NameNodeService\022m\n\010register\022/.com." +
+      "o2\211\003\n\017NameNodeService\022m\n\010register\022/.com." +
       "iclouding.mfs.rpc.namenode.RegisterReque" +
       "st\0320.com.iclouding.mfs.rpc.namenode.Regi" +
       "sterResponse\022p\n\theartbeat\0220.com.icloudin" +
       "g.mfs.rpc.namenode.HeartbeatRequest\0321.co" +
       "m.iclouding.mfs.rpc.namenode.HeartbeatRe" +
-      "sponseB@\n&com.iclouding.mfs.rpc.namenode" +
-      ".serviceB\021NameNodeRpcServerP\001\240\001\001b\006proto3"
+      "sponse\022\224\001\n\025informReplicaReceived\022<.com.i" +
+      "clouding.mfs.rpc.namenode.InformReplicaR",
+      "eceivedRequest\032=.com.iclouding.mfs.rpc.n" +
+      "amenode.InformReplicaReceivedResponseB@\n" +
+      "&com.iclouding.mfs.rpc.namenode.serviceB" +
+      "\021NameNodeRpcServerP\001\240\001\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

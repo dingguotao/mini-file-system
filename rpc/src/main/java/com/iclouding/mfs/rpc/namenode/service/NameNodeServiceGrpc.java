@@ -39,6 +39,15 @@ public class NameNodeServiceGrpc {
               "com.iclouding.mfs.rpc.namenode.NameNodeService", "heartbeat"),
           io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest.getDefaultInstance()),
           io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse.getDefaultInstance()));
+  @io.grpc.ExperimentalApi
+  public static final io.grpc.MethodDescriptor<com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest,
+      com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse> METHOD_INFORM_REPLICA_RECEIVED =
+      io.grpc.MethodDescriptor.create(
+          io.grpc.MethodDescriptor.MethodType.UNARY,
+          generateFullMethodName(
+              "com.iclouding.mfs.rpc.namenode.NameNodeService", "informReplicaReceived"),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest.getDefaultInstance()),
+          io.grpc.protobuf.ProtoUtils.marshaller(com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse.getDefaultInstance()));
 
   public static NameNodeServiceStub newStub(io.grpc.Channel channel) {
     return new NameNodeServiceStub(channel);
@@ -61,6 +70,9 @@ public class NameNodeServiceGrpc {
 
     public void heartbeat(com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest request,
         io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse> responseObserver);
+
+    public void informReplicaReceived(com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest request,
+        io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse> responseObserver);
   }
 
   public static interface NameNodeServiceBlockingClient {
@@ -68,6 +80,8 @@ public class NameNodeServiceGrpc {
     public com.iclouding.mfs.rpc.namenode.model.RegisterResponse register(com.iclouding.mfs.rpc.namenode.model.RegisterRequest request);
 
     public com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse heartbeat(com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest request);
+
+    public com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse informReplicaReceived(com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest request);
   }
 
   public static interface NameNodeServiceFutureClient {
@@ -77,6 +91,9 @@ public class NameNodeServiceGrpc {
 
     public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse> heartbeat(
         com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest request);
+
+    public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse> informReplicaReceived(
+        com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest request);
   }
 
   public static class NameNodeServiceStub extends io.grpc.stub.AbstractStub<NameNodeServiceStub>
@@ -109,6 +126,13 @@ public class NameNodeServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_HEARTBEAT, getCallOptions()), request, responseObserver);
     }
+
+    @java.lang.Override
+    public void informReplicaReceived(com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest request,
+        io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_INFORM_REPLICA_RECEIVED, getCallOptions()), request, responseObserver);
+    }
   }
 
   public static class NameNodeServiceBlockingStub extends io.grpc.stub.AbstractStub<NameNodeServiceBlockingStub>
@@ -138,6 +162,12 @@ public class NameNodeServiceGrpc {
     public com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse heartbeat(com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_HEARTBEAT, getCallOptions(), request);
+    }
+
+    @java.lang.Override
+    public com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse informReplicaReceived(com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_INFORM_REPLICA_RECEIVED, getCallOptions(), request);
     }
   }
 
@@ -171,10 +201,18 @@ public class NameNodeServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_HEARTBEAT, getCallOptions()), request);
     }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse> informReplicaReceived(
+        com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_INFORM_REPLICA_RECEIVED, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_REGISTER = 0;
   private static final int METHODID_HEARTBEAT = 1;
+  private static final int METHODID_INFORM_REPLICA_RECEIVED = 2;
 
   private static class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -199,6 +237,10 @@ public class NameNodeServiceGrpc {
         case METHODID_HEARTBEAT:
           serviceImpl.heartbeat((com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest) request,
               (io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse>) responseObserver);
+          break;
+        case METHODID_INFORM_REPLICA_RECEIVED:
+          serviceImpl.informReplicaReceived((com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest) request,
+              (io.grpc.stub.StreamObserver<com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -232,6 +274,13 @@ public class NameNodeServiceGrpc {
               com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest,
               com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse>(
                 serviceImpl, METHODID_HEARTBEAT)))
+        .addMethod(
+          METHOD_INFORM_REPLICA_RECEIVED,
+          asyncUnaryCall(
+            new MethodHandlers<
+              com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedRequest,
+              com.iclouding.mfs.rpc.namenode.model.InformReplicaReceivedResponse>(
+                serviceImpl, METHODID_INFORM_REPLICA_RECEIVED)))
         .build();
   }
 }

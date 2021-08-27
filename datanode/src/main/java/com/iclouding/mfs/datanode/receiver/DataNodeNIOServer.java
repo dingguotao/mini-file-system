@@ -92,7 +92,7 @@ public class DataNodeNIOServer {
                 ByteBuffer reponseByteBuffer = ByteBuffer.wrap(response.getBytes(StandardCharsets.UTF_8));
                 socketClient.write(reponseByteBuffer);
                 // todo 给nanemode发送消息，通知收到一个文件
-
+                rpcClient.informReplicaReceived(filePath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
