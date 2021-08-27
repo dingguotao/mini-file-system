@@ -64,7 +64,7 @@ public class FSImageNIOServer {
             FSImage fsImage = JSON.parseObject(request, FSImage.class);
             try {
 
-                FileUtil.writeStr2File(request, getFsImageName("./namenode/fsimage/", fsImage.getLastTxid()));
+                FileUtil.writeContent2File(request, getFsImageName("./namenode/fsimage/", fsImage.getLastTxid()));
             } catch (IOException e) {
                 e.printStackTrace();
                 fsImageResponse.setStatus(ResponseStatus.FAILURE.getStatus());

@@ -1,9 +1,7 @@
 package com.iclouding.mfs.namenode.dir;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Splitter;
-import com.iclouding.mfs.namenode.log.EditLogTypeEnum;
 import com.iclouding.mfs.namenode.log.FSEditLog;
 import com.iclouding.mfs.namenode.log.FSImage;
 import com.iclouding.mfs.namenode.log.editlog.CreateEditLogOp;
@@ -16,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class FSDirectory {
         writeLock.lock();
         DirectoryINode directoryINode = null;
         try {
-            DirectoryINode parent = findParentDirectoryINode(paths.subList(0, paths.size() - 1), createParent);
+            DirectoryINode parent = findINode(paths.subList(0, paths.size() - 1), createParent);
 
             // 最后一级的目录添加
             // TODO 判断目录是否已经存在
@@ -84,19 +83,19 @@ public class FSDirectory {
     }
 
     /**
-     * 根据paths传过来的路径，找到
+     * 根据paths传过来的路径，找到对应inode
      * @param paths
      * @param createParent
      * @return
      */
-    private DirectoryINode findParentDirectoryINode(List<String> paths, boolean createParent) {
+    private DirectoryINode findINode(List<String> paths, boolean createParent) {
         assert writeLock.isHeldByCurrentThread();
         DirectoryINode parent = this.dirTree;
         // 找到要创建节点的父节点
         for (int i = 0; i < paths.size(); i++) {
             // 上一级目录
             List<INode> childDirs = parent.getChilds().stream()
-                    .filter(dir -> INodeTypeEnum.DIRECTORY.equals(dir.getiNodeType())).collect(Collectors.toList());
+                    .filter(dir -> INodeTypeEnum.DIRECTORY.equals(dir.getINodeType())).collect(Collectors.toList());
 
             boolean needCreated = true;
             for (INode childDir : childDirs) {
@@ -118,6 +117,39 @@ public class FSDirectory {
             }
         }
         return parent;
+    }
+
+
+    /**
+     * 根据paths传过来的路径，找到对应inode
+     * @param paths
+     * @return
+     */
+    private INode findINode(List<String> paths) {
+        assert writeLock.isHeldByCurrentThread();
+        int pathSize = paths.size();
+        DirectoryINode parent = this.dirTree;
+        // 找到要创建节点的父节点
+        for (int i = 0; i < pathSize - 1; i++) {
+            // 上一级目录
+            List<INode> childDirs = parent.getChilds().stream()
+                    .filter(dir -> INodeTypeEnum.DIRECTORY.equals(dir.getINodeType())).collect(Collectors.toList());
+            boolean hasFind = false;
+            for (INode childDir : childDirs) {
+                if ((childDir.getPath().equals(paths.get(i)))) {
+                    parent = (DirectoryINode) childDir;
+                    hasFind = true;
+                    break;
+                }
+            }
+            if (!hasFind){
+                return null;
+            }
+        }
+        List<INode> childs = parent.getChilds();
+        Optional<INode> node = childs.stream().filter(iNode -> iNode.getPath().equals(paths.get(pathSize - 1)))
+                .findFirst();
+        return node.orElse(null);
     }
 
     public DirectoryINode renamedir(String srcdir, String desdir) throws Exception {
@@ -212,16 +244,16 @@ public class FSDirectory {
         dirTree = (DirectoryINode) iNode;
     }
 
-    public FileINode create(String path, boolean createParent, int replication) {
+    public FileINode createFile(String path, boolean createParent, int replication) {
         FileINode fileINode = null;
         Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
         List<String> paths = pathSplitter.splitToList(path);
+        int pathSize = paths.size();
         writeLock.lock();
         try {
-            DirectoryINode parentDirectoryINode = findParentDirectoryINode(paths.subList(0, paths.size() - 1),
-                    createParent);
+            DirectoryINode parentDirectoryINode = findINode(paths.subList(0, pathSize - 1), createParent);
 
-            fileINode = new FileINode(path, replication);
+            fileINode = new FileINode(paths.get(pathSize - 1), replication);
             parentDirectoryINode.addChild(fileINode);
             CreateEditLogOp createEditLogOp = new CreateEditLogOp(path, createParent, replication, fileINode.getCreateTime(),
                     fileINode.getUpdateTime());
@@ -237,27 +269,31 @@ public class FSDirectory {
     public FSImage getFSImage() {
         return null;
     }
-    //
-    //public void apply(JSONObject editLogJSONObject, long txid) throws Exception {
-    //
-    //    String type = editLogJSONObject.getString("type");
-    //    switch (EditLogTypeEnum.valueOf(type)) {
-    //
-    //
-    //        case MKDIR_OP:
-    //            MkDirEditLogOp mkDirEditLogOp = JSON
-    //                    .parseObject(editLogJSONObject.toJSONString(), MkDirEditLogOp.class);
-    //            try {
-    //                logger.info("创建文件: {}, {}", mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent());
-    //                mkdirs(mkDirEditLogOp.getPath(), mkDirEditLogOp.getCreateParent(), txid);
-    //            } catch (Exception e) {
-    //                logger.error("创建目录异常: {}", ExceptionUtils.getStackTrace(e));
-    //                throw new RuntimeException(e);
-    //            }
-    //            break;
-    //        case CREATE_OP:
-    //            break;
-    //    }
-    //
-    //}
+
+    public FileINode findFile(String filePath) {
+        Splitter pathSplitter = Splitter.on("/").omitEmptyStrings().trimResults();
+        List<String> paths = pathSplitter.splitToList(filePath);
+        FileINode resultFile;
+        writeLock.lock();
+        try {
+            INode iNode = findINode(paths);
+            if (iNode == null){
+                logger.error("{}文件没找到", filePath);
+                throw new RuntimeException(filePath + "文件没找到");
+            }
+            if (iNode.getINodeType().equals(INodeTypeEnum.DIRECTORY)){
+                logger.error("{}文件类型错误", filePath);
+                throw new RuntimeException(filePath + "文件类型错误");
+            }
+
+            resultFile = (FileINode) iNode;
+
+        } finally {
+            writeLock.unlock();
+        }
+
+        return resultFile;
+    }
+
+
 }

@@ -50,7 +50,9 @@ public class NameNode {
             nameNode.start();
         } catch (Exception e) {
             logger.error("NameNode启动失败，异常原因: {}", ExceptionUtils.getStackTrace(e));
+            System.exit(-1);
         }
+        logger.info("NameNode启动成功");
     }
 
     /**

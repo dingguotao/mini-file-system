@@ -1,7 +1,9 @@
 package com.iclouding.mfs.client;
 
-import com.iclouding.mfs.client.config.Configuration;
+import com.iclouding.mfs.client.socket.Sender;
 import com.iclouding.mfs.common.ResponseStatus;
+import com.iclouding.mfs.common.conf.Configuration;
+import com.iclouding.mfs.common.util.FileUtil;
 import com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesRequest;
 import com.iclouding.mfs.rpc.namenode.model.AllocationDataNodesResponse;
 import com.iclouding.mfs.rpc.namenode.model.CreateFileRequest;
@@ -15,6 +17,8 @@ import com.iclouding.mfs.rpc.namenode.service.ClientNameNodeServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -71,14 +75,15 @@ public class DFSClient {
         return renameDirResponse.getStatus() == 0;
     }
 
-    public boolean createFile(String path) {
-        return createFile(path, DEFAULT_REPLICATION);
+    public boolean createFile(String path, boolean createParent) {
+        return createFile(path, DEFAULT_REPLICATION, createParent);
     }
 
-    private boolean createFile(String path, int replication) {
+    private boolean createFile(String path, int replication, boolean createParent) {
         CreateFileRequest createRequest = CreateFileRequest
                 .newBuilder()
                 .setPath(path)
+                .setCreateParent(createParent)
                 .setReplication(replication)
                 .build();
         CreateFileResponse createResponse = namenode.createFile(createRequest);
@@ -113,7 +118,14 @@ public class DFSClient {
      * @param destPath
      * @param dataNodeInfoProtos
      */
-    public void uploadFile(String oriPath, String destPath, List<DataNodeInfoProto> dataNodeInfoProtos) {
-
+    public void uploadFile(String oriPath, String destPath, List<DataNodeInfoProto> dataNodeInfoProtos)
+            throws IOException {
+        for (DataNodeInfoProto dataNodeInfoProto : dataNodeInfoProtos) {
+            String ip = dataNodeInfoProto.getIp();
+            int dataPort = dataNodeInfoProto.getDataPort();
+            Sender sender = new Sender(ip, dataPort);
+            byte[] fileBytes = FileUtil.getFileBytes(oriPath);
+            sender.send(fileBytes, destPath);
+        }
     }
 }

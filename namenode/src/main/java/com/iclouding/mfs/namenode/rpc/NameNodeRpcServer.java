@@ -38,20 +38,22 @@ public class NameNodeRpcServer {
      */
     private Server server;
 
+    private int port;
+
     public NameNodeRpcServer(FSNamesystem namesystem, DataNodeManager dataNodeManager, Configuration conf) {
+        port = conf.getInt("namenode.port");
         this.namesystem = namesystem;
         this.dataNodeManager = dataNodeManager;
-        server = ServerBuilder.forPort(50010)
+        server = ServerBuilder.forPort(port)
                 // 绑定NameNode的RPC service
                 .addService(NameNodeServiceGrpc.bindService(new NameNodeRpcServiceImpl(namesystem, dataNodeManager)))
                 .addService(ClientNameNodeServiceGrpc.bindService(new ClientNameNodeService(namesystem)))
-                .addService(StandbyNameNodeServiceGrpc.bindService(new StandbyNameNodeService(namesystem)))
-                .build();
+                .addService(StandbyNameNodeServiceGrpc.bindService(new StandbyNameNodeService(namesystem))).build();
     }
 
     public void start() throws IOException {
         server.start();
-        logger.info("NameNode RPC启动，监听{}端口", 50010);
+        logger.info("NameNode RPC启动，监听{}端口", port);
         // 在JVM 停止时，添加钩子，停掉NameNode RPC Server
         Runtime.getRuntime().addShutdownHook(new Thread(NameNodeRpcServer.this::stop));
 

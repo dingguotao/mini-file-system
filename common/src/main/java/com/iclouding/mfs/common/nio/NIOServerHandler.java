@@ -25,7 +25,7 @@ public abstract class NIOServerHandler {
      */
     public abstract String handleRequestAndResponse(String request);
 
-    public void handleChannel(SocketChannel socketClient) {
+    public void handleChannelRead(SocketChannel socketClient) {
         ByteBuffer byteBuffer = ByteBuffer.allocate(8 * 1024);
 
         StringBuilder received = new StringBuilder();

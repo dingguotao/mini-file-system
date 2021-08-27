@@ -30,38 +30,46 @@ public class FileUtil {
     }
 
     public static List<String> getFileData(String fileName) {
-       List<String> lines = null;
+        List<String> lines = null;
         try {
-            lines = FileUtils.readLines(new File( fileName));
+            lines = FileUtils.readLines(new File(fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return lines;
     }
 
+    public static byte[] getFileBytes(String fileName) throws IOException {
+        byte[] data = FileUtils.readFileToByteArray(new File(fileName));
+        return data;
+    }
+
     public static boolean createFile(File file) throws IOException {
         File parentDir = file.getAbsoluteFile().getParentFile();
-        if (!parentDir.exists()){
+        if (!parentDir.exists()) {
             parentDir.mkdirs();
         }
         file.createNewFile();
         return true;
     }
 
-    public static void writeStr2File(String str, String fileName) throws IOException {
-        File file = new File(fileName);
-        if (!file.exists()){
+    public static void writeContent2File(String content, String filePath) throws IOException {
+        writeContent2File(content.getBytes(StandardCharsets.UTF_8), filePath);
+    }
+
+    public static void writeContent2File(byte[] content, String filePath) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()) {
             createFile(file);
         }
-        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-             final FileChannel channel = randomAccessFile.getChannel()){
-            final ByteBuffer byteBuffer = ByteBuffer.wrap(str.getBytes(StandardCharsets.UTF_8));
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file,
+                "rw"); final FileChannel channel = randomAccessFile.getChannel()) {
+            final ByteBuffer byteBuffer = ByteBuffer.wrap(content);
             channel.write(byteBuffer);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("写入文件异常: \n{}", e);
             throw new IOException(e);
         }
-        System.out.println("写入完成");
     }
 
     public static void deleteFile(String file) throws IOException {

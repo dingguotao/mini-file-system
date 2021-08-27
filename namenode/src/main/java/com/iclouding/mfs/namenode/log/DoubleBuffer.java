@@ -119,7 +119,7 @@ public class DoubleBuffer {
         public void flush(String editLogFileName) {
 
             try {
-                FileUtil.writeStr2File(String.join("", buf), editLogFileName);
+                FileUtil.writeContent2File(String.join("", buf), editLogFileName);
             } catch (IOException e) {
                 logger.error("写入文件失败，异常原因: \n{}", ExceptionUtils.getStackTrace(e));
             }

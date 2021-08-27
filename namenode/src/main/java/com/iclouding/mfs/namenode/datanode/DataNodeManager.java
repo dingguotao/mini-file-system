@@ -25,13 +25,15 @@ public class DataNodeManager {
 
     public DataNodeManager() {
         // 启动后台线程，监控节点心跳，及时处理没有心跳的节点
-        new DataNodeAliveMonitor().start();
+        new DataNodeHeartbeatMonitor().start();
     }
 
-    public void register(String ip, String hostname) {
-        DataNodeInfo dataNodeInfo = new DataNodeInfo(ip, hostname);
+    public void register(String ip, String hostname, int dataPort) {
+        DataNodeInfo dataNodeInfo = new DataNodeInfo(ip, hostname, dataPort);
         dataNodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
-        dataNodes.put(getDataNodeKey(dataNodeInfo.getIp(), dataNodeInfo.getHostname()), dataNodeInfo);
+        String dataNodeKey = getDataNodeKey(dataNodeInfo.getIp(), dataNodeInfo.getHostname());
+        dataNodes.put(dataNodeKey, dataNodeInfo);
+        logger.info("收到datanode: ({}:{}的注册信息)",dataNodeKey, dataPort);
     }
 
     private String getDataNodeKey(String ip, String hostname) {
@@ -47,11 +49,12 @@ public class DataNodeManager {
         String dataNodeKey = getDataNodeKey(ip, hostname);
         DataNodeInfo dataNodeInfo = dataNodes.get(dataNodeKey);
         if (dataNodeInfo == null) {
-            logger.error("节点: {} 没有注册，无法处理心跳", ip);
+            logger.error("节点: {} 没有注册，无法处理心跳", dataNodeKey);
             return;
         }
         dataNodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
         dataNodes.put(dataNodeKey, dataNodeInfo);
+        logger.info("收到节点: {}心跳信息", dataNodeKey);
     }
 
     /**
@@ -83,7 +86,7 @@ public class DataNodeManager {
 
 
 
-    class DataNodeAliveMonitor extends Thread {
+    class DataNodeHeartbeatMonitor extends Thread {
         @Override
         public void run() {
             while (true) {

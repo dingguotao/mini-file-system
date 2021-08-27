@@ -27,12 +27,11 @@ public class Configuration {
 
     public static final Logger logger = LoggerFactory.getLogger(Configuration.class);
 
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
         try {
             // 加载classpath下配置
-
             Enumeration<URL> resources = Configuration.class.getClassLoader().getResources("");
             while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
@@ -64,7 +63,18 @@ public class Configuration {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    public String get(String key) {
+        return properties.getProperty(key);
+    }
+
+    public String getOrDefault(String key, String defaultValue) {
+        String value = get(key);
+        return value == null ? defaultValue : value;
+    }
+
+    public int getInt(String key) {
+        return Integer.parseInt(properties.getProperty(key));
+    }
 }

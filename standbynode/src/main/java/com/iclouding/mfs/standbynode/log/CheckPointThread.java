@@ -105,7 +105,7 @@ public class CheckPointThread extends Thread {
 
         final String fsImageFileName = getFSImageFileName(fsimageDir, fsImage.getLastTxid());
         try {
-            FileUtil.writeStr2File(fsImage.toJSONString(), fsImageFileName);
+            FileUtil.writeContent2File(fsImage.toJSONString(), fsImageFileName);
         } catch (IOException e) {
             e.printStackTrace();
             logger.error("写入镜像文件错误, {}", ExceptionUtils.getStackTrace(e));

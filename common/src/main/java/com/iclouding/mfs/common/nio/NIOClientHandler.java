@@ -10,7 +10,8 @@ import java.nio.channels.SocketChannel;
  * @email: clouding.vip@qq.com
  */
 public abstract class NIOClientHandler {
+
     public abstract void acceptConnect(SocketChannel socketClient) ;
 
-    public abstract void handleReadRequest(SocketChannel socketClient);
+    public abstract boolean handleChannelRead(SocketChannel socketClient);
 }

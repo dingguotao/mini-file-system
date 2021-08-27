@@ -14,9 +14,10 @@ import lombok.Setter;
 @Getter
 public class DataNodeInfo implements Comparable<DataNodeInfo> {
 
-    public DataNodeInfo(String ip, String hostname) {
+    public DataNodeInfo(String ip, String hostname, int dataPort) {
         this.ip = ip;
         this.hostname = hostname;
+        this.dataPort = dataPort;
     }
 
     private String ip;

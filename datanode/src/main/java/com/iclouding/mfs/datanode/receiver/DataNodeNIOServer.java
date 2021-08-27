@@ -105,7 +105,7 @@ public class DataNodeNIOServer {
     }
 
     private String getFileAbsolutePath(String dataPath, String filePath) {
-        return dataPath + File.pathSeparator + filePath;
+        return dataPath + File.separator + filePath;
     }
 
 

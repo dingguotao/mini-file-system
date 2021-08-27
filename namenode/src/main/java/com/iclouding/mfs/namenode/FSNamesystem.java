@@ -48,7 +48,7 @@ public class FSNamesystem {
      * @param conf
      */
     public void loadFromDisk(Configuration conf) {
-        String fsImageDir = "./namenode/fsimage/";
+        String fsImageDir = conf.getOrDefault("namenode.fsimage.dir", "./namenode/fsimage/");
         File dir = new File(fsImageDir);
         String[] fsimages = dir.list((dir1, name) -> name.startsWith("fsimage"));
         if (fsimages == null || fsimages.length == 0){
@@ -56,7 +56,7 @@ public class FSNamesystem {
             return;
         }
         String maxFsImageFile = Arrays.stream(fsimages).max(String::compareTo).get();
-        List<String> fileData = FileUtil.getFileData(maxFsImageFile);
+        List<String> fileData = FileUtil.getFileData(fsImageDir+ File.pathSeparator + maxFsImageFile);
         if (CollectionUtils.isEmpty(fileData)){
             logger.error("{}文件数据为空", maxFsImageFile);
             return;
@@ -112,12 +112,15 @@ public class FSNamesystem {
     }
 
     public boolean createFile(String path, boolean createParent, int replication){
-        FileINode file = fsDirectory.create(path, createParent, replication);
+        FileINode file = fsDirectory.createFile(path, createParent, replication);
         return true;
     }
 
     public List<DataNodeInfo> allocationDataNodes(String filePath, long fileSize) {
-        List<DataNodeInfo> dataNodeInfos = dataNodeManager.allocateDataNodes(fileSize, 2);
+        FileINode file = fsDirectory.findFile(filePath);
+        // 更新上去fileSize
+        file.setFileSize(fileSize);
+        List<DataNodeInfo> dataNodeInfos = dataNodeManager.allocateDataNodes(fileSize, file.getReplication());
         return dataNodeInfos;
     }
 }

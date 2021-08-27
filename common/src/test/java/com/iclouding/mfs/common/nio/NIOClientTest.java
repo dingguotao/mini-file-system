@@ -44,8 +44,9 @@ public class NIOClientTest {
         }
 
         @Override
-        public void handleReadRequest(SocketChannel socketClient) {
+        public boolean handleChannelRead(SocketChannel socketClient) {
             logger.info("处理数据");
+            return false;
         }
     }
 }

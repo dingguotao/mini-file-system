@@ -24,6 +24,8 @@ public class HeartBeatManager {
 
     private final HeartbeatThread heartbeatThread;
 
+    private volatile boolean isRunning;
+
     public HeartBeatManager(NameNodeRPCClient rpcClient, Configuration conf) {
         this.rpcClient = rpcClient;
         ip = conf.get("datanode.ip");
@@ -32,11 +34,12 @@ public class HeartBeatManager {
     }
 
     public void start() {
+        isRunning = true;
         heartbeatThread.start();
     }
 
     public void stop() {
-
+        isRunning = false;
     }
 
     /**
@@ -54,19 +57,21 @@ public class HeartBeatManager {
             /**
              * 拿到 ip hostname 去namenode注册
              */
-            HeartbeatRequest heartbeatRequest = HeartbeatRequest
-                    .newBuilder()
-                    .setHostname(hostname)
-                    .setIp(ip)
-                    .build();
-            HeartbeatResponse heartbeatResponse = rpcClient.heartbeat(heartbeatRequest);
-            int status = heartbeatResponse.getStatus();
-            logger.info("收到的心跳结果: {}" + status);
+            while (isRunning) {
+                HeartbeatRequest heartbeatRequest = HeartbeatRequest
+                        .newBuilder()
+                        .setHostname(hostname)
+                        .setIp(ip)
+                        .build();
+                HeartbeatResponse heartbeatResponse = rpcClient.heartbeat(heartbeatRequest);
+                int status = heartbeatResponse.getStatus();
+                logger.info("收到的心跳结果: {}" , status);
 
-            try {
-                Thread.sleep(3 * 1000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(30 * 1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

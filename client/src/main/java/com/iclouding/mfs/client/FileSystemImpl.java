@@ -1,6 +1,7 @@
 package com.iclouding.mfs.client;
 
-import com.iclouding.mfs.client.config.Configuration;
+import com.alibaba.fastjson.JSON;
+import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +50,8 @@ public class FileSystemImpl extends FileSystem {
     }
 
     @Override
-    public boolean createFile(String path) {
-        return dfsClient.createFile(path);
+    public boolean createFile(String path, boolean createParent) {
+        return dfsClient.createFile(path, createParent);
     }
 
     /**
@@ -66,7 +67,7 @@ public class FileSystemImpl extends FileSystem {
             logger.error("{}文件不存在", localPath);
             throw new FileNotFoundException(localPath + " 文件不存在");
         }
-        boolean b = dfsClient.createFile(mfsPath);
+        boolean b = dfsClient.createFile(mfsPath, true);
         List<DataNodeInfoProto> dataNodeInfoProtos = dfsClient.allocationDataNodes(mfsPath, oriFile.length());
         dfsClient.uploadFile(localPath, mfsPath, dataNodeInfoProtos);
         // 上传文件

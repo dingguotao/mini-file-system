@@ -23,7 +23,7 @@ public class FileUtilTest {
     @Test
     public void writeStr2File() {
         try {
-            FileUtil.writeStr2File("test", "aaa.txt");
+            FileUtil.writeContent2File("test", "aaa.txt");
             System.out.println();
         } catch (IOException e) {
             e.printStackTrace();

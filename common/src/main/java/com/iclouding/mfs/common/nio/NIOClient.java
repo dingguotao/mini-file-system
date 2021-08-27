@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * NIOClient
@@ -36,10 +38,16 @@ public class NIOClient {
 
     private ClientListenThread listenThread;
 
-    public NIOClient(NIOClientHandler handler) throws IOException {
+    private ReentrantLock lock;
+
+    private Condition condition;
+
+    public NIOClient(NIOClientHandler handler) {
         this.handler = handler;
-        executorService = Executors.newFixedThreadPool(3);
+        executorService = Executors.newFixedThreadPool(2);
         listenThread = new ClientListenThread();
+        lock = new ReentrantLock();
+        condition = lock.newCondition();
     }
 
     public void connect(String host, int port) throws IOException {
@@ -47,7 +55,7 @@ public class NIOClient {
         channel = SocketChannel.open();
         channel.configureBlocking(false);
         channel.connect(new InetSocketAddress(host, port));
-        channel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ );
+        channel.register(selector, SelectionKey.OP_CONNECT);
         isRunning = true;
         listenThread.start();
     }
@@ -57,10 +65,10 @@ public class NIOClient {
         @Override
         public void run() {
             while (isRunning) {
-                System.out.println("启动线程...");
+                logger.info("启动线程");
                 try {
                     int select = selector.select();
-                    if (select == 0){
+                    if (select == 0) {
                         try {
                             Thread.sleep(1000L);
                         } catch (InterruptedException e) {
@@ -73,20 +81,23 @@ public class NIOClient {
                         SelectionKey selectionKey = selectionKeyIterator.next();
                         SocketChannel socketClient = (SocketChannel) selectionKey.channel();
                         if (selectionKey.isConnectable()) {
-                            if (channel.isConnectionPending()){
+                            if (channel.isConnectionPending()) {
                                 channel.finishConnect();
                             }
                             System.out.println("可连接");
-                            executorService.submit(() -> handler.acceptConnect(socketClient));
-                            channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                            handler.acceptConnect(socketClient);
+                            channel.register(selector, SelectionKey.OP_READ);
                         } else if (selectionKey.isReadable()) {
                             // 提交到线程池，避免阻塞
                             System.out.println("可读取");
-                            executorService.submit(() -> handler.handleReadRequest(socketClient));
-                            channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-                        }else if (selectionKey.isWritable()){
+                            boolean responseStatus = handler.handleChannelRead(socketClient);
+                            if (responseStatus) {
+                                close();
+                            }
+                            channel.register(selector, SelectionKey.OP_READ);
+                        } else if (selectionKey.isWritable()) {
                             System.out.println("sss");
-                            channel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                            channel.register(selector, SelectionKey.OP_READ);
                         }
                         selectionKeyIterator.remove();
                     }
@@ -96,6 +107,18 @@ public class NIOClient {
             }
         }
     }
+
+    public void blockUntilEnd(){
+        lock.lock();
+        try {
+            condition.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+    }
+
 
     public void close() {
         isRunning = false;
@@ -115,6 +138,12 @@ public class NIOClient {
         }
         executorService.shutdown();
         listenThread.interrupt();
+        lock.lock();
+        try {
+            condition.signal();
+        }finally {
+            lock.unlock();
+        }
     }
 
 }

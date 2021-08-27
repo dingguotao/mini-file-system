@@ -1,24 +1,17 @@
 package com.iclouding.mfs.common.nio;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -130,11 +123,10 @@ public class NIOServer {
                         } else if (selectionKey.isReadable()) {
                             SocketChannel socketClient = (SocketChannel) selectionKey.channel();
                             // 提交到线程池，避免阻塞
-                            executorService.submit(() -> handler.handleChannel(socketClient));
+                            executorService.submit(() -> handler.handleChannelRead(socketClient));
                         }
                         selectionKeyIterator.remove();
                     }
-
                 } catch (IOException e) {
                     logger.error("处理连接请求异常: \n{}", ExceptionUtils.getStackTrace(e));
                 }

@@ -2,6 +2,7 @@ package com.iclouding.mfs.namenode.rpc;
 
 import com.iclouding.mfs.namenode.datanode.DataNodeManager;
 import com.iclouding.mfs.namenode.FSNamesystem;
+import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatRequest;
 import com.iclouding.mfs.rpc.namenode.model.HeartbeatResponse;
 import com.iclouding.mfs.rpc.namenode.model.RegisterRequest;
@@ -35,22 +36,11 @@ public class NameNodeRpcServiceImpl implements NameNodeServiceGrpc.NameNodeServi
         this.dataNodeManager = dataNodeManager;
     }
 
-    /**
-     * 对DataNode 进行注册
-     * @param ip
-     * @param hostname
-     * @return
-     * @throws Exception
-     */
-    public boolean register(String ip, String hostname) throws Exception {
-        dataNodeManager.register(ip, hostname);
-        logger.info("收到节点: {} 的注册请求。", ip);
-        return true;
-    }
-
     @Override
     public void register(RegisterRequest request, StreamObserver<RegisterResponse> responseObserver) {
-        dataNodeManager.register(request.getDataNodeInfo().getIp(), request.getDataNodeInfo().getIp());
+        DataNodeInfoProto dataNodeInfo = request.getDataNodeInfo();
+        dataNodeManager.register(dataNodeInfo.getIp(), dataNodeInfo.getHostname(),
+                dataNodeInfo.getDataPort());
 
         // 封装返回值
         RegisterResponse response = RegisterResponse
@@ -63,7 +53,10 @@ public class NameNodeRpcServiceImpl implements NameNodeServiceGrpc.NameNodeServi
     @Override
     public void heartbeat(HeartbeatRequest request, StreamObserver<HeartbeatResponse> responseObserver) {
         dataNodeManager.heartbeat(request.getIp(), request.getHostname());
-        HeartbeatResponse heartbeatResponse = HeartbeatResponse.newBuilder().setStatus(STATUS_SUCCESS).build();
+        HeartbeatResponse heartbeatResponse = HeartbeatResponse
+                .newBuilder()
+                .setStatus(STATUS_SUCCESS)
+                .build();
         responseObserver.onNext(heartbeatResponse);
         responseObserver.onCompleted();
 

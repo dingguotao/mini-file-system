@@ -19,7 +19,7 @@ public class DataNode {
     /**
      * datanode是否在运行
       */
-    private volatile boolean shouldRun;
+    private volatile boolean isRunning;
 
     private final HeartBeatManager heartBeatManager;
 
@@ -48,7 +48,7 @@ public class DataNode {
     private void start() {
         dataNodeNIOServer.start();
         heartBeatManager.start();
-        shouldRun = true;
+        isRunning = true;
         synchronized (this){
             try {
                 wait();
@@ -59,7 +59,7 @@ public class DataNode {
     }
 
     private void stop() {
-        shouldRun = false;
+        isRunning = false;
         dataNodeNIOServer.stop();
         heartBeatManager.stop();
         rpcClient.stop();
