@@ -1,5 +1,6 @@
 package com.iclouding.mfs.namenode.datanode;
 
+import com.iclouding.mfs.rpc.namenode.model.DataNodeInfoProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +29,11 @@ public class DataNodeManager {
         new DataNodeHeartbeatMonitor().start();
     }
 
-    public void register(String ip, String hostname, int dataPort) {
-        DataNodeInfo dataNodeInfo = new DataNodeInfo(ip, hostname, dataPort);
+    public void register(DataNodeInfo dataNodeInfo) {
         dataNodeInfo.setLatestHeartbeatTime(System.currentTimeMillis());
         String dataNodeKey = getDataNodeKey(dataNodeInfo.getIp(), dataNodeInfo.getHostname());
         dataNodes.put(dataNodeKey, dataNodeInfo);
-        logger.info("收到datanode: ({}:{}的注册信息)",dataNodeKey, dataPort);
+        logger.info("收到datanode: ({}:{}的注册信息)",dataNodeKey, dataNodeInfo.getDataPort());
     }
 
     private String getDataNodeKey(String ip, String hostname) {

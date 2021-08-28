@@ -1,6 +1,7 @@
 package com.iclouding.mfs.datanode.receiver;
 
 import com.iclouding.mfs.common.conf.Configuration;
+import com.iclouding.mfs.common.nio.NIORequestType;
 import com.iclouding.mfs.common.nio.NIOServer;
 import com.iclouding.mfs.common.nio.NIOServerHandler;
 import com.iclouding.mfs.common.util.FileUtil;
@@ -73,29 +74,45 @@ public class DataNodeNIOServer {
                     return;
                 }
                 byteBuffer.flip();
-                int filePathLength = byteBuffer.getInt();
-                if (filePathLength == 0L) {
+                int requestType = byteBuffer.getInt();
+                if (requestType == 0L) {
+                    // 没有读取到数据
                     return;
                 }
-                logger.info("filePathLengthBuffer = {}", filePathLength);
-                byte[] filePathBytes = new byte[filePathLength];
-                byteBuffer.get(filePathBytes, 0, filePathLength);
-                String filePath = new String(filePathBytes);
-                logger.info("filePath = {}", filePath);
-                int fileLength = byteBuffer.getInt();
-                byte[] fileContentBytes = new byte[fileLength];
-                byteBuffer.get(fileContentBytes, 0, fileLength);
-                String fileAbsolutePath = getFileAbsolutePath(dataPath, filePath);
-                FileUtil.writeContent2File(fileContentBytes, fileAbsolutePath);
-                String md5 = MD5Util.getContents(fileContentBytes);
-                String response = handleRequestAndResponse(md5);
-                ByteBuffer reponseByteBuffer = ByteBuffer.wrap(response.getBytes(StandardCharsets.UTF_8));
-                socketClient.write(reponseByteBuffer);
-                // todo 给nanemode发送消息，通知收到一个文件
-                rpcClient.informReplicaReceived(filePath);
+                switch (requestType) {
+                    case NIORequestType.UPLOAD_FILE:
+                        uploadFile(socketClient, byteBuffer);
+                        break;
+                    case NIORequestType.GET_FILE:
+                        // todo 下载文件
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + requestType);
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        private void uploadFile(SocketChannel socketClient, ByteBuffer byteBuffer) throws IOException {
+            int filePathLength = byteBuffer.getInt();
+            logger.info("filePathLengthBuffer = {}", filePathLength);
+            byte[] filePathBytes = new byte[filePathLength];
+            byteBuffer.get(filePathBytes, 0, filePathLength);
+            String filePath = new String(filePathBytes);
+            logger.info("filePath = {}", filePath);
+            int fileLength = byteBuffer.getInt();
+            byte[] fileContentBytes = new byte[fileLength];
+            byteBuffer.get(fileContentBytes, 0, fileLength);
+            String fileAbsolutePath = getFileAbsolutePath(dataPath, filePath);
+            FileUtil.writeContent2File(fileContentBytes, fileAbsolutePath);
+            String md5 = MD5Util.getContents(fileContentBytes);
+            String response = handleRequestAndResponse(md5);
+            ByteBuffer reponseByteBuffer = ByteBuffer.wrap(response.getBytes(StandardCharsets.UTF_8));
+            socketClient.write(reponseByteBuffer);
+            // todo 给nanemode发送消息，通知收到一个文件
+            rpcClient.informReplicaReceived(filePath);
         }
 
         @Override
@@ -107,6 +124,5 @@ public class DataNodeNIOServer {
     private String getFileAbsolutePath(String dataPath, String filePath) {
         return dataPath + File.separator + filePath;
     }
-
 
 }

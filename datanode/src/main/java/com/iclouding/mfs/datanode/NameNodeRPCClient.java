@@ -12,7 +12,9 @@ import com.iclouding.mfs.rpc.namenode.model.RegisterResponse;
 import com.iclouding.mfs.rpc.namenode.service.NameNodeServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -41,12 +43,16 @@ public class NameNodeRPCClient {
         String ip = conf.get("datanode.ip");
         String hostname = conf.get("datanode.hostname");
         int dataPort = conf.getInt("datanode.nio.port");
+        String dataPath = conf.get("datanode.data.path");
 
+        File dataFile = new File(dataPath);
         dataNodeInfo = DataNodeInfoProto
                 .newBuilder()
                 .setHostname(hostname)
                 .setIp(ip)
                 .setDataPort(dataPort)
+                .setTotalDiskSize(dataFile.getTotalSpace())
+                .setUsedDiskSize(dataFile.getUsableSpace())
                 .build();
     }
 

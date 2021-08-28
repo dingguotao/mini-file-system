@@ -41,14 +41,14 @@ public class NameNodeRpcServiceImpl implements NameNodeServiceGrpc.NameNodeServi
 
     @Override
     public void register(RegisterRequest request, StreamObserver<RegisterResponse> responseObserver) {
-        DataNodeInfoProto dataNodeInfo = request.getDataNodeInfo();
-        dataNodeManager.register(dataNodeInfo.getIp(), dataNodeInfo.getHostname(),
-                dataNodeInfo.getDataPort());
+        DataNodeInfoProto dataNodeInfoProto = request.getDataNodeInfo();
+        dataNodeManager.register(DataNodeInfo.getByDataNodeInfoProto(dataNodeInfoProto));
 
         // 封装返回值
         RegisterResponse response = RegisterResponse
                 .newBuilder()
-                .setStatus(STATUS_SUCCESS).build();
+                .setStatus(STATUS_SUCCESS)
+                .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

@@ -2,8 +2,11 @@ package com.iclouding.mfs.datanode;
 
 import com.iclouding.mfs.common.conf.Configuration;
 import com.iclouding.mfs.datanode.receiver.DataNodeNIOServer;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 /**
  * DataNode

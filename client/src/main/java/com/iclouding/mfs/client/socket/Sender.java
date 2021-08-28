@@ -2,6 +2,7 @@ package com.iclouding.mfs.client.socket;
 
 import com.iclouding.mfs.common.nio.NIOClient;
 import com.iclouding.mfs.common.nio.NIOClientHandler;
+import com.iclouding.mfs.common.nio.NIORequestType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,12 +57,14 @@ public class Sender {
             // 发送数据
 
             /**
-             * 格式：路径长度，路径，文件内容
+             * 格式：请求类型 路径长度，路径，文件内容
              */
             logger.info("开始发送数据, 路径是: {}", path);
             byte[] pathBytes = path.getBytes(StandardCharsets.UTF_8);
-            ByteBuffer byteBuffer = ByteBuffer
-                    .allocate(Integer.BYTES + pathBytes.length + Integer.BYTES + fileBytes.length);
+            // todo 这里在大文件时，或者大量请求时，有溢出的风险，后续优化成固定大小。
+            ByteBuffer byteBuffer = ByteBuffer.allocate(Integer.BYTES + Integer.BYTES + pathBytes.length + Integer.BYTES + fileBytes.length);
+            // 操作类型，用int表示。
+            byteBuffer.putInt(NIORequestType.UPLOAD_FILE);
             // 文件路径长度
             logger.info("path的长度：{}", pathBytes.length);
             byteBuffer.putInt(pathBytes.length);
